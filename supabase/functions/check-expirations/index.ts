@@ -77,8 +77,7 @@ async function sendExpirationWarningEmail(
     </p>
   </div>
   <div class="footer">
-    <p>MRO - Mais Resultados Online</p>
-    <p>Gabriel Fernandes da Silva | CNPJ: 54.840.738/0001-96</p>
+    <p>Código InstaShop</p>
   </div>
   <img src="${trackingPixelUrl}" width="1" height="1" style="display:none;" alt="" />
 </body>
@@ -86,7 +85,7 @@ async function sendExpirationWarningEmail(
     `;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "⚠️ Seu acesso MRO expira amanhã! Renove agora",
       content: `Seu acesso ao MRO expira em ${expDate}. Renove em maisresultadosonline.com.br`,
@@ -168,8 +167,7 @@ async function sendExpiredNotificationEmail(
     </p>
   </div>
   <div class="footer">
-    <p>MRO - Mais Resultados Online</p>
-    <p>Gabriel Fernandes da Silva | CNPJ: 54.840.738/0001-96</p>
+    <p>Código InstaShop</p>
   </div>
   <img src="${trackingPixelUrl}" width="1" height="1" style="display:none;" alt="" />
 </body>
@@ -177,7 +175,7 @@ async function sendExpiredNotificationEmail(
     `;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "❌ Seu acesso MRO expirou - Renove e continue crescendo!",
       content: `Seu acesso ao MRO expirou. Renove em maisresultadosonline.com.br`,

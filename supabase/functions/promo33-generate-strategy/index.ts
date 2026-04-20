@@ -227,7 +227,7 @@ ENGAJAMENTO (últimos ${strategyPosts.length} posts):
 `;
 
     let prompt = '';
-    let systemPrompt = `Você é um especialista em marketing digital e Instagram da MRO - Mais Resultados Online. 
+    let systemPrompt = `Você é um especialista em marketing digital e Instagram da Código InstaShop. 
 Gere estratégias práticas, objetivas e prontas para implementar. Use linguagem direta e amigável.
 Responda sempre em português brasileiro.`;
 

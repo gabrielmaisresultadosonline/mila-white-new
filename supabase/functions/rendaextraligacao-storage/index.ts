@@ -74,7 +74,7 @@ const sendEmailViaSMTP = async (to: string, nome: string, groupLink: string) => 
 
 <tr><td style="background:#222;padding:20px;text-align:center;">
 <p style="color:#FFD700;margin:0 0 8px;font-weight:bold;font-size:14px;">Bem-vindo a familia MRO!</p>
-<p style="color:#888;margin:0;font-size:11px;">MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:11px;">Código InstaShop</p>
 </td></tr>
 
 </table>

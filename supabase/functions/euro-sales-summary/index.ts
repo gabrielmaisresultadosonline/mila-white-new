@@ -169,7 +169,7 @@ ${salesListHtml || '<tr><td colspan="6" style="padding:20px;text-align:center;co
 Este é um resumo automático gerado pelo sistema MRO.
 </p>
 <p style="margin:10px 0 0 0;color:#9ca3af;font-size:12px;">
-© ${new Date().getFullYear()} MRO - Mais Resultados Online
+© ${new Date().getFullYear()} Código InstaShop
 </p>
 </div>
 

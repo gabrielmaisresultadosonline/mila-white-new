@@ -274,7 +274,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 <tr>
 <td style="background:#000;padding:25px;text-align:center;border-top:3px solid #FFD700;">
 <p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;font-size:16px;">MRO - Programa de Afiliados 💛</p>
-<p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#4b5563;margin:10px 0 0 0;font-size:11px;">Juntos vamos longe! 🚀</p>
 </td>
 </tr>
@@ -364,7 +364,7 @@ Continue assim! Você está no caminho certo! 🔥
 <tr>
 <td style="background:#000;padding:20px;text-align:center;border-top:3px solid #FFD700;">
 <p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
-<p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td>
 </tr>
 </table>
@@ -609,7 +609,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
 <p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
-<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#666;margin:10px 0 0 0;font-size:11px;">Resumo gerado em ${timestamp}</p>
 </td>
 </tr>

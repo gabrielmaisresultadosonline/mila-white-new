@@ -206,8 +206,7 @@ ${planType === "lifetime" ? "♾️ Acesso Vitalício - Sem data de expiração!
 </tr>
 <tr>
 <td style="text-align:center;padding:20px;background:#f8f9fa;color:#666;font-size:11px;">
-<p style="margin:0;">ZAPMRO - Mais Resultados Online</p>
-<p style="margin:5px 0 0 0;">Gabriel Fernandes da Silva | CNPJ: 54.840.738/0001-96</p>
+<p style="margin:0;">ZAPCódigo InstaShop</p>
 </td>
 </tr>
 </table>
@@ -215,7 +214,7 @@ ${planType === "lifetime" ? "♾️ Acesso Vitalício - Sem data de expiração!
 </html>`;
 
     await client.send({
-      from: "ZAPMRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "ZAPCódigo InstaShop <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `ZAPMRO - Acesso Liberado à Ferramenta WhatsApp (${planLabel})!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email.",

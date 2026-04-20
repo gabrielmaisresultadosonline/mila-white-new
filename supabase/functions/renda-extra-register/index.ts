@@ -142,7 +142,7 @@ Fique atento! Você receberá um email de lembrete no dia do lançamento.
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
-<p style="margin:0;color:#999;font-size:12px;">© 2026 MRO - Mais Resultados Online</p>
+<p style="margin:0;color:#999;font-size:12px;">© 2026 Código InstaShop</p>
 <p style="margin:10px 0 0 0;color:#666;font-size:11px;">Este email foi enviado porque você se cadastrou na página de Renda Extra.</p>
 </td>
 </tr>

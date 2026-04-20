@@ -359,7 +359,7 @@ serve(async (req) => {
 </td></tr>
 <tr><td style="background:#1a1a1a;padding:20px;text-align:center;">
 <p style="color:#22c55e;margin:0 0 8px;font-weight:bold;">Obrigado por confiar na Prompts MRO! 💚</p>
-<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td></tr>
 </table></body></html>`;
 

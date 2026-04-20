@@ -173,8 +173,7 @@ async function sendAccessEmail(
 </tr>
 <tr>
 <td style="text-align:center;padding:20px;background:#f8f9fa;color:#666;font-size:11px;">
-<p style="margin:0;">MRO - Mais Resultados Online</p>
-<p style="margin:5px 0 0 0;">Gabriel Fernandes da Silva | CNPJ: 54.840.738/0001-96</p>
+<p style="margin:0;">Código InstaShop</p>
 </td>
 </tr>
 </table>
@@ -199,7 +198,7 @@ async function sendAccessEmail(
     const finalHtml = htmlContent.replace('{EXPIRATION_SECTION}', expirationSection);
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `MRO - Acesso Liberado ao ${serviceName}!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email HTML.",
@@ -540,7 +539,7 @@ serve(async (req) => {
           });
 
           await client.send({
-            from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+            from: "Código InstaShop <suporte@codigoinstashop.com.br>",
             to: email,
             subject: "🧪 Email de Teste - MRO Admin",
             content: "Este é um email de teste do sistema MRO Admin.",
@@ -550,7 +549,7 @@ serve(async (req) => {
                 <p>Este é um email de teste do sistema <strong>MRO Admin</strong>.</p>
                 <p>Se você recebeu este email, o sistema de envio está funcionando corretamente!</p>
                 <hr style="border-color: #333;">
-                <p style="color: #888; font-size: 12px;">MRO - Mais Resultados Online</p>
+                <p style="color: #888; font-size: 12px;">Código InstaShop</p>
               </div>
             `,
           });
@@ -678,15 +677,13 @@ serve(async (req) => {
 </head>
 <body>
   <div class="header">
-    <h1>📢 MRO - Mais Resultados Online</h1>
+    <h1>📢 Código InstaShop</h1>
   </div>
   <div class="content">
     ${message}
   </div>
   <div class="footer">
-    <p>MRO - Mais Resultados Online</p>
-    <p>Gabriel Fernandes da Silva</p>
-    <p>CNPJ: 54.840.738/0001-96</p>
+    <p>Código InstaShop</p>
   </div>
 </body>
 </html>
@@ -695,7 +692,7 @@ serve(async (req) => {
         for (const email of emails) {
           try {
             await client.send({
-              from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+              from: "Código InstaShop <suporte@codigoinstashop.com.br>",
               to: email,
               subject: subject || '📢 Novidades do MRO!',
               content: message.replace(/<[^>]*>/g, ''), // Plain text version
