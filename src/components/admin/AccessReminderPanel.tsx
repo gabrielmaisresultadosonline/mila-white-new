@@ -222,7 +222,7 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         const { error } = await supabase.functions.invoke("broadcast-email", {
           body: {
             to: user.customer_email,
-            subject: "Seu acesso MRO !",
+            subject: getReminderSubject(),
             body,
             userName: user.customer_name || user.username,
           },
