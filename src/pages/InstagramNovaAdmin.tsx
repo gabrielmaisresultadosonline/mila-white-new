@@ -2840,42 +2840,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     </div>
                   )}
                   
-                  {/* Configurações Globais de Afiliados */}
-                  <div className="mb-4 p-4 bg-zinc-800/50 border border-zinc-600 rounded-lg">
-                    <h4 className="text-white font-medium mb-3 flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-green-400" />
-                      Configurações Globais (Emails)
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm text-zinc-400 mb-1 block">WhatsApp para Contato (Comissões)</label>
-                        <Input
-                          placeholder="5511999999999"
-                          value={affiliateWhatsApp}
-                          onChange={(e) => setAffiliateWhatsApp(e.target.value.replace(/\D/g, ""))}
-                          className="bg-zinc-800/50 border-zinc-600 text-white"
-                        />
-                        <p className="text-xs text-zinc-500 mt-1">
-                          Número de referência. O link nos emails direcionará para /whatsapp automaticamente
-                        </p>
-                      </div>
-                      <div className="flex items-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            saveAffiliateSettings(affiliateWhatsApp);
-                            toast.success("Configurações de WhatsApp salvas!");
-                          }}
-                          className="border-green-500/50 text-green-400 hover:bg-green-500/10"
-                        >
-                          <Save className="w-4 h-4 mr-1" />
-                          Salvar WhatsApp
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
+                  {/* WhatsApp de suporte agora é gerenciado em /whatsapp — emails redirecionam automaticamente */}
+
                   <div className="flex items-center justify-between gap-4 pt-4 border-t border-purple-500/20">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
