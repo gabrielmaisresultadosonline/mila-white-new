@@ -33,6 +33,8 @@ import {
   Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2
 } from 'lucide-react';
 import ManualScraper from '@/components/admin/ManualScraper';
+import { lazy, Suspense } from 'react';
+const InstagramNovaAdmin = lazy(() => import('./InstagramNovaAdmin'));
 
 type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados';
 type UserFilter = 'all' | 'instagram' | 'connected';
@@ -270,13 +272,10 @@ const Admin = () => {
                   key={tab.id}
                   type="button"
                   onClick={() => {
-                    if (tab.id === 'vendas') {
-                      window.location.href = '/instagram-nova-admin';
-                      return;
-                    }
                     if (tab.id === 'afiliados') {
-                      window.location.href = '/instagram-nova-admin?view=affiliates';
-                      return;
+                      window.history.replaceState(null, '', '/admin?view=affiliates');
+                    } else if (tab.id === 'vendas') {
+                      window.history.replaceState(null, '', '/admin?view=sales');
                     }
                     setActiveTab(tab.id as Tab);
                   }}
@@ -1068,7 +1067,13 @@ const Admin = () => {
         {activeTab === 'userlist' && (
           <UsersListPanel />
         )}
-        {/* Vendas/Afiliados tabs redirect via window.location — no inline render */}
+        {(activeTab === 'vendas' || activeTab === 'afiliados') && (
+          <div className="-mx-4 -my-8">
+            <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Carregando...</div>}>
+              <InstagramNovaAdmin key={activeTab} />
+            </Suspense>
+          </div>
+        )}
       </main>
     </div>
   );
