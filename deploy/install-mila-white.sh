@@ -136,11 +136,13 @@ nginx -t
 systemctl reload nginx
 
 # ---------- 8. SSL ----------------------------------------------------------
-bold "Emitindo certificado SSL (Let's Encrypt)..."
-certbot --nginx \
+bold "Emitindo certificado SSL (Let's Encrypt) via webroot..."
+certbot certonly --webroot -w "$APP_DIR/dist" \
   -d "$DOMAIN" -d "$WWW_DOMAIN" \
   --non-interactive --agree-tos -m "$EMAIL" \
-  --redirect || err "Certbot falhou — verifique se $DOMAIN aponta para o IP deste servidor."
+  --preferred-challenges http \
+  && certbot install --nginx -d "$DOMAIN" -d "$WWW_DOMAIN" --redirect --non-interactive \
+  || err "Certbot falhou — se você usa Cloudflare, DESATIVE o PROXY (nuvem cinza) até o certificado ser emitido, depois reative em modo Full (strict)."
 
 systemctl enable certbot.timer
 systemctl start  certbot.timer
