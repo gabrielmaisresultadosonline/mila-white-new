@@ -2383,7 +2383,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             <div className="mx-auto w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mb-4">
               <Lock className="w-8 h-8 text-amber-400" />
             </div>
-            <CardTitle className="text-xl text-white">Admin MRO Instagram</CardTitle>
+            <CardTitle className="text-xl text-white">Admin Código InstaShop</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
@@ -2428,7 +2428,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-white">Admin MRO Instagram</h1>
+              <h1 className="text-2xl font-bold text-white">Admin Código InstaShop</h1>
               <p className="text-zinc-400 text-sm">Gerenciamento de pedidos /instagram-nova</p>
               {lastAutoCheck && (
                 <p className="text-zinc-500 text-xs mt-1">

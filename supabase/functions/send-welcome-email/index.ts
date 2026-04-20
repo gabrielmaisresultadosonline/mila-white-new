@@ -97,7 +97,7 @@ serve(async (req) => {
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;">
 <tr>
 <td style="background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);padding:30px;text-align:center;">
-<div style="background:#000;color:#fff;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">MRO</div>
+<div style="background:#000;color:#fff;display:inline-block;padding:10px 25px;border-radius:8px;font-size:24px;font-weight:bold;letter-spacing:1px;margin-bottom:10px;">Código InstaShop</div>
 <h1 style="color:#000;margin:15px 0 0 0;font-size:24px;">🎉 Reconhecemos seu Primeiro Acesso!</h1>
 </td>
 </tr>
@@ -109,7 +109,7 @@ serve(async (req) => {
 </div>
 
 <p style="margin:0 0 20px 0;font-size:16px;">Olá!</p>
-<p style="margin:0 0 15px 0;font-size:16px;">Já reconheci seu <strong>primeiro acesso</strong> à nossa ferramenta <strong>MRO</strong>! 🚀</p>
+<p style="margin:0 0 15px 0;font-size:16px;">Já reconheci seu <strong>primeiro acesso</strong> à nossa ferramenta <strong>Código InstaShop</strong>! 🚀</p>
 <p style="margin:0 0 15px 0;font-size:16px;">A partir de agora, você vai:</p>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px 0;">
