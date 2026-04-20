@@ -276,6 +276,13 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
+        <EmailTemplateEditor
+          storageKey="reminder_template"
+          defaultSubject={DEFAULT_REMINDER_SUBJECT}
+          defaultBody={DEFAULT_REMINDER_BODY}
+          sampleVariables={{ name: "João Silva", username: "joaosilva", password: "abc123", email: "joao@email.com" }}
+          accent="blue"
+        />
         {/* Controls */}
         <div className="flex flex-wrap gap-2 items-center">
           <div className="flex-1 min-w-[200px]">
