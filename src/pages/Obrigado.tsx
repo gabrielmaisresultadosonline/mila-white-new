@@ -43,7 +43,8 @@ const Obrigado = () => {
       `Olá! Acabei de comprar o MRO I.A + Automação!\n\nNome: ${nome.trim()}\nEmail: ${email.trim()}`
     );
     
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    const phone = whatsappNumber.replace(/\D/g, "");
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };
 
   return (
