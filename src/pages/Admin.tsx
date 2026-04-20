@@ -316,9 +316,6 @@ const Admin = () => {
             {/* Connected Users Panel */}
             <ConnectedUsersPanel />
 
-            {/* Creatives PRO Manager */}
-            <CreativesProManager />
-
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <h2 className="text-2xl font-display font-bold">Perfis Instagram</h2>
