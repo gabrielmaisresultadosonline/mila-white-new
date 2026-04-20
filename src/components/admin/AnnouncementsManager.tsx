@@ -470,9 +470,9 @@ const AnnouncementsManager = ({ filterArea }: AnnouncementsManagerProps = {}) =>
         </div>
       </div>
 
-      <div className="glass-card p-4 bg-yellow-500/10 border border-yellow-600/40">
-        <p className="text-sm text-yellow-900 dark:text-yellow-100 font-medium">
-          <AlertTriangle className="w-4 h-4 inline mr-2" />
+      <div className="p-4 rounded-xl bg-yellow-100 border border-yellow-500">
+        <p className="text-sm font-medium" style={{ color: '#000000' }}>
+          <AlertTriangle className="w-4 h-4 inline mr-2" style={{ color: '#000000' }} />
           Os avisos aparecem como popup logo após o usuário fazer login no sistema.
           Formatos de imagem suportados: 1920x1080, 1080x1920, 1080x1080, 1080x1350
         </p>
