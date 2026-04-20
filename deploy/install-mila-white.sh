@@ -92,10 +92,15 @@ chown -R www-data:www-data "$APP_DIR/dist"
 
 # ---------- 7. Nginx (HTTP) -------------------------------------------------
 bold "Configurando Nginx..."
+# Diretório dedicado (fora do SPA) para os challenges do Let's Encrypt
+mkdir -p /var/www/letsencrypt/.well-known/acme-challenge
+chown -R www-data:www-data /var/www/letsencrypt
+chmod -R 755 /var/www/letsencrypt
+
 cat > "$NGINX_CONF" <<EOF
 server {
-    listen 80;
-    listen [::]:80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     server_name $DOMAIN $WWW_DOMAIN;
 
     root $APP_DIR/dist;
@@ -103,16 +108,10 @@ server {
 
     client_max_body_size 100M;
 
-    # ACME challenge (Let's Encrypt) — precisa vir ANTES de qualquer outra regra
+    # ACME challenge — diretório separado, SEM try_files do SPA
     location ^~ /.well-known/acme-challenge/ {
         default_type "text/plain";
-        root $APP_DIR/dist;
-        try_files \$uri =404;
-    }
-
-    # SPA fallback
-    location / {
-        try_files \$uri \$uri/ /index.html;
+        root /var/www/letsencrypt;
     }
 
     # Cache estáticos
@@ -120,6 +119,11 @@ server {
         expires 30d;
         add_header Cache-Control "public, immutable";
         try_files \$uri =404;
+    }
+
+    # SPA fallback (por último)
+    location / {
+        try_files \$uri \$uri/ /index.html;
     }
 
     # Gzip
@@ -137,12 +141,22 @@ systemctl reload nginx
 
 # ---------- 8. SSL ----------------------------------------------------------
 bold "Emitindo certificado SSL (Let's Encrypt) via webroot..."
-certbot certonly --webroot -w "$APP_DIR/dist" \
+# Teste rápido do ACME path antes do certbot
+echo "ok-$(date +%s)" > /var/www/letsencrypt/.well-known/acme-challenge/test.txt
+chown -R www-data:www-data /var/www/letsencrypt
+systemctl reload nginx
+if ! curl -fsS "http://$DOMAIN/.well-known/acme-challenge/test.txt" >/dev/null 2>&1; then
+  err "ACME path não está acessível em http://$DOMAIN/.well-known/acme-challenge/test.txt"
+  err "Verifique: (1) DNS A record aponta para o IP deste servidor; (2) porta 80 aberta no firewall/VPS."
+fi
+rm -f /var/www/letsencrypt/.well-known/acme-challenge/test.txt
+
+certbot certonly --webroot -w /var/www/letsencrypt \
   -d "$DOMAIN" -d "$WWW_DOMAIN" \
   --non-interactive --agree-tos -m "$EMAIL" \
   --preferred-challenges http \
   && certbot install --nginx -d "$DOMAIN" -d "$WWW_DOMAIN" --redirect --non-interactive \
-  || err "Certbot falhou — se você usa Cloudflare, DESATIVE o PROXY (nuvem cinza) até o certificado ser emitido, depois reative em modo Full (strict)."
+  || err "Certbot falhou — confirme que $DOMAIN aponta (DNS A) para o IP do servidor (2.57.91.91) e que a porta 80 está aberta."
 
 systemctl enable certbot.timer
 systemctl start  certbot.timer
