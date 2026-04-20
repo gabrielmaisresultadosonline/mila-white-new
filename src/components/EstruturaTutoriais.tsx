@@ -6,8 +6,8 @@ import { Play, X, ChevronLeft, ChevronRight, Type, Loader2, ExternalLink, Gift, 
 import { toast } from 'sonner';
 import ModuleManager from '@/components/admin/ModuleManager';
 
-const ADMIN_EMAIL = 'mro@gmail.com';
-const ADMIN_PASSWORD = 'Ga145523@';
+const ADMIN_EMAIL = 'milasouza@email.com';
+const ADMIN_PASSWORD = 'maisresultadosonline';
 
 const moduleColorClasses: Record<ModuleColor, { border: string; bg: string; accent: string }> = {
   default: { border: 'border-border', bg: 'bg-card', accent: 'bg-muted' },
