@@ -103,6 +103,13 @@ server {
 
     client_max_body_size 100M;
 
+    # ACME challenge (Let's Encrypt) — precisa vir ANTES de qualquer outra regra
+    location ^~ /.well-known/acme-challenge/ {
+        default_type "text/plain";
+        root $APP_DIR/dist;
+        try_files \$uri =404;
+    }
+
     # SPA fallback
     location / {
         try_files \$uri \$uri/ /index.html;
