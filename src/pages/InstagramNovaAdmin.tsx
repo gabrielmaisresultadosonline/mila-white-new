@@ -2507,18 +2507,18 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div>
-              <h1 className="text-2xl font-bold text-white">Admin Código InstaShop</h1>
-              <p className="text-zinc-400 text-sm">Gerenciamento de pedidos /instagram-nova</p>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
+          <div className="flex flex-wrap items-start gap-3">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Admin Código InstaShop</h1>
+              <p className="text-zinc-400 text-xs sm:text-sm">Gerenciamento de pedidos /instagram-nova</p>
               {lastAutoCheck && (
-                <p className="text-zinc-500 text-xs mt-1">
+                <p className="text-zinc-500 text-[10px] sm:text-xs mt-1">
                   Última verificação: {format(lastAutoCheck, "HH:mm:ss", { locale: ptBR })}
-                  {autoCheckEnabled && " (auto: 8s para pedidos recentes)"}
+                  {autoCheckEnabled && " (auto: 8s)"}
                 </p>
               )}
             </div>
@@ -2526,18 +2526,18 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               onClick={() => setShowWebhookLogs(true)}
               variant="outline"
               size="sm"
-              className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10"
+              className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 shrink-0"
             >
               <FileText className="w-4 h-4 mr-1" />
               Logs
             </Button>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button
               onClick={() => { setShowAffiliateConfig(!showAffiliateConfig); if (!showAffiliateConfig) setShowRemarketingDashboard(false); }}
               variant="outline"
               size="sm"
-              className={`border-zinc-600 ${showAffiliateConfig ? "text-purple-400 border-purple-500/50" : "text-zinc-400"}`}
+              className={`border-zinc-600 shrink-0 ${showAffiliateConfig ? "text-purple-400 border-purple-500/50" : "text-zinc-400"}`}
             >
               <Settings className="w-4 h-4 mr-1" />
               Afiliados
@@ -2546,7 +2546,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               onClick={() => { setShowRemarketingDashboard(!showRemarketingDashboard); if (!showRemarketingDashboard) setShowAffiliateConfig(false); }}
               variant="outline"
               size="sm"
-              className={`border-zinc-600 ${showRemarketingDashboard ? "text-red-400 border-red-500/50" : "text-zinc-400"}`}
+              className={`border-zinc-600 shrink-0 ${showRemarketingDashboard ? "text-red-400 border-red-500/50" : "text-zinc-400"}`}
             >
               <Send className="w-4 h-4 mr-1" />
               Remarketing
@@ -2555,7 +2555,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               onClick={() => { setShowAccessReminder(!showAccessReminder); if (!showAccessReminder) { setShowAffiliateConfig(false); setShowRemarketingDashboard(false); } }}
               variant="outline"
               size="sm"
-              className={`border-zinc-600 ${showAccessReminder ? "text-blue-400 border-blue-500/50" : "text-zinc-400"}`}
+              className={`border-zinc-600 shrink-0 ${showAccessReminder ? "text-blue-400 border-blue-500/50" : "text-zinc-400"}`}
             >
               <Key className="w-4 h-4 mr-1" />
               Lembrete
@@ -2564,29 +2564,32 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               onClick={() => setAutoCheckEnabled(!autoCheckEnabled)}
               variant="outline"
               size="sm"
-              className={`border-zinc-600 ${autoCheckEnabled ? "text-green-400 border-green-500/50" : "text-zinc-400"}`}
+              className={`border-zinc-600 shrink-0 ${autoCheckEnabled ? "text-green-400 border-green-500/50" : "text-zinc-400"}`}
             >
               {autoCheckEnabled ? "Auto ✓" : "Auto ✗"}
             </Button>
             <Button
               onClick={() => { loadOrders(); checkPendingPayments(); }}
               variant="outline"
-              className="border-zinc-600 text-zinc-300"
+              size="sm"
+              className="border-zinc-600 text-zinc-300 shrink-0"
               disabled={loading}
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
               Atualizar
             </Button>
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+              size="sm"
+              className="border-red-500/50 text-red-400 hover:bg-red-500/10 shrink-0"
             >
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="w-4 h-4 mr-1" />
               Sair
             </Button>
           </div>
         </div>
+
 
         {/* Configuração de Afiliados Expandida */}
         {showAffiliateConfig && (
