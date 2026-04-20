@@ -250,8 +250,8 @@ const VendasCompleta = () => {
                <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">NÃO GASTE MAIS COM ANÚNCIOS</span>
              </h1>
              <h2 className="relative text-xl md:text-3xl lg:text-4xl font-black mb-3">
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-clip-text text-transparent">
-                Utilize a Código InstaShop!
+              <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}>
+                Utilize o Código InstaShop!
               </span>
             </h2>
             <p className="relative mt-3 text-sm md:text-base text-gray-400">
