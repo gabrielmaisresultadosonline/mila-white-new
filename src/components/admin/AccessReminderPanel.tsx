@@ -265,14 +265,14 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-blue-400 flex items-center gap-2">
             <Key className="w-5 h-5" />
-            Lembrete de Acesso MRO
+            Lembrete de Acesso Código InstaShop
           </CardTitle>
           <Button size="sm" variant="ghost" onClick={onClose} className="text-zinc-400 hover:text-white">
             <X className="w-4 h-4" />
           </Button>
         </div>
         <p className="text-sm text-zinc-400">
-          Envie um email para lembrar os clientes dos seus acessos MRO
+          Envie um email para lembrar os clientes dos seus acessos Código InstaShop
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
