@@ -1,4 +1,4 @@
-import logoMro3 from '@/assets/logo-mro-3.png';
+import logoMro3 from '@/assets/logo-codigoinstashop.png';
 import { Shield, CheckCircle, Clock, MessageCircle, AlertTriangle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';

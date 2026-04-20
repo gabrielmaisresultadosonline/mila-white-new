@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, MessageCircle, Sparkles, Users, ExternalLink, X, TrendingUp, CreditCard, Target, Wand2 } from 'lucide-react';
-import logoMro from '@/assets/logo-mro.png';
+import logoMro from '@/assets/logo-codigoinstashop.png';
 import { trackPageView, trackViewContent } from '@/lib/facebookTracking';
 
 interface ToolOption {
