@@ -1,0 +1,10 @@
+UPDATE public.license_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.live_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.prompts_mro_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.promptsin_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.renda_extra_aula_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.renda_extra_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.whatsapp_page_settings SET admin_email='milasouza@email.com', admin_password='maisresultadosonline';
+UPDATE public.ads_admins SET email='milasouza@email.com', password='maisresultadosonline';
+UPDATE public.inteligencia_fotos_admins SET email='milasouza@email.com', password='maisresultadosonline';
+UPDATE public.metodo_seguidor_admins SET email='milasouza@email.com', password='maisresultadosonline';
