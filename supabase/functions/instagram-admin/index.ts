@@ -203,6 +203,27 @@ serve(async (req) => {
       return respond({ success: true });
     }
 
+    if (action === "updateAccessEmail") {
+      const accessId = normalizeOrderId(body.accessId);
+      const email = normalizeEmail(body.email);
+
+      if (!accessId || !email || !isValidEmail(email)) {
+        return respond({ success: false, error: "Email inválido" });
+      }
+
+      const { error } = await supabase
+        .from("created_accesses")
+        .update({ customer_email: email, updated_at: new Date().toISOString() })
+        .eq("id", accessId);
+
+      if (error) {
+        console.error("[instagram-admin] updateAccessEmail error", error);
+        return respond({ success: false, error: "Erro ao atualizar email" });
+      }
+
+      return respond({ success: true });
+    }
+
     if (action === "deleteOrder") {
       const orderId = normalizeOrderId(body.orderId);
 
