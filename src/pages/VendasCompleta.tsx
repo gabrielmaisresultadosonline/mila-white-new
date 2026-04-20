@@ -210,15 +210,17 @@ const VendasCompleta = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-gray-800">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-pink-500/20">
+        {/* Instagram gradient accent line */}
+        <div className="h-[3px] w-full" style={{ background: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }} />
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <img src={logoMro} alt="MRO" className="h-10 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-full px-4 py-1.5">
-              <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-amber-400 text-xs font-bold">V7+ PLUS</span>
+            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-1.5 border border-pink-500/40" style={{ background: 'linear-gradient(90deg,rgba(214,41,118,0.18),rgba(150,47,191,0.18),rgba(79,91,213,0.18))' }}>
+              <Crown className="w-4 h-4 text-pink-300" />
+              <span className="text-white text-xs font-bold">V7+ PLUS</span>
             </div>
-            <Button onClick={scrollToPricing} className="bg-amber-500 hover:bg-amber-600 text-black font-bold">
+            <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
               Garantir Acesso
             </Button>
           </div>
@@ -228,28 +230,28 @@ const VendasCompleta = () => {
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 px-4">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px]" />
-          <div className="absolute top-40 right-1/4 w-80 h-80 bg-orange-500/5 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-40 bg-gradient-to-t from-purple-500/5 to-transparent" />
+          <div className="absolute top-20 left-1/4 w-96 h-96 rounded-full blur-[120px]" style={{ background: 'radial-gradient(circle,rgba(214,41,118,0.18),transparent 70%)' }} />
+          <div className="absolute top-40 right-1/4 w-80 h-80 rounded-full blur-[100px]" style={{ background: 'radial-gradient(circle,rgba(250,126,30,0.15),transparent 70%)' }} />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-40" style={{ background: 'linear-gradient(to top,rgba(150,47,191,0.18),transparent)' }} />
         </div>
         <div className="max-w-5xl mx-auto text-center relative">
-          <img src={logoMro} alt="MRO" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
           
-          {/* V7+ Badge */}
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600/30 to-pink-600/30 border border-purple-500/50 rounded-full px-6 py-2 mb-6">
-            <Flame className="w-5 h-5 text-orange-400 animate-pulse" />
+          {/* V7+ Badge - Instagram gradient */}
+          <div className="inline-flex items-center gap-2 rounded-full px-6 py-2 mb-6 border border-pink-500/50" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.25),rgba(214,41,118,0.3),rgba(150,47,191,0.3),rgba(79,91,213,0.25))' }}>
+            <Flame className="w-5 h-5 text-orange-300 animate-pulse" />
             <span className="text-white font-bold text-sm md:text-base">NOVA VERSÃO V7+ PLUS — A MAIS COMPLETA</span>
-            <Flame className="w-5 h-5 text-orange-400 animate-pulse" />
+            <Flame className="w-5 h-5 text-pink-300 animate-pulse" />
           </div>
           
           <div className="relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 blur-3xl rounded-full" />
+            <div className="absolute -inset-4 blur-3xl rounded-full" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.2),rgba(214,41,118,0.25),rgba(150,47,191,0.2),rgba(79,91,213,0.2))' }} />
             <h1 className="relative text-3xl md:text-5xl lg:text-6xl font-black mb-3 leading-tight">
                <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">NÃO GASTE MAIS COM ANÚNCIOS</span>
              </h1>
              <h2 className="relative text-xl md:text-3xl lg:text-4xl font-black mb-3">
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-clip-text text-transparent">
-                Utilize a Código InstaShop!
+              <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}>
+                Utilize o Código InstaShop!
               </span>
             </h2>
             <p className="relative mt-3 text-sm md:text-base text-gray-400">
@@ -679,7 +681,7 @@ const VendasCompleta = () => {
                 ))}
                 <div className="flex items-center gap-2 text-xs text-gray-500 pt-1"><span>• {affiliateBonus}</span></div>
               </div>
-              <Button size="lg" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-black font-bold py-4 rounded-xl hover:scale-105 transition-transform"
+              <Button size="lg" className="w-full text-white font-bold py-4 rounded-xl hover:scale-105 transition-transform border-0" style={{ background: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}
                 onClick={() => { trackLead('Instagram MRO - Plano Vitalício'); setSelectedPlan("lifetime"); setShowCheckoutModal(true); }}>
                 GARANTIR PLANO VITALÍCIO
               </Button>
