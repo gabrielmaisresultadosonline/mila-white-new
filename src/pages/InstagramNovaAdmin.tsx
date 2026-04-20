@@ -43,7 +43,8 @@ import {
   Eye,
   EyeOff,
   FileText,
-  Key
+  Key,
+  Ban
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format, differenceInDays, addDays } from "date-fns";
