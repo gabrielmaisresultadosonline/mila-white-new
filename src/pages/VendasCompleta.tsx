@@ -249,7 +249,7 @@ const VendasCompleta = () => {
              </h1>
              <h2 className="relative text-xl md:text-3xl lg:text-4xl font-black mb-3">
               <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-clip-text text-transparent">
-                Utilize a MRO Inteligente!
+                Utilize a Código InstaShop!
               </span>
             </h2>
             <p className="relative mt-3 text-sm md:text-base text-gray-400">
@@ -355,7 +355,7 @@ const VendasCompleta = () => {
               Totalmente otimizada com mais automação, mais inteligência e mais resultados
             </p>
             <p className="text-2xl md:text-3xl font-black mt-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-              🎁 O que você vai receber no Plano MRO!
+              🎁 O que você vai receber no Plano Código InstaShop!
             </p>
           </div>
 
@@ -526,7 +526,7 @@ const VendasCompleta = () => {
             <h2 className="text-3xl md:text-5xl font-black mb-4">
               💰 MAIS RESULTADOS, <span className="text-red-400">ZERO ANÚNCIOS</span>
             </h2>
-            <p className="text-gray-400 text-lg">Com a MRO Inteligente V7+ você:</p>
+            <p className="text-gray-400 text-lg">Com a Código InstaShop V7+ você:</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -557,7 +557,7 @@ const VendasCompleta = () => {
                 <span className="text-amber-400 font-bold text-sm">RESUMO FINAL</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black mb-8">
-                A MRO Inteligente V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
+                A Código InstaShop V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[

@@ -120,7 +120,7 @@ serve(async (req) => {
 </table>
 
 <div style="background:#fff3cd;border-left:4px solid #ffc107;padding:15px;margin:20px 0;border-radius:0 8px 8px 0;">
-<p style="margin:0;color:#856404;font-size:15px;"><strong>💛 A MRO não é só uma ferramenta, é uma família de apoio!</strong><br>Você receberá sempre novidades em primeira mão dentro da nossa área.</p>
+<p style="margin:0;color:#856404;font-size:15px;"><strong>💛 O Código InstaShop não é só uma ferramenta, é uma família de apoio!</strong><br>Você receberá sempre novidades em primeira mão dentro da nossa área.</p>
 </div>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff;border:2px solid #FFD700;border-radius:10px;margin:20px 0;">
@@ -202,8 +202,8 @@ ${daysDisplay ? `<tr><td style="height:10px;"></td></tr><tr><td style="padding:1
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Bem-vindo à família MRO! 💛</p>
-<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Bem-vindo à família Código InstaShop! 💛</p>
+<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#666;margin:10px 0 0 0;font-size:11px;">Este email foi enviado porque você cadastrou seu email em nossa plataforma.</p>
 </td>
 </tr>
@@ -212,9 +212,9 @@ ${daysDisplay ? `<tr><td style="height:10px;"></td></tr><tr><td style="padding:1
 </html>`;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: email,
-      subject: "🎉 Reconhecemos seu Primeiro Acesso à MRO!",
+      subject: "🎉 Reconhecemos seu Primeiro Acesso ao Código InstaShop!",
       html: htmlContent,
     });
 

@@ -81,7 +81,7 @@ const DEFAULT_TEMPLATES: EmailTemplate[] = [
 
 Temos novidades importantes para você!
 
-Acabamos de lançar uma nova atualização da ferramenta MRO Instagram com melhorias significativas:
+Acabamos de lançar uma nova atualização da ferramenta Código InstaShop Instagram com melhorias significativas:
 
 ✅ Maior velocidade de processamento
 ✅ Novas funcionalidades
@@ -97,7 +97,7 @@ Equipe MRO`
   {
     id: "support",
     name: "Mudança de Suporte",
-    subject: "📞 Novo Número de Suporte - MRO - Mais Resultados Online",
+    subject: "📞 Novo Número de Suporte - Código InstaShop",
     body: `Olá!
 
 Informamos que nosso número de suporte foi atualizado.

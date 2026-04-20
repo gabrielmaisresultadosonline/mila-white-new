@@ -258,7 +258,7 @@ export const EstruturaTrialDashboard = ({ onBack, mroUsername, mroPassword }: Pr
                   <div>
                     <h4 className="font-bold text-green-400 text-lg">Teste ativado com sucesso! ✅</h4>
                     <p className="text-white/70 text-sm mt-1">
-                      A conta <span className="text-green-300 font-bold">@{justCreated}</span> já está ativa por 6 horas na ferramenta MRO. 
+                      A conta <span className="text-green-300 font-bold">@{justCreated}</span> já está ativa por 6 horas na ferramenta Código InstaShop. 
                       O cliente pode utilizar normalmente a ferramenta agora.
                     </p>
                   </div>
@@ -388,7 +388,7 @@ export const EstruturaTrialDashboard = ({ onBack, mroUsername, mroPassword }: Pr
                     <div className="bg-green-500/10 border border-green-500/20 rounded-lg px-3 py-2 flex items-center gap-2">
                       <CheckCircle2 size={14} className="text-green-400 flex-shrink-0" />
                       <p className="text-green-300/90 text-xs">
-                        Conta ativa — o cliente pode utilizar normalmente a ferramenta MRO.
+                        Conta ativa — o cliente pode utilizar normalmente a ferramenta Código InstaShop.
                       </p>
                     </div>
                   </div>

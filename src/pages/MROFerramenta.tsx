@@ -489,7 +489,7 @@ const MROFerramenta = () => {
           {!selectedModule && !isLoading && (
             <>
               <h1 className="text-3xl font-display font-bold mb-2 text-center">Módulos</h1>
-              <p className="text-muted-foreground mb-8 text-center">Aprenda a usar a ferramenta MRO Inteligente</p>
+              <p className="text-muted-foreground mb-8 text-center">Aprenda a usar a ferramenta Código InstaShop</p>
 
               {modules.length === 0 ? (
                 <div className="glass-card p-12 text-center">

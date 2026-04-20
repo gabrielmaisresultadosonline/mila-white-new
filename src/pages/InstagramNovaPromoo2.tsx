@@ -316,7 +316,7 @@ const InstagramNovaPromoo2 = () => {
             </h1>
             <h2 className="relative text-lg sm:text-xl md:text-3xl lg:text-4xl font-black mb-3">
               <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent">
-                UTILIZE A MRO INTELIGENTE!
+                UTILIZE A CÓDIGO INSTASHOP!
               </span>
             </h2>
             <p className="relative mt-3 text-sm md:text-base text-gray-400">
@@ -452,7 +452,7 @@ const InstagramNovaPromoo2 = () => {
               Totalmente otimizada com mais automação, mais inteligência e mais resultados
             </p>
             <p className="text-xl sm:text-2xl md:text-3xl font-black mt-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-              🎁 O que você vai receber no Plano MRO!
+              🎁 O que você vai receber no Plano Código InstaShop!
             </p>
           </div>
 
@@ -623,7 +623,7 @@ const InstagramNovaPromoo2 = () => {
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4">
               💰 MAIS RESULTADOS, <span className="text-red-400">ZERO ANÚNCIOS</span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-lg">Com a MRO Inteligente V7+ você:</p>
+            <p className="text-gray-400 text-sm sm:text-lg">Com a Código InstaShop V7+ você:</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
@@ -654,7 +654,7 @@ const InstagramNovaPromoo2 = () => {
                 <span className="text-amber-400 font-bold text-xs sm:text-sm">RESUMO FINAL</span>
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-6 sm:mb-8">
-                A MRO Inteligente V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
+                A Código InstaShop V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 {[
@@ -861,7 +861,7 @@ const InstagramNovaPromoo2 = () => {
                 <span className="font-bold text-black text-xs sm:text-sm">PRINCIPAL</span>
               </div>
               <h3 className="text-lg sm:text-2xl md:text-3xl font-bold">
-                FERRAMENTA MRO
+                FERRAMENTA CÓDIGO INSTASHOP
               </h3>
             </div>
             
@@ -1087,7 +1087,7 @@ const InstagramNovaPromoo2 = () => {
       {/* Footer */}
       <footer className="py-6 sm:py-8 px-3 sm:px-4 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center text-gray-500 text-xs sm:text-sm">
-          <p>© 2025 MRO - Mais Resultados Online. Todos os direitos reservados.</p>
+          <p>© 2025 Código InstaShop. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

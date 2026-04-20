@@ -63,7 +63,7 @@ const Obrigado = () => {
           
           <div className="space-y-2">
             <p className="text-xl font-semibold text-foreground">
-              Parabéns por fazer parte do MRO!
+              Parabéns por fazer parte do Código InstaShop!
             </p>
             <p className="text-muted-foreground">
               Você acaba de adquirir um sistema que vai transformar seus resultados no Instagram com Inteligência Artificial + Automação.
@@ -125,7 +125,7 @@ const Obrigado = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} MRO - Mais Resultados Online
+          © {new Date().getFullYear()} Código InstaShop
         </p>
       </div>
     </div>
