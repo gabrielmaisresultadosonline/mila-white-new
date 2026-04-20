@@ -2098,33 +2098,45 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     loadHistory();
   }, [isAuthenticated, remarketingHistoryLoaded]);
 
-  const buildRemarketingEmailHtml = (order: MROOrder) => {
-    const baseEmail = getBaseEmail(order.email);
-    const dateStr = format(new Date(order.created_at), "dd/MM/yyyy", { locale: ptBR });
-    const whatsappLink = `https://maisresultadosonline.com.br/whatsapp`;
-    
-    return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+  const DEFAULT_REMARKETING_SUBJECT = "🚀 Instagram Turbinado sem gastar com anúncios! - Desconto Interno";
+  const DEFAULT_REMARKETING_BODY = `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
 <div style="text-align:center;padding:20px;background:#000;border-bottom:3px solid #FFD700;">
 <div style="background:#000;color:#FFD700;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">MRO</div>
 </div>
 <div style="padding:30px;background:#fff;">
 <h2 style="color:#1a1a1a;font-size:22px;margin-bottom:15px;">🚀 Instagram Turbinado sem gastar com anúncios!</h2>
 <p style="color:#333;font-size:15px;line-height:1.6;">Olá!</p>
-<p style="color:#333;font-size:15px;line-height:1.6;">Vimos que tivemos uma tentativa de compra na data <strong>${dateStr}</strong> do cadastro em questão, e notamos que tens interesse em testar nosso sistema.</p>
-<p style="color:#333;font-size:15px;line-height:1.6;">Se tiver interesse, estamos liberando um <strong style="color:#e74c3c;">desconto interno até dia 20/04</strong> onde estamos conseguindo liberar um valor melhor para conseguir testar e ter resultados sem precisar gastar com anúncios!</p>
+<p style="color:#333;font-size:15px;line-height:1.6;">Vimos que tivemos uma tentativa de compra na data <strong>{{date}}</strong> do cadastro em questão, e notamos que tens interesse em testar nosso sistema.</p>
+<p style="color:#333;font-size:15px;line-height:1.6;">Se tiver interesse, estamos liberando um <strong style="color:#e74c3c;">desconto interno</strong> onde estamos conseguindo liberar um valor melhor para conseguir testar e ter resultados sem precisar gastar com anúncios!</p>
 <div style="background:#f8f9fa;border-left:4px solid #FFD700;padding:15px;margin:20px 0;border-radius:0 8px 8px 0;">
-<p style="margin:0;color:#333;font-size:14px;">📧 Email do cadastro: <strong>${baseEmail}</strong></p>
-<p style="margin:5px 0 0;color:#333;font-size:14px;">📅 Data da tentativa: <strong>${dateStr}</strong></p>
+<p style="margin:0;color:#333;font-size:14px;">📧 Email do cadastro: <strong>{{email}}</strong></p>
+<p style="margin:5px 0 0;color:#333;font-size:14px;">📅 Data da tentativa: <strong>{{date}}</strong></p>
 </div>
 <div style="text-align:center;margin:25px 0;">
-<a href="${whatsappLink}" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp e garantir desconto</a>
+<a href="https://maisresultadosonline.com.br/whatsapp" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp e garantir desconto</a>
 </div>
-<p style="color:#666;font-size:13px;line-height:1.5;">Envie seu email (<strong>${baseEmail}</strong>) junto com a mensagem no WhatsApp para que possamos identificar seu cadastro e liberar o desconto especial.</p>
+<p style="color:#666;font-size:13px;line-height:1.5;">Envie seu email (<strong>{{email}}</strong>) junto com a mensagem no WhatsApp para que possamos identificar seu cadastro e liberar o desconto especial.</p>
 </div>
 <div style="background:#1a1a1a;padding:15px;text-align:center;">
-<p style="color:#888;margin:0;font-size:11px;">© ${new Date().getFullYear()} Código InstaShop</p>
+<p style="color:#888;margin:0;font-size:11px;">© {{year}} Código InstaShop</p>
 </div>
 </div>`;
+
+  const buildRemarketingEmailHtml = (order: MROOrder) => {
+    const baseEmail = getBaseEmail(order.email);
+    const dateStr = format(new Date(order.created_at), "dd/MM/yyyy", { locale: ptBR });
+    const tpl = getSavedTemplate("remarketing_template", DEFAULT_REMARKETING_SUBJECT, DEFAULT_REMARKETING_BODY);
+    return renderTemplate(tpl.body, {
+      email: baseEmail,
+      date: dateStr,
+      username: order.username || "",
+      year: String(new Date().getFullYear()),
+    });
+  };
+
+  const getRemarketingSubject = () => {
+    const tpl = getSavedTemplate("remarketing_template", DEFAULT_REMARKETING_SUBJECT, DEFAULT_REMARKETING_BODY);
+    return tpl.subject;
   };
 
   const sendRemarketingEmail = async (to: string, htmlBody: string) => {
