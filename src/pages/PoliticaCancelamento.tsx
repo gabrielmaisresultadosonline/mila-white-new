@@ -28,7 +28,7 @@ const PoliticaCancelamento = () => {
             Política de Cancelamento e Reembolso
           </h1>
           <p className="text-lg text-gray-600">
-            MRO - Mais Resultados Online
+            Código InstaShop
           </p>
         </div>
 
