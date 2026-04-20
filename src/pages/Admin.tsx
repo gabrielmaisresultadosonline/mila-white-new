@@ -269,7 +269,17 @@ const Admin = () => {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(tab.id as Tab)}
+                  onClick={() => {
+                    if (tab.id === 'vendas') {
+                      window.location.href = '/instagram-nova-admin';
+                      return;
+                    }
+                    if (tab.id === 'afiliados') {
+                      window.location.href = '/instagram-nova-admin?view=affiliates';
+                      return;
+                    }
+                    setActiveTab(tab.id as Tab);
+                  }}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap text-sm shrink-0 ${
                     activeTab === tab.id
                       ? 'bg-primary text-primary-foreground'
@@ -1058,40 +1068,7 @@ const Admin = () => {
         {activeTab === 'userlist' && (
           <UsersListPanel />
         )}
-        {/* Vendas Tab - embeds InstagramNovaAdmin */}
-        {activeTab === 'vendas' && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Vendas — /instagram-nova</h2>
-              <Button variant="outline" size="sm" onClick={() => window.open('/instagram-nova-admin', '_blank')}>
-                <ExternalLink className="w-4 h-4 mr-2" /> Abrir em nova aba
-              </Button>
-            </div>
-            <iframe
-              src="/instagram-nova-admin"
-              title="Vendas Instagram Nova"
-              className="w-full rounded-lg border border-border bg-background"
-              style={{ height: 'calc(100vh - 220px)', minHeight: '600px' }}
-            />
-          </div>
-        )}
-        {/* Afiliados Tab - embeds InstagramNovaAdmin focused on affiliates */}
-        {activeTab === 'afiliados' && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Afiliados — /instagram-nova</h2>
-              <Button variant="outline" size="sm" onClick={() => window.open('/instagram-nova-admin?view=affiliates', '_blank')}>
-                <ExternalLink className="w-4 h-4 mr-2" /> Abrir em nova aba
-              </Button>
-            </div>
-            <iframe
-              src="/instagram-nova-admin?view=affiliates"
-              title="Afiliados Instagram Nova"
-              className="w-full rounded-lg border border-border bg-background"
-              style={{ height: 'calc(100vh - 220px)', minHeight: '600px' }}
-            />
-          </div>
-        )}
+        {/* Vendas/Afiliados tabs redirect via window.location — no inline render */}
       </main>
     </div>
   );
