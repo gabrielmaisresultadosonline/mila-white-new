@@ -42,7 +42,7 @@ const PoliticaCancelamento = () => {
               Nosso Compromisso
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Nós da <strong>MRO (Mais Resultados Online)</strong> nos responsabilizamos pelos resultados. 
+              Nós da <strong>Código InstaShop</strong> nos responsabilizamos pelos resultados. 
               Por isso, entregamos suporte completo e <strong>garantia de 30 dias</strong> em cima dos resultados. 
               Se nossas ferramentas e nossos sistemas não entregarem os resultados prometidos, 
               cancelamos e <strong>devolvemos 100% do seu dinheiro</strong>.
