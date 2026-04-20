@@ -163,16 +163,16 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
     setUsers(prev => prev.filter(u => u.id !== id));
   };
 
-  const DEFAULT_REMINDER_SUBJECT = "Seu acesso MRO !";
+  const DEFAULT_REMINDER_SUBJECT = "Seu acesso Código InstaShop !";
   const DEFAULT_REMINDER_BODY = `<p>Olá {{name}}! 👋</p>
 
-<p>Estou passando só para <strong>lembrar seu acesso MRO</strong> e como você vai fazer para entrar no seu acesso.</p>
+<p>Estou passando só para <strong>lembrar seu acesso Código InstaShop</strong> e como você vai fazer para entrar no seu acesso.</p>
 
 <p>A melhor ferramenta para Instagram agora com a <strong>versão 7</strong>, podendo enviar mensagens no Direct e muito mais!</p>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;background:#1a1a2e;border-radius:12px;border:1px solid #333;">
 <tr><td style="padding:20px;">
-<p style="color:#a78bfa;font-weight:bold;margin:0 0 10px;">🔐 Seu Acesso MRO:</p>
+<p style="color:#a78bfa;font-weight:bold;margin:0 0 10px;">🔐 Seu Acesso Código InstaShop:</p>
 <p style="color:#fff;margin:5px 0;">👤 Usuário: <strong>{{username}}</strong></p>
 <p style="color:#fff;margin:5px 0;">🔑 Senha: <strong>{{password}}</strong></p>
 </td></tr>
@@ -265,14 +265,14 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg text-blue-400 flex items-center gap-2">
             <Key className="w-5 h-5" />
-            Lembrete de Acesso MRO
+            Lembrete de Acesso Código InstaShop
           </CardTitle>
           <Button size="sm" variant="ghost" onClick={onClose} className="text-zinc-400 hover:text-white">
             <X className="w-4 h-4" />
           </Button>
         </div>
         <p className="text-sm text-zinc-400">
-          Envie um email para lembrar os clientes dos seus acessos MRO
+          Envie um email para lembrar os clientes dos seus acessos Código InstaShop
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
