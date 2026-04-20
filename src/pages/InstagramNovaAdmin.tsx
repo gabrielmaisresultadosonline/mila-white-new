@@ -3582,6 +3582,13 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               </div>
             </CardHeader>
             <CardContent>
+              <EmailTemplateEditor
+                storageKey="remarketing_template"
+                defaultSubject={DEFAULT_REMARKETING_SUBJECT}
+                defaultBody={DEFAULT_REMARKETING_BODY}
+                sampleVariables={{ email: "cliente@email.com", date: "20/04/2025", username: "cliente_teste", year: String(new Date().getFullYear()) }}
+                accent="red"
+              />
               {/* Stats do Remarketing */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 <div className="bg-zinc-800/50 rounded-lg p-3 border border-zinc-700/50">
