@@ -859,10 +859,8 @@ const VendasCompleta = () => {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-gray-800">
         <div className="max-w-6xl mx-auto text-center text-gray-500">
-          <img src={logoMro} alt="MRO" className="h-10 mx-auto mb-4 object-contain" />
-          <p className="font-medium text-gray-400">Mais Resultados Online</p>
-          <p className="text-sm mt-1">Gabriel Fernandes da Silva</p>
-          <p className="text-sm mt-1">CNPJ: 54.840.738/0001-96</p>
+          <img src={logoMro} alt="Código InstaShop" className="h-10 mx-auto mb-4 object-contain" />
+          <p className="font-medium text-gray-400">Código InstaShop</p>
           <p className="text-sm mt-3">© 2024. Todos os direitos reservados.</p>
         </div>
       </footer>
