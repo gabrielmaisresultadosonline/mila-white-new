@@ -141,12 +141,22 @@ systemctl reload nginx
 
 # ---------- 8. SSL ----------------------------------------------------------
 bold "Emitindo certificado SSL (Let's Encrypt) via webroot..."
-certbot certonly --webroot -w "$APP_DIR/dist" \
+# Teste rápido do ACME path antes do certbot
+echo "ok-$(date +%s)" > /var/www/letsencrypt/.well-known/acme-challenge/test.txt
+chown -R www-data:www-data /var/www/letsencrypt
+systemctl reload nginx
+if ! curl -fsS "http://$DOMAIN/.well-known/acme-challenge/test.txt" >/dev/null 2>&1; then
+  err "ACME path não está acessível em http://$DOMAIN/.well-known/acme-challenge/test.txt"
+  err "Verifique: (1) DNS A record aponta para o IP deste servidor; (2) porta 80 aberta no firewall/VPS."
+fi
+rm -f /var/www/letsencrypt/.well-known/acme-challenge/test.txt
+
+certbot certonly --webroot -w /var/www/letsencrypt \
   -d "$DOMAIN" -d "$WWW_DOMAIN" \
   --non-interactive --agree-tos -m "$EMAIL" \
   --preferred-challenges http \
   && certbot install --nginx -d "$DOMAIN" -d "$WWW_DOMAIN" --redirect --non-interactive \
-  || err "Certbot falhou — se você usa Cloudflare, DESATIVE o PROXY (nuvem cinza) até o certificado ser emitido, depois reative em modo Full (strict)."
+  || err "Certbot falhou — confirme que $DOMAIN aponta (DNS A) para o IP do servidor (2.57.91.91) e que a porta 80 está aberta."
 
 systemctl enable certbot.timer
 systemctl start  certbot.timer
