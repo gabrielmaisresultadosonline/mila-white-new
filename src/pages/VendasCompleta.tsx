@@ -233,12 +233,7 @@ const VendasCompleta = () => {
         <div className="max-w-5xl mx-auto text-center relative">
           <img src={logoMro} alt="Código InstaShop" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
           
-          {/* V7+ Badge - Instagram gradient */}
-          <div className="inline-flex items-center gap-2 rounded-full px-6 py-2 mb-6 border border-pink-500/50" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.25),rgba(214,41,118,0.3),rgba(150,47,191,0.3),rgba(79,91,213,0.25))' }}>
-            <Flame className="w-5 h-5 text-orange-300 animate-pulse" />
-            <span className="text-white font-bold text-sm md:text-base">NOVA VERSÃO V7+ PLUS — A MAIS COMPLETA</span>
-            <Flame className="w-5 h-5 text-pink-300 animate-pulse" />
-          </div>
+          
           
           <div className="relative">
             <div className="absolute -inset-4 blur-3xl rounded-full" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.2),rgba(214,41,118,0.25),rgba(150,47,191,0.2),rgba(79,91,213,0.2))' }} />
