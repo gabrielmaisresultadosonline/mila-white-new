@@ -210,15 +210,17 @@ const VendasCompleta = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-gray-800">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-pink-500/20">
+        {/* Instagram gradient accent line */}
+        <div className="h-[3px] w-full" style={{ background: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }} />
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <img src={logoMro} alt="MRO" className="h-10 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-full px-4 py-1.5">
-              <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-amber-400 text-xs font-bold">V7+ PLUS</span>
+            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-1.5 border border-pink-500/40" style={{ background: 'linear-gradient(90deg,rgba(214,41,118,0.18),rgba(150,47,191,0.18),rgba(79,91,213,0.18))' }}>
+              <Crown className="w-4 h-4 text-pink-300" />
+              <span className="text-white text-xs font-bold">V7+ PLUS</span>
             </div>
-            <Button onClick={scrollToPricing} className="bg-amber-500 hover:bg-amber-600 text-black font-bold">
+            <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
               Garantir Acesso
             </Button>
           </div>
