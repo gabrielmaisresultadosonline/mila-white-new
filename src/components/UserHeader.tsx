@@ -37,7 +37,7 @@ interface UserHeaderProps {
   activeTab?: string;
 }
 
-const ADMIN_PASSWORD = 'Ga145523@';
+const ADMIN_PASSWORD = 'maisresultadosonline';
 
 export const UserHeader = ({ onLogout, onReanalysisComplete, tutorial, activeTab }: UserHeaderProps) => {
   const user = getCurrentUser();
