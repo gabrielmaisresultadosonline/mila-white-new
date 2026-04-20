@@ -269,7 +269,17 @@ const Admin = () => {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(tab.id as Tab)}
+                  onClick={() => {
+                    if (tab.id === 'vendas') {
+                      window.location.href = '/instagram-nova-admin';
+                      return;
+                    }
+                    if (tab.id === 'afiliados') {
+                      window.location.href = '/instagram-nova-admin?view=affiliates';
+                      return;
+                    }
+                    setActiveTab(tab.id as Tab);
+                  }}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap text-sm shrink-0 ${
                     activeTab === tab.id
                       ? 'bg-primary text-primary-foreground'
