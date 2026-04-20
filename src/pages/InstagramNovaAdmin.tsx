@@ -56,6 +56,7 @@ import {
 import { ptBR } from "date-fns/locale";
 import { Switch } from "@/components/ui/switch";
 import AccessReminderPanel from "@/components/admin/AccessReminderPanel";
+import EmailTemplateEditor, { getSavedTemplate, renderTemplate } from "@/components/admin/EmailTemplateEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ADMIN_SESSION_STORAGE_KEY = "mro_instagram_admin_session";
