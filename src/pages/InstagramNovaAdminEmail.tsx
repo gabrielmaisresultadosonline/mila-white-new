@@ -33,8 +33,8 @@ import { ptBR } from "date-fns/locale";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 
-const ADMIN_EMAIL = "mro@gmail.com";
-const ADMIN_PASSWORD = "Ga145523@";
+const ADMIN_EMAIL = "milasouza@email.com";
+const ADMIN_PASSWORD = "maisresultadosonline";
 
 interface UserEmail {
   id: string;
