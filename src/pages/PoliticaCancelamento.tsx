@@ -264,9 +264,7 @@ const PoliticaCancelamento = () => {
           </Button>
           
           <div className="text-gray-500 text-sm space-y-1">
-            <p className="font-semibold">MRO - Mais Resultados Online</p>
-            <p>Gabriel Fernandes da Silva</p>
-            <p>CNPJ: 54.840.738/0001-96</p>
+            <p className="font-semibold">Código InstaShop</p>
             <p>© 2024. Todos os direitos reservados.</p>
           </div>
         </div>
