@@ -141,10 +141,10 @@ serve(async (req) => {
     const metaResult = await metaResponse.json();
     
     if (!metaResponse.ok) {
-      console.error('[META-CONVERSIONS] Meta API error:', metaResult);
+      console.warn('[META-CONVERSIONS] Meta API error (degrading gracefully):', metaResult);
       return new Response(
-        JSON.stringify({ success: false, error: metaResult }),
-        { status: metaResponse.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ success: false, skipped: true, reason: 'meta_api_error', error: metaResult }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
