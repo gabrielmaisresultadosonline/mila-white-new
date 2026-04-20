@@ -3,12 +3,17 @@
 # Mila White / Código InstaShop — Instalação Automática (Ubuntu 22.04 LTS)
 # Repositório: https://github.com/gabrielmaisresultadosonline/mila-white-new
 #
-# USO (one-line no terminal da Hostinger / VPS):
-#   curl -fsSL https://raw.githubusercontent.com/gabrielmaisresultadosonline/mila-white-new/main/deploy/install-mila-white.sh | sudo DOMAIN=seudominio.com.br EMAIL=voce@email.com bash
+# USO (one-line no terminal da Hostinger / VPS Ubuntu 22.04):
 #
-# Variáveis (opcionais antes do bash):
+#   curl -fsSL https://raw.githubusercontent.com/gabrielmaisresultadosonline/mila-white-new/main/deploy/install-mila-white.sh | sudo bash
+#
+# Pronto! Sem precisar passar nada. Domínio fixo: codigoinstashop.com.br
+#
+# (Opcional) Sobrescrever variáveis:
 #   DOMAIN  -> domínio principal      (default: codigoinstashop.com.br)
-#   EMAIL   -> email Let's Encrypt    (default: suporte@$DOMAIN)
+#   EMAIL   -> email Let's Encrypt    (default: suporte@codigoinstashop.com.br)
+#                ↑ usado APENAS pelo Certbot para enviar avisos de expiração
+#                  do certificado SSL. Pode ser qualquer email seu válido.
 #   BRANCH  -> branch git             (default: main)
 #
 # O que faz:
@@ -24,7 +29,7 @@ set -euo pipefail
 # ============= CONFIG ========================================================
 DOMAIN="${DOMAIN:-codigoinstashop.com.br}"
 WWW_DOMAIN="www.${DOMAIN}"
-EMAIL="${EMAIL:-suporte@${DOMAIN}}"
+EMAIL="${EMAIL:-suporte@codigoinstashop.com.br}"
 BRANCH="${BRANCH:-main}"
 REPO_URL="https://github.com/gabrielmaisresultadosonline/mila-white-new.git"
 APP_DIR="/var/www/mila-white"
