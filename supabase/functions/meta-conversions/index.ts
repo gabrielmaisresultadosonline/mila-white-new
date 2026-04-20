@@ -64,10 +64,10 @@ serve(async (req) => {
     const accessToken = Deno.env.get('META_CONVERSIONS_API_TOKEN');
     
     if (!accessToken) {
-      console.error('[META-CONVERSIONS] Access token not configured');
+      console.warn('[META-CONVERSIONS] Access token not configured - skipping event tracking');
       return new Response(
-        JSON.stringify({ success: false, error: 'Access token not configured' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ success: false, skipped: true, reason: 'token_not_configured' }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
