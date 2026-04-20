@@ -545,7 +545,7 @@ const AffiliatePromoPage = () => {
         </div>
       </section>
 
-      {/* ====== O QUE HÁ DE NOVO NA V7+ PLUS ====== */}
+      {/* ====== O QUE HÁ DE NOVO ====== */}
       <section className="py-20 px-4 bg-gradient-to-b from-black via-gray-950 to-black">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -554,7 +554,7 @@ const AffiliatePromoPage = () => {
               <span className="text-amber-400 font-bold text-sm">O QUE HÁ DE NOVO</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              NOVIDADES DA <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">V7+ PLUS</span>
+              NOVIDADES
             </h2>
             <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mb-2">
               Totalmente otimizada com mais automação, mais inteligência e mais resultados
@@ -702,7 +702,7 @@ const AffiliatePromoPage = () => {
                     <h3 className="text-2xl md:text-3xl font-black text-pink-300">Inteligência Artificial Exclusiva</h3>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-5 text-lg">A MRO V7+ vai além da automação:</p>
+                <p className="text-gray-300 mb-5 text-lg">A MRO  vai além da automação:</p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     { icon: Bot, text: "Análise completa do seu perfil", color: "text-pink-400" },
@@ -731,7 +731,7 @@ const AffiliatePromoPage = () => {
             <h2 className="text-3xl md:text-5xl font-black mb-4">
               💰 MAIS RESULTADOS, <span className="text-red-400">ZERO ANÚNCIOS</span>
             </h2>
-            <p className="text-gray-400 text-lg">Com a Código InstaShop V7+ você:</p>
+            <p className="text-gray-400 text-lg">Com a Código InstaShop  você:</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -762,7 +762,7 @@ const AffiliatePromoPage = () => {
                 <span className="text-amber-400 font-bold text-sm">RESUMO FINAL</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black mb-8">
-                A Código InstaShop V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
+                A Código InstaShop  é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
