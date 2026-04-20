@@ -46,7 +46,7 @@ import {
   Flame,
   MousePointerClick
 } from "lucide-react";
-import logoMro from "@/assets/logo-mro.png";
+import logoMro from "@/assets/logo-codigoinstashop.png";
 import ActiveClientsSection from "@/components/ActiveClientsSection";
 
 const InstagramNovaPromoo2 = () => {

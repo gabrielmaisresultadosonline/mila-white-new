@@ -49,7 +49,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
-import logoMro from "@/assets/logo-mro.png";
+import logoMro from "@/assets/logo-codigoinstashop.png";
 import bonus5mil from "@/assets/bonus-5mil.png";
 import ActiveClientsSection from "@/components/ActiveClientsSection";
 

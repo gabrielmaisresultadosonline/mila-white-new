@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageCircle, Sparkles, Headset, HelpCircle, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackPageView, trackLead } from "@/lib/facebookTracking";
-import logoMroWhite from "@/assets/logo-mro-white.png";
+import logoMroWhite from "@/assets/logo-codigoinstashop.png";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   sparkles: Sparkles,

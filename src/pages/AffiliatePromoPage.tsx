@@ -52,7 +52,7 @@ import {
   MousePointerClick,
   BarChart3
 } from "lucide-react";
-import logoMro from "@/assets/logo-mro.png";
+import logoMro from "@/assets/logo-codigoinstashop.png";
 import ActiveClientsSection from "@/components/ActiveClientsSection";
 
 interface AffiliateData {
