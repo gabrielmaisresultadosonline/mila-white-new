@@ -18,6 +18,8 @@ import {
   Mail,
   User,
   Key,
+  Pencil,
+  Save,
 } from "lucide-react";
 
 interface AccessUser {
@@ -54,6 +56,44 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
   const [history, setHistory] = useState<ReminderHistory[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const sendingRef = useRef(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingEmail, setEditingEmail] = useState("");
+  const [savingEmailId, setSavingEmailId] = useState<string | null>(null);
+
+  const startEditEmail = (user: AccessUser) => {
+    setEditingId(user.id);
+    setEditingEmail(user.customer_email);
+  };
+
+  const cancelEditEmail = () => {
+    setEditingId(null);
+    setEditingEmail("");
+  };
+
+  const saveEditEmail = async (userId: string) => {
+    const email = editingEmail.trim();
+    if (!email || !email.includes("@")) {
+      toast.error("Email inválido");
+      return;
+    }
+    setSavingEmailId(userId);
+    try {
+      const { data, error } = await supabase.functions.invoke("instagram-admin", {
+        body: { action: "updateAccessEmail", token: adminSessionToken, accessId: userId, email },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || "Erro ao atualizar email");
+        return;
+      }
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, customer_email: email } : u));
+      toast.success("Email atualizado");
+      cancelEditEmail();
+    } catch {
+      toast.error("Erro ao atualizar email");
+    } finally {
+      setSavingEmailId(null);
+    }
+  };
 
   useEffect(() => {
     loadUsers();
@@ -314,10 +354,48 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-zinc-500 mt-1">
-                        <span className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" /> {user.customer_email}
-                        </span>
+                      <div className="flex items-center gap-3 text-xs text-zinc-500 mt-1 flex-wrap">
+                        {editingId === user.id ? (
+                          <div className="flex items-center gap-1 flex-1 min-w-[200px]" onClick={e => e.stopPropagation()}>
+                            <Mail className="w-3 h-3" />
+                            <Input
+                              type="email"
+                              value={editingEmail}
+                              onChange={e => setEditingEmail(e.target.value)}
+                              onClick={e => e.stopPropagation()}
+                              className="h-7 text-xs bg-zinc-900 border-zinc-600 text-white"
+                              autoFocus
+                            />
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={e => { e.stopPropagation(); saveEditEmail(user.id); }}
+                              disabled={savingEmailId === user.id}
+                              className="h-7 px-2 text-green-400 hover:text-green-300"
+                            >
+                              {savingEmailId === user.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={e => { e.stopPropagation(); cancelEditEmail(); }}
+                              className="h-7 px-2 text-zinc-400"
+                            >
+                              <X className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <span className="flex items-center gap-1">
+                            <Mail className="w-3 h-3" /> {user.customer_email}
+                            <button
+                              onClick={e => { e.stopPropagation(); startEditEmail(user); }}
+                              className="ml-1 text-zinc-500 hover:text-blue-400"
+                              title="Editar email"
+                            >
+                              <Pencil className="w-3 h-3" />
+                            </button>
+                          </span>
+                        )}
                         <span className="flex items-center gap-1">
                           <User className="w-3 h-3" /> {user.username}
                         </span>
