@@ -33,7 +33,7 @@ serve(async (req) => {
     }
 
     // Admin actions require auth
-    if (email !== 'mro@gmail.com' || password !== 'Ga145523@') {
+    if (email !== 'milasouza@email.com' || password !== 'maisresultadosonline') {
       return new Response(JSON.stringify({ success: false, error: 'Credenciais inválidas' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401,
       });

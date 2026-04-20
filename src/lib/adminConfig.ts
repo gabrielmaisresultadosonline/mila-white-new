@@ -754,7 +754,7 @@ export const isAdminLoggedIn = async (): Promise<boolean> => {
     if (!stored) return false;
     
     const session = JSON.parse(stored);
-    return session.email?.toUpperCase() === 'MRO@GMAIL.COM';
+    return session.email?.toUpperCase() === 'MILASOUZA@EMAIL.COM';
   } catch (error) {
     console.error('Error verifying admin status:', error);
     return false;
@@ -765,8 +765,8 @@ export const isAdminLoggedIn = async (): Promise<boolean> => {
 export const verifyAdmin = isAdminLoggedIn;
 
 // Admin credentials - stored securely
-const ADMIN_EMAIL = 'MRO@GMAIL.COM';
-const ADMIN_PASSWORD = 'Ga145523@';
+const ADMIN_EMAIL = 'MILASOUZA@EMAIL.COM';
+const ADMIN_PASSWORD = 'maisresultadosonline';
 
 // Login admin - validates credentials
 export const loginAdmin = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
