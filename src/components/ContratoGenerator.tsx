@@ -28,7 +28,7 @@ const defaultData: ContratoData = {
   empresaNome: '',
   contratadoNome: 'GABRIEL',
   contratadoCpf: '000.000.000-00',
-  agenciaNome: 'Mais Resultados Online',
+  agenciaNome: 'Código InstaShop',
   valorMensal: '600,00',
   duracaoMeses: '3',
   logoUrl: null,

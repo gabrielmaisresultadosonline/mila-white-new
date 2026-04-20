@@ -143,7 +143,7 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
 
 [BOTAO_WHATSAPP]
 
-<p style="color:#888;font-size:13px;">Equipe MRO - Mais Resultados Online</p>`;
+<p style="color:#888;font-size:13px;">Equipe Código InstaShop</p>`;
   };
 
   const sendReminders = async () => {
