@@ -1015,7 +1015,7 @@ const EstruturaRendaExtra = () => {
               </span>
               <br />
               <span className="text-white/90 text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-2 block">
-                prestando serviço com a MRO para empresas!
+                prestando serviço para empresas!
               </span>
             </h1>
             <div className="mt-5 flex items-center justify-center gap-4 sm:gap-6 flex-wrap text-white/40 text-xs font-medium">
@@ -1281,8 +1281,8 @@ const EstruturaRendaExtra = () => {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <GerenciadorVideoCard title="Instalador Windows App MRO" videoId="uqqlR_UXCoQ" />
-            <GerenciadorVideoCard title="Utilizando o App Windows MRO" videoId="9R4I4_iEiSI" />
+            <GerenciadorVideoCard title="Instalador Windows App" videoId="uqqlR_UXCoQ" />
+            <GerenciadorVideoCard title="Utilizando o App Windows" videoId="9R4I4_iEiSI" />
           </div>
 
           {/* Download Button */}
