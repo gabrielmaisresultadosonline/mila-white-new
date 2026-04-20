@@ -148,7 +148,7 @@ export default function AdminUsuario() {
   }>({});
 
   // Mass email state
-  const [massEmailSubject, setMassEmailSubject] = useState('📢 Novidades do MRO!');
+  const [massEmailSubject, setMassEmailSubject] = useState('📢 Novidades do Código InstaShop!');
   const [massEmailMessage, setMassEmailMessage] = useState('');
   const [manualEmails, setManualEmails] = useState('');
   const [selectedEmails, setSelectedEmails] = useState<Set<string>>(new Set());

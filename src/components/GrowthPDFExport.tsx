@@ -129,7 +129,7 @@ export const GrowthPDFExport = ({ profileSession }: GrowthPDFExportProps) => {
       pdf.setFillColor(0, 100, 50);
       pdf.roundedRect(margin - 5, yPos - 5, pageWidth - 2 * margin + 10, 25, 3, 3, 'F');
       yPos += 5;
-      addText('Continue utilizando a MRO Inteligente!', 12, true, [0, 255, 136]);
+      addText('Continue utilizando a Código InstaShop!', 12, true, [0, 255, 136]);
       yPos += 5;
       addText('Você está no caminho certo para o crescimento.', 10, false, [200, 200, 200]);
 
@@ -137,7 +137,7 @@ export const GrowthPDFExport = ({ profileSession }: GrowthPDFExportProps) => {
       yPos = pdf.internal.pageSize.getHeight() - 10;
       pdf.setFontSize(8);
       pdf.setTextColor(100, 100, 100);
-      pdf.text(`Gerado por MRO Inteligente • ${new Date().toLocaleDateString('pt-BR')}`, margin, yPos);
+      pdf.text(`Gerado por Código InstaShop • ${new Date().toLocaleDateString('pt-BR')}`, margin, yPos);
 
       // Save
       pdf.save(`crescimento_${profileSession.profile.username}_${new Date().toISOString().split('T')[0]}.pdf`);

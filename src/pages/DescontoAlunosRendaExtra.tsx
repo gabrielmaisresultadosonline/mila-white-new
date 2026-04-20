@@ -341,7 +341,7 @@ const DescontoAlunosRendaExtra = () => {
               </span>
             </h2>
             <p className="relative mt-3 text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto">
-              Renda extra automática e real! Com apenas 1 computador ou notebook, instale a ferramenta MRO e comece a faturar de qualquer lugar do mundo.
+              Renda extra automática e real! Com apenas 1 computador ou notebook, instale a ferramenta Código InstaShop e comece a faturar de qualquer lugar do mundo.
             </p>
           </div>
 
@@ -394,7 +394,7 @@ const DescontoAlunosRendaExtra = () => {
               COMO VOCÊ VAI <span className="text-green-400">FATURAR</span>
             </h2>
             <p className="text-gray-300 text-sm sm:text-lg max-w-3xl mx-auto">
-              Seja uma <strong className="text-white">EUGência de Marketing Digital</strong> — preste serviço para empresas usando a ferramenta MRO e cobre mensalidade deles!
+              Seja uma <strong className="text-white">EUGência de Marketing Digital</strong> — preste serviço para empresas usando a ferramenta Código InstaShop e cobre mensalidade deles!
             </p>
           </div>
 
@@ -461,7 +461,7 @@ const DescontoAlunosRendaExtra = () => {
             Desde como se posicionar para começar, até fechar contratos e entregar testes ao cliente — além de materiais disponíveis para divulgação.
           </p>
           <div className="rounded-2xl overflow-hidden border-2 border-amber-500/30 shadow-2xl shadow-amber-500/10">
-            <img src={bonus5mil} alt="Passo a passo para faturar mais de 5 mil com a ferramenta MRO" className="w-full h-auto" />
+            <img src={bonus5mil} alt="Passo a passo para faturar mais de 5 mil com a ferramenta Código InstaShop" className="w-full h-auto" />
           </div>
         </div>
       </section>
@@ -478,7 +478,7 @@ const DescontoAlunosRendaExtra = () => {
               Alunos faturando <span className="text-green-400">mais de R$5.000</span>
             </h2>
             <p className="text-gray-400 text-sm sm:text-base">
-              Veja os feedbacks de quem já está lucrando com prestação de serviço usando a ferramenta MRO
+              Veja os feedbacks de quem já está lucrando com prestação de serviço usando a ferramenta Código InstaShop
             </p>
           </div>
 
@@ -878,7 +878,7 @@ const DescontoAlunosRendaExtra = () => {
       {/* Footer */}
       <footer className="py-6 sm:py-8 px-3 sm:px-4 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center text-gray-500 text-xs sm:text-sm">
-          <p>© 2025 MRO - Mais Resultados Online. Todos os direitos reservados.</p>
+          <p>© 2025 Código InstaShop. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

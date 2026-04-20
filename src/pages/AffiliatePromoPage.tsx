@@ -456,7 +456,7 @@ const AffiliatePromoPage = () => {
               className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-orange-500 px-1"
               style={{ textShadow: '0 2px 8px rgba(249,115,22,0.3), 0 1px 3px rgba(0,0,0,0.8)' }}
             >
-              UTILIZE A MRO INTELIGENTE!
+              UTILIZE A CÓDIGO INSTASHOP!
             </h2>
             <p className="text-gray-300 text-sm sm:text-base mt-3">
               Instale em seu notebook, macbook ou computador de mesa!
@@ -560,7 +560,7 @@ const AffiliatePromoPage = () => {
               Totalmente otimizada com mais automação, mais inteligência e mais resultados
             </p>
             <p className="text-2xl md:text-3xl font-black mt-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-              🎁 O que você vai receber no Plano MRO!
+              🎁 O que você vai receber no Plano Código InstaShop!
             </p>
           </div>
 
@@ -731,7 +731,7 @@ const AffiliatePromoPage = () => {
             <h2 className="text-3xl md:text-5xl font-black mb-4">
               💰 MAIS RESULTADOS, <span className="text-red-400">ZERO ANÚNCIOS</span>
             </h2>
-            <p className="text-gray-400 text-lg">Com a MRO Inteligente V7+ você:</p>
+            <p className="text-gray-400 text-lg">Com a Código InstaShop V7+ você:</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -762,7 +762,7 @@ const AffiliatePromoPage = () => {
                 <span className="text-amber-400 font-bold text-sm">RESUMO FINAL</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black mb-8">
-                A MRO Inteligente V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
+                A Código InstaShop V7+ Plus é uma <span className="text-amber-400">máquina de crescimento e vendas</span> no Instagram
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
@@ -1016,7 +1016,7 @@ const AffiliatePromoPage = () => {
                 <span className="font-bold text-black text-xs sm:text-sm">PRINCIPAL</span>
               </div>
               <h3 className="text-lg sm:text-2xl md:text-3xl font-bold">
-                FERRAMENTA MRO
+                FERRAMENTA CÓDIGO INSTASHOP
               </h3>
             </div>
             
@@ -1131,7 +1131,7 @@ const AffiliatePromoPage = () => {
           {/* Mais recursos da I.A */}
           <div className="bg-gray-900/50 border border-gray-800 rounded-xl sm:rounded-2xl p-5 sm:p-8 mb-6">
             <h3 className="text-lg sm:text-xl font-bold mb-6 text-center">
-              E mais recursos da <span className="text-green-400">I.A da MRO</span>
+              E mais recursos da <span className="text-green-400">I.A do Código InstaShop</span>
             </h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">
@@ -1251,7 +1251,7 @@ const AffiliatePromoPage = () => {
             {[
               {
                 question: "Quais são os planos disponíveis hoje?",
-                answer: "Oferecemos o Plano Anual Completo que inclui acesso à ferramenta MRO, 4 contas simultâneas, 5 testes mensais, área de membros, grupo VIP e todos os bônus exclusivos."
+                answer: "Oferecemos o Plano Anual Completo que inclui acesso à ferramenta Código InstaShop, 4 contas simultâneas, 5 testes mensais, área de membros, grupo VIP e todos os bônus exclusivos."
               },
               {
                 question: "Por que interagir em massa vai me ajudar?",
@@ -1518,7 +1518,7 @@ const AffiliatePromoPage = () => {
       {/* Footer */}
       <footer className="py-6 sm:py-8 px-3 sm:px-4 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center text-gray-500 text-xs sm:text-sm">
-          <p>© 2025 MRO - Mais Resultados Online. Todos os direitos reservados.</p>
+          <p>© 2025 Código InstaShop. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

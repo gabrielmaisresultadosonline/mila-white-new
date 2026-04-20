@@ -942,7 +942,7 @@ const Admin = () => {
             <div className="glass-card p-6 space-y-4">
               <h3 className="font-semibold flex items-center gap-2">
                 <Settings className="w-5 h-5 text-primary" />
-                APIs de I.A da MRO
+                APIs de I.A do Código InstaShop
               </h3>
 
               <div className="space-y-4">

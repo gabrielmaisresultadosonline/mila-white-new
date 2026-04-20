@@ -180,7 +180,7 @@ export const StrategyDisplay = ({ strategy }: StrategyDisplayProps) => {
             <div>
               <p className="text-sm font-semibold text-amber-500 mb-1">⚠️ Aviso Importante — Interações com a MRO</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Quando iniciar a ferramenta MRO, <strong className="text-foreground">evite fazer interações manualmente pelo celular</strong>. 
+                Quando iniciar a ferramenta Código InstaShop, <strong className="text-foreground">evite fazer interações manualmente pelo celular</strong>. 
                 Você pode publicar stories, feed posts normalmente, mas <strong className="text-foreground">não siga ninguém, não curta ninguém e não curta nenhum story</strong> enquanto a ferramenta estiver ativa. 
                 A MRO funciona em dias alternados (1 dia sim, 1 dia não) com uma tarefa por dia: seguir + curtir em um dia, curtir stories em outro, enviar mensagens em outro.
               </p>
@@ -192,7 +192,7 @@ export const StrategyDisplay = ({ strategy }: StrategyDisplayProps) => {
       {/* MRO Tutorial */}
       {strategy.mroTutorial && (
         <CollapsibleSection
-          title="🤖 Tutorial MRO Inteligente"
+          title="🤖 Tutorial Código InstaShop"
           isExpanded={expandedSections.mroTutorial}
           onToggle={() => toggleSection('mroTutorial')}
         >

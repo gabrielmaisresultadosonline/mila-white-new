@@ -311,7 +311,7 @@ export const ProfileRegistration = ({ onProfileRegistered, onSyncComplete, onEnt
           <p style="color:#666;font-size:12px;margin-top:8px;">Aguardando print do perfil para análise completa</p>
         </div>
         <div style="text-align:center;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
-          <div style="font-size:11px;color:#666;">MRO Inteligente • ${new Date().toLocaleDateString('pt-BR')}</div>
+          <div style="font-size:11px;color:#666;">Código InstaShop • ${new Date().toLocaleDateString('pt-BR')}</div>
         </div>
       `;
       document.body.appendChild(printDiv);
@@ -427,7 +427,7 @@ export const ProfileRegistration = ({ onProfileRegistered, onSyncComplete, onEnt
               {registeredIGs.length > 0 ? 'Cadastrar Nova Conta' : 'Cadastrar Perfil'}
             </CardTitle>
             <CardDescription>
-              Cadastre um perfil para conseguir utilizar a ferramenta MRO. A ferramenta só vai funcionar em um perfil cadastrado no nosso banco de dados.
+              Cadastre um perfil para conseguir utilizar a ferramenta Código InstaShop. A ferramenta só vai funcionar em um perfil cadastrado no nosso banco de dados.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

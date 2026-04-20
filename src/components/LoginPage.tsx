@@ -166,7 +166,7 @@ export const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
               <Logo />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Acesso MRO Inteligente</CardTitle>
+          <CardTitle className="text-2xl font-bold">Acesso Código InstaShop</CardTitle>
           <CardDescription>
             Digite suas credenciais para acessar o sistema
           </CardDescription>

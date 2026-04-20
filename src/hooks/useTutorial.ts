@@ -87,13 +87,13 @@ export const dashboardTutorial: TutorialSection[] = [
   },
   {
     id: 'ferramenta',
-    title: 'Ferramenta MRO',
+    title: 'Ferramenta Código InstaShop',
     icon: '🔧',
     steps: [
       {
         id: 'mro-button',
         targetSelector: '[data-tutorial="mro-button"]',
-        title: 'Ferramenta MRO',
+        title: 'Ferramenta Código InstaShop',
         description: 'Acesse a ferramenta de automação MRO para interagir com 200 pessoas por dia, seguir + curtir automaticamente e enviar mensagens em massa.',
         position: 'bottom'
       }
@@ -196,7 +196,7 @@ export const strategyTutorial: TutorialSection[] = [
         id: 'strategy-display',
         targetSelector: '[data-tutorial="strategy-display"]',
         title: 'Sua Estratégia',
-        description: 'Veja passos detalhados, calendário de 30 dias, scripts de vendas e tutorial da ferramenta MRO para interagir e enviar mensagens.',
+        description: 'Veja passos detalhados, calendário de 30 dias, scripts de vendas e tutorial da ferramenta Código InstaShop para interagir e enviar mensagens.',
         position: 'top'
       }
     ]
