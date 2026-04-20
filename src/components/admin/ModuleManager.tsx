@@ -947,7 +947,7 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-display font-bold">MRO Ferramenta - Módulos</h2>
+          <h2 className="text-2xl font-display font-bold">Codigo InstaShop - Módulos</h2>
           {isLoadingCloud && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="w-4 h-4 animate-spin" />
