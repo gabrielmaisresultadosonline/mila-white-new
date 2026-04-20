@@ -76,34 +76,80 @@ const Index = () => {
       try {
         const authenticated = isAuthenticated();
         setIsLoggedIn(authenticated);
-        
-        if (authenticated) {
-          const registeredIGs = getRegisteredIGs();
-          setHasRegisteredProfiles(registeredIGs.length > 0);
-          
-          // Just check the existing session - data should already be loaded
-          const existingSession = getSession();
-          
-          console.log(`🔐 Auth check: ${registeredIGs.length} IGs registrados, ${existingSession.profiles.length} perfis na sessão`);
-          
-          // Clean expired data
-          cleanExpiredCreatives();
-          cleanExpiredStrategies();
-          
-          setSession(existingSession);
-          
-          if (existingSession.profiles.length > 0) {
-            setShowDashboard(true);
-            // Show announcements when user is already logged in and has profiles
-            setShowAnnouncements(true);
+
+        if (!authenticated) return;
+
+        const user = getCurrentUser();
+        const username = user?.username || '';
+
+        // Clean expired data
+        cleanExpiredCreatives();
+        cleanExpiredStrategies();
+
+        let existingSession = getSession();
+        console.log(`🔐 Auth check (mount): ${existingSession.profiles.length} perfis na sessão local`);
+
+        // CRITICAL: On every page load, re-hydrate from cloud + reconcile with SquareCloud.
+        // This prevents the "shows registration screen on refresh" bug.
+        try {
+          const { loadUserFromCloud } = await import('@/lib/userStorage');
+          const cloudData = username ? await loadUserFromCloud(username) : null;
+
+          if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
+            const { initializeFromCloud } = await import('@/lib/storage');
+            initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
+            console.log(`☁️ Re-hidratado: ${cloudData.profileSessions.length} perfis da nuvem`);
           }
+        } catch (cloudErr) {
+          console.error('[Index] Error loading cloud on mount:', cloudErr);
+        }
+
+        // Reconcile with SquareCloud (authoritative source)
+        try {
+          if (username) {
+            const squareResult = await verifyRegisteredIGs(username);
+            if (squareResult.success && squareResult.instagrams) {
+              const squareIGs = new Set(squareResult.instagrams.map(ig => ig.toLowerCase()));
+              const current = getSession();
+              const before = current.profiles.length;
+              current.profiles = current.profiles.filter(p =>
+                squareIGs.has(p.profile.username.toLowerCase())
+              );
+              if (current.profiles.length !== before) {
+                if (current.activeProfileId && !current.profiles.find(p => p.id === current.activeProfileId)) {
+                  current.activeProfileId = current.profiles[0]?.id || null;
+                }
+                saveSession(current);
+              }
+
+              // If SquareCloud has IGs but session is empty -> auto-sync placeholders
+              if (current.profiles.length === 0 && squareResult.instagrams.length > 0) {
+                console.log(`🔄 Auto-sync no mount: ${squareResult.instagrams.length} IGs do SquareCloud`);
+                setHasRegisteredProfiles(true);
+                await handleSyncComplete(squareResult.instagrams);
+                return;
+              }
+            }
+          }
+        } catch (recErr) {
+          console.error('[Index] Error reconciling with SquareCloud on mount:', recErr);
+        }
+
+        existingSession = getSession();
+        const registeredIGs = getRegisteredIGs();
+        setHasRegisteredProfiles(registeredIGs.length > 0 || existingSession.profiles.length > 0);
+        setSession(existingSession);
+
+        if (existingSession.profiles.length > 0) {
+          setShowDashboard(true);
+          setShowAnnouncements(true);
         }
       } catch (error) {
         console.error('[Index] Error in auth check:', error);
         setIsLoggedIn(false);
       }
     };
-    
+
     initializeFromCloudData();
   }, []);
 
