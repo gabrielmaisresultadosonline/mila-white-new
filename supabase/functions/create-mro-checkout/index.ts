@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const INFINITEPAY_HANDLE = "paguemro";
+const INFINITEPAY_HANDLE = "mahatma-cravinho";
 
 const log = (step: string, details?: unknown) => {
   const timestamp = new Date().toISOString();
