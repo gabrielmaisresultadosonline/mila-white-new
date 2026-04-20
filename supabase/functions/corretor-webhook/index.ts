@@ -81,7 +81,7 @@ async function sendWelcomeEmail(supabase: any, email: string, name: string | nul
     // Enviar email via SMTP (Hostinger)
     const smtpHost = "smtp.hostinger.com";
     const smtpPort = 587;
-    const smtpUser = "contato@maisresultadosonline.com.br";
+    const smtpUser = "suporte@codigoinstashop.com.br";
 
     const emailPayload = {
       from: `Corretor MRO <${smtpUser}>`,

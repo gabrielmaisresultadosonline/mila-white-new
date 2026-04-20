@@ -264,7 +264,7 @@ async function sendProConfirmationEmail(email: string, name: string, password: s
         hostname: "smtp.hostinger.com",
         port: 465,
         tls: true,
-        auth: { username: "suporte@maisresultadosonline.com.br", password: SMTP_PASSWORD },
+        auth: { username: "suporte@codigoinstashop.com.br", password: SMTP_PASSWORD },
       },
     });
 
@@ -292,7 +292,7 @@ async function sendProConfirmationEmail(email: string, name: string, password: s
     `;
 
     await client.send({
-      from: "Prompts MRO <suporte@maisresultadosonline.com.br>",
+      from: "Prompts MRO <suporte@codigoinstashop.com.br>",
       to: email,
       subject: `🎉 Pagamento Confirmado - Plano ${isMonthly ? 'PRO Mensal' : 'PRO Anual'} Ativado!`,
       html,

@@ -136,7 +136,7 @@ serve(async (req) => {
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -624,7 +624,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
     }
 
     await client.send({
-      from: "MRO - Afiliados <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Afiliados <suporte@codigoinstashop.com.br>",
       to: finalAffiliateEmail,
       subject: subject,
       html: htmlContent,

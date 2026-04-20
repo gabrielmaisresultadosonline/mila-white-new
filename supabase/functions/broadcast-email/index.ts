@@ -179,7 +179,7 @@ serve(async (req) => {
     emailSubject = subject;
     originalBody = body;
 
-    const SMTP_USER = "suporte@maisresultadosonline.com.br";
+    const SMTP_USER = "suporte@codigoinstashop.com.br";
     const SMTP_PASSWORD = Deno.env.get("SMTP_PASSWORD");
 
     if (!SMTP_PASSWORD) {

@@ -38,7 +38,7 @@ async function sendAccessEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -199,7 +199,7 @@ async function sendAccessEmail(
     const finalHtml = htmlContent.replace('{EXPIRATION_SECTION}', expirationSection);
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `MRO - Acesso Liberado ao ${serviceName}!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email HTML.",
@@ -533,14 +533,14 @@ serve(async (req) => {
               port: 465,
               tls: true,
               auth: {
-                username: "suporte@maisresultadosonline.com.br",
+                username: "suporte@codigoinstashop.com.br",
                 password: smtpPassword,
               },
             },
           });
 
           await client.send({
-            from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+            from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
             to: email,
             subject: "🧪 Email de Teste - MRO Admin",
             content: "Este é um email de teste do sistema MRO Admin.",
@@ -656,7 +656,7 @@ serve(async (req) => {
             port: 465,
             tls: true,
             auth: {
-              username: "suporte@maisresultadosonline.com.br",
+              username: "suporte@codigoinstashop.com.br",
               password: smtpPassword,
             },
           },
@@ -695,7 +695,7 @@ serve(async (req) => {
         for (const email of emails) {
           try {
             await client.send({
-              from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+              from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
               to: email,
               subject: subject || '📢 Novidades do MRO!',
               content: message.replace(/<[^>]*>/g, ''), // Plain text version

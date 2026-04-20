@@ -12,9 +12,9 @@ const sendEmailViaSMTP = async (to: string, subject: string, html: string) => {
   if (!smtpPassword) return false;
   try {
     const client = new SMTPClient({
-      connection: { hostname: "smtp.hostinger.com", port: 465, tls: true, auth: { username: "suporte@maisresultadosonline.com.br", password: smtpPassword } },
+      connection: { hostname: "smtp.hostinger.com", port: 465, tls: true, auth: { username: "suporte@codigoinstashop.com.br", password: smtpPassword } },
     });
-    await client.send({ from: "MRO <suporte@maisresultadosonline.com.br>", to, subject, content: "auto", html });
+    await client.send({ from: "MRO <suporte@codigoinstashop.com.br>", to, subject, content: "auto", html });
     await client.close();
     return true;
   } catch (e) {

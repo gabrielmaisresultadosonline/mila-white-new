@@ -281,7 +281,7 @@ serve(async (req) => {
           hostname: "smtp.hostinger.com",
           port: 465,
           tls: true,
-          auth: { username: "suporte@maisresultadosonline.com.br", password: SMTP_PASSWORD },
+          auth: { username: "suporte@codigoinstashop.com.br", password: SMTP_PASSWORD },
         },
       });
 
@@ -305,7 +305,7 @@ serve(async (req) => {
       `;
 
       await client.send({
-        from: "Prompts MRO <suporte@maisresultadosonline.com.br>",
+        from: "Prompts MRO <suporte@codigoinstashop.com.br>",
         to: user.email,
         subject,
         html,

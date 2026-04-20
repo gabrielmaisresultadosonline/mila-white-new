@@ -45,7 +45,7 @@ const sendRegistrationEmail = async (email: string, name: string, password: stri
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -224,7 +224,7 @@ const sendRegistrationEmail = async (email: string, name: string, password: stri
 </html>`;
 
     await client.send({
-      from: "Ads News <suporte@maisresultadosonline.com.br>",
+      from: "Ads News <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "Complete seu pagamento - Ads News",
       html: htmlContent,
