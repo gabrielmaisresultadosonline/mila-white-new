@@ -108,9 +108,6 @@ const Index = () => {
         try {
           if (username) {
             const squareResult = await verifyRegisteredIGs(username);
-            if (squareResult.success && squareResult.instagrums) {
-              // typo guard handled below
-            }
             if (squareResult.success && squareResult.instagrams) {
               const squareIGs = new Set(squareResult.instagrams.map(ig => ig.toLowerCase()));
               const current = getSession();
