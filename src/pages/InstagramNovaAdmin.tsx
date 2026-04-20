@@ -3692,7 +3692,45 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                         <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2">
                           <div>
                             <p className="text-xs text-zinc-500">Email</p>
-                            <p className="text-sm text-white truncate">{baseEmail}</p>
+                            {editingOrder?.id === order.id && showEditEmailModal === false ? (
+                              <div className="flex items-center gap-1">
+                                <Input
+                                  type="email"
+                                  value={newEmail}
+                                  onChange={(e) => setNewEmail(e.target.value)}
+                                  className="h-7 text-xs bg-zinc-900 border-zinc-600 text-white"
+                                  autoFocus
+                                />
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={saveNewEmail}
+                                  disabled={savingEmail}
+                                  className="h-7 px-2 text-green-400"
+                                >
+                                  {savingEmail ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => { setEditingOrder(null); setNewEmail(""); }}
+                                  className="h-7 px-2 text-zinc-400"
+                                >
+                                  <X className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-1">
+                                <p className="text-sm text-white truncate">{baseEmail}</p>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setEditingOrder(order); setNewEmail(baseEmail); }}
+                                  className="text-zinc-500 hover:text-blue-400 shrink-0"
+                                  title="Editar email"
+                                >
+                                  <Pencil className="w-3 h-3" />
+                                </button>
+                              </div>
+                            )}
                           </div>
                           <div>
                             <p className="text-xs text-zinc-500">Usuário</p>
