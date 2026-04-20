@@ -28,6 +28,7 @@ const AdminLogin = () => {
         title: "Login realizado!",
         description: "Bem-vindo ao painel administrativo",
       });
+      sessionStorage.setItem('admin_just_logged_in', '1');
       navigate('/admin');
     } else {
       setError(result.error || 'Credenciais inválidas');
