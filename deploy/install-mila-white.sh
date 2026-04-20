@@ -92,10 +92,15 @@ chown -R www-data:www-data "$APP_DIR/dist"
 
 # ---------- 7. Nginx (HTTP) -------------------------------------------------
 bold "Configurando Nginx..."
+# Diretório dedicado (fora do SPA) para os challenges do Let's Encrypt
+mkdir -p /var/www/letsencrypt/.well-known/acme-challenge
+chown -R www-data:www-data /var/www/letsencrypt
+chmod -R 755 /var/www/letsencrypt
+
 cat > "$NGINX_CONF" <<EOF
 server {
-    listen 80;
-    listen [::]:80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     server_name $DOMAIN $WWW_DOMAIN;
 
     root $APP_DIR/dist;
@@ -103,16 +108,10 @@ server {
 
     client_max_body_size 100M;
 
-    # ACME challenge (Let's Encrypt) — precisa vir ANTES de qualquer outra regra
+    # ACME challenge — diretório separado, SEM try_files do SPA
     location ^~ /.well-known/acme-challenge/ {
         default_type "text/plain";
-        root $APP_DIR/dist;
-        try_files \$uri =404;
-    }
-
-    # SPA fallback
-    location / {
-        try_files \$uri \$uri/ /index.html;
+        root /var/www/letsencrypt;
     }
 
     # Cache estáticos
@@ -120,6 +119,11 @@ server {
         expires 30d;
         add_header Cache-Control "public, immutable";
         try_files \$uri =404;
+    }
+
+    # SPA fallback (por último)
+    location / {
+        try_files \$uri \$uri/ /index.html;
     }
 
     # Gzip
