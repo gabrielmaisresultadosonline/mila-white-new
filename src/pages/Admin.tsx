@@ -186,9 +186,8 @@ const Admin = () => {
 
   const tabs = [
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
-    { id: 'sync', label: 'Sincronizar', icon: <CloudDownload className="w-4 h-4" /> },
-    { id: 'tutorials', label: 'MRO Ferramenta', icon: <Video className="w-4 h-4" /> },
-    { id: 'estrutura', label: 'Estrutura Tutoriais', icon: <Video className="w-4 h-4" /> },
+    { id: 'tutorials', label: 'Tutorial Ferramenta', icon: <Video className="w-4 h-4" /> },
+    { id: 'estrutura', label: 'Tutorial Renda Extra', icon: <Video className="w-4 h-4" /> },
     { id: 'announcements', label: 'Avisos', icon: <Bell className="w-4 h-4" /> },
     { id: 'settings', label: 'APIs', icon: <Settings className="w-4 h-4" /> },
     { id: 'whatsapp', label: 'WhatsApp', icon: <MessageCircle className="w-4 h-4" /> },
