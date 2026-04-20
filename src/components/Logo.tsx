@@ -1,4 +1,4 @@
-import logoMro from '@/assets/logo-mro.png';
+import logoCodigoInstaShop from '@/assets/logo-codigoinstashop.png';
 
 interface LogoProps {
   className?: string;
@@ -15,8 +15,8 @@ const sizeClasses = {
 export const Logo = ({ className = '', size = 'md' }: LogoProps) => {
   return (
     <img 
-      src={logoMro} 
-      alt="I.A MRO" 
+      src={logoCodigoInstaShop} 
+      alt="Código InstaShop" 
       className={`${sizeClasses[size]} w-auto object-contain ${className}`}
     />
   );
