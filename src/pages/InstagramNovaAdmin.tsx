@@ -129,10 +129,22 @@ export default function InstagramNovaAdmin() {
   });
 
   // Configuração de afiliado - sistema expandido
-  const [showAffiliateConfig, setShowAffiliateConfig] = useState(false);
+  const [showAffiliateConfig, setShowAffiliateConfig] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("view") === "affiliates";
+    }
+    return false;
+  });
   const [showRemarketingDashboard, setShowRemarketingDashboard] = useState(false);
   const [showAccessReminder, setShowAccessReminder] = useState(false);
-  const [activeTab, setActiveTab] = useState<"config" | "affiliates" | "sales" | "attempts" | "email-preview">("config");
+  const [activeTab, setActiveTab] = useState<"config" | "affiliates" | "sales" | "attempts" | "email-preview">(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("view") === "affiliates") return "affiliates";
+    }
+    return "config";
+  });
   
   // Afiliado atual sendo editado
   const [affiliateId, setAffiliateId] = useState("");

@@ -30,11 +30,11 @@ import {
   Eye, TrendingUp, Calendar, Sparkles, Download, 
   Save, RefreshCw, Check, ExternalLink,
   Image as ImageIcon, BarChart3, User, CloudDownload,
-  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe
+  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2
 } from 'lucide-react';
 import ManualScraper from '@/components/admin/ManualScraper';
 
-type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp';
+type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados';
 type UserFilter = 'all' | 'instagram' | 'connected';
 
 const Admin = () => {
@@ -186,6 +186,8 @@ const Admin = () => {
 
   const tabs = [
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
+    { id: 'vendas', label: 'Vendas', icon: <ShoppingCart className="w-4 h-4" /> },
+    { id: 'afiliados', label: 'Afiliados', icon: <Users2 className="w-4 h-4" /> },
     { id: 'tutorials', label: 'Tutorial Ferramenta', icon: <Video className="w-4 h-4" /> },
     { id: 'estrutura', label: 'Tutorial Renda Extra', icon: <Video className="w-4 h-4" /> },
     { id: 'announcements', label: 'Avisos', icon: <Bell className="w-4 h-4" /> },
@@ -1055,6 +1057,40 @@ const Admin = () => {
         {/* Users List Tab */}
         {activeTab === 'userlist' && (
           <UsersListPanel />
+        )}
+        {/* Vendas Tab - embeds InstagramNovaAdmin */}
+        {activeTab === 'vendas' && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">Vendas — /instagram-nova</h2>
+              <Button variant="outline" size="sm" onClick={() => window.open('/instagram-nova-admin', '_blank')}>
+                <ExternalLink className="w-4 h-4 mr-2" /> Abrir em nova aba
+              </Button>
+            </div>
+            <iframe
+              src="/instagram-nova-admin"
+              title="Vendas Instagram Nova"
+              className="w-full rounded-lg border border-border bg-background"
+              style={{ height: 'calc(100vh - 220px)', minHeight: '600px' }}
+            />
+          </div>
+        )}
+        {/* Afiliados Tab - embeds InstagramNovaAdmin focused on affiliates */}
+        {activeTab === 'afiliados' && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">Afiliados — /instagram-nova</h2>
+              <Button variant="outline" size="sm" onClick={() => window.open('/instagram-nova-admin?view=affiliates', '_blank')}>
+                <ExternalLink className="w-4 h-4 mr-2" /> Abrir em nova aba
+              </Button>
+            </div>
+            <iframe
+              src="/instagram-nova-admin?view=affiliates"
+              title="Afiliados Instagram Nova"
+              className="w-full rounded-lg border border-border bg-background"
+              style={{ height: 'calc(100vh - 220px)', minHeight: '600px' }}
+            />
+          </div>
         )}
       </main>
     </div>
