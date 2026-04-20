@@ -229,7 +229,7 @@ serve(async (req) => {
         '<p style="color:#666;font-size:13px;margin:10px 0 0 0;">Abraços,<br><strong>Equipe MRO</strong></p>' +
         '</td></tr>' +
         '<tr><td style="background:#1a1a1a;padding:15px;text-align:center;">' +
-        '<p style="color:#888;margin:0;font-size:11px;">© ' + new Date().getFullYear() + ' MRO - Mais Resultados Online</p>' +
+        '<p style="color:#888;margin:0;font-size:11px;">© ' + new Date().getFullYear() + ' Código InstaShop</p>' +
         '</td></tr>' +
         '</table></body></html>';
     }
@@ -240,7 +240,7 @@ serve(async (req) => {
       username: SMTP_USER,
       password: SMTP_PASSWORD,
       from: SMTP_USER,
-      fromName: "MRO - Mais Resultados Online",
+      fromName: "Código InstaShop",
       to: recipientEmail,
       subject: emailSubject,
       textBody: plainTextBody,

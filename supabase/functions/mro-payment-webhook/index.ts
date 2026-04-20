@@ -254,8 +254,7 @@ async function sendAccessEmail(
 </tr>
 <tr>
 <td style="text-align:center;padding:20px;background:#f8f9fa;color:#666;font-size:11px;">
-<p style="margin:0;">MRO - Mais Resultados Online</p>
-<p style="margin:5px 0 0 0;">Gabriel Fernandes da Silva | CNPJ: 54.840.738/0001-96</p>
+<p style="margin:0;">Código InstaShop</p>
 </td>
 </tr>
 </table>
@@ -263,7 +262,7 @@ async function sendAccessEmail(
 </html>`;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `MRO - Acesso Liberado à Ferramenta Instagram (${planLabel})!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email.",

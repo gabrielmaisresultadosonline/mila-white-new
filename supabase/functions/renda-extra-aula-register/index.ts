@@ -86,7 +86,7 @@ serve(async (req) => {
 </div>
 </td></tr>
 <tr><td style="background-color:#1a1a1a;padding:20px;text-align:center;">
-<p style="margin:0;color:#999999;font-size:12px;">&copy; 2026 MRO - Mais Resultados Online</p>
+<p style="margin:0;color:#999999;font-size:12px;">&copy; 2026 Código InstaShop</p>
 </td></tr>
 </table>
 </td></tr>

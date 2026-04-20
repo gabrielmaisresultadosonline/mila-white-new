@@ -12,7 +12,7 @@ const PoliticaCancelamento = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-center">
-            <img src={logoMro3} alt="MRO - Mais Resultados Online" className="h-16 w-auto" />
+            <img src={logoMro3} alt="Código InstaShop" className="h-16 w-auto" />
           </div>
         </div>
       </header>
@@ -28,7 +28,7 @@ const PoliticaCancelamento = () => {
             Política de Cancelamento e Reembolso
           </h1>
           <p className="text-lg text-gray-600">
-            MRO - Mais Resultados Online
+            Código InstaShop
           </p>
         </div>
 
@@ -42,7 +42,7 @@ const PoliticaCancelamento = () => {
               Nosso Compromisso
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Nós da <strong>MRO (Mais Resultados Online)</strong> nos responsabilizamos pelos resultados. 
+              Nós da <strong>Código InstaShop</strong> nos responsabilizamos pelos resultados. 
               Por isso, entregamos suporte completo e <strong>garantia de 30 dias</strong> em cima dos resultados. 
               Se nossas ferramentas e nossos sistemas não entregarem os resultados prometidos, 
               cancelamos e <strong>devolvemos 100% do seu dinheiro</strong>.
@@ -264,9 +264,7 @@ const PoliticaCancelamento = () => {
           </Button>
           
           <div className="text-gray-500 text-sm space-y-1">
-            <p className="font-semibold">MRO - Mais Resultados Online</p>
-            <p>Gabriel Fernandes da Silva</p>
-            <p>CNPJ: 54.840.738/0001-96</p>
+            <p className="font-semibold">Código InstaShop</p>
             <p>© 2024. Todos os direitos reservados.</p>
           </div>
         </div>

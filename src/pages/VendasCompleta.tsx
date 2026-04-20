@@ -200,7 +200,7 @@ const VendasCompleta = () => {
 
   const faqs = [
     { q: "Quais são os planos disponíveis hoje?", a: "Oferecemos dois planos: o Plano Anual de 12 meses, que dá acesso completo por um ano, e o Plano Pagamento Único Vitalício, onde você paga apenas uma vez e tem acesso para sempre, incluindo todas as atualizações sem custo adicional." },
-    { q: "O que é a automação de Direct (DM) em massa?", a: "É uma funcionalidade exclusiva da V7+ Plus que permite enviar mensagens automáticas no Direct para novos seguidores, seus seguidores atuais e até seguidores de qualquer outra página — tudo com copy otimizada pelo Corretor de IA exclusivo MRO." },
+    { q: "O que é a automação de Direct (DM) em massa?", a: "É uma funcionalidade exclusiva da  que permite enviar mensagens automáticas no Direct para novos seguidores, seus seguidores atuais e até seguidores de qualquer outra página — tudo com copy otimizada pelo Corretor de IA exclusivo MRO." },
     { q: "O que são os Filtros Inteligentes (Público Quente)?", a: "São filtros avançados de segmentação que identificam pessoas que já demonstraram interesse no seu nicho — como quem curtiu posts, comentou ou segue perfis concorrentes. Isso garante mais precisão, mais respostas e mais conversões." },
     { q: "Isso em massa não gera bloqueio?", a: "Não. Nosso sistema simula um humano com tela ligada, interações espaçadas e pausas naturais. Você deixa rodando por 7 a 8 horas diárias com segurança. O algoritmo entende como uso real, evitando bloqueios." },
     { q: "Funciona só em computador?", a: "Sim, nossa ferramenta é compatível apenas com computadores de mesa, notebooks ou MacBooks. Não funciona em celulares, tablets ou dispositivos móveis." },
@@ -216,10 +216,6 @@ const VendasCompleta = () => {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-1.5 border border-pink-500/40" style={{ background: 'linear-gradient(90deg,rgba(214,41,118,0.18),rgba(150,47,191,0.18),rgba(79,91,213,0.18))' }}>
-              <Crown className="w-4 h-4 text-pink-300" />
-              <span className="text-white text-xs font-bold">V7+ PLUS</span>
-            </div>
             <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
               Garantir Acesso
             </Button>
@@ -237,12 +233,7 @@ const VendasCompleta = () => {
         <div className="max-w-5xl mx-auto text-center relative">
           <img src={logoMro} alt="Código InstaShop" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
           
-          {/* V7+ Badge - Instagram gradient */}
-          <div className="inline-flex items-center gap-2 rounded-full px-6 py-2 mb-6 border border-pink-500/50" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.25),rgba(214,41,118,0.3),rgba(150,47,191,0.3),rgba(79,91,213,0.25))' }}>
-            <Flame className="w-5 h-5 text-orange-300 animate-pulse" />
-            <span className="text-white font-bold text-sm md:text-base">NOVA VERSÃO V7+ PLUS — A MAIS COMPLETA</span>
-            <Flame className="w-5 h-5 text-pink-300 animate-pulse" />
-          </div>
+          
           
           <div className="relative">
             <div className="absolute -inset-4 blur-3xl rounded-full" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.2),rgba(214,41,118,0.25),rgba(150,47,191,0.2),rgba(79,91,213,0.2))' }} />
@@ -342,7 +333,7 @@ const VendasCompleta = () => {
         </div>
       </section>
 
-      {/* ====== O QUE HÁ DE NOVO NA V7+ PLUS ====== */}
+      {/* ====== O QUE HÁ DE NOVO NA  ====== */}
       <section className="py-20 px-4 bg-gradient-to-b from-black via-gray-950 to-black">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -351,7 +342,7 @@ const VendasCompleta = () => {
               <span className="text-pink-400 font-bold text-sm">O QUE HÁ DE NOVO</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              NOVIDADES DA <span className="bg-gradient-to-r from-fuchsia-400 to-rose-400 bg-clip-text text-transparent">V7+ PLUS</span>
+              NOVIDADES
             </h2>
             <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mb-2">
               Totalmente otimizada com mais automação, mais inteligência e mais resultados
@@ -499,7 +490,7 @@ const VendasCompleta = () => {
                     <h3 className="text-2xl md:text-3xl font-black text-pink-300">Inteligência Artificial Exclusiva</h3>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-5 text-lg">A MRO V7+ vai além da automação:</p>
+                <p className="text-gray-300 mb-5 text-lg">A MRO  vai além da automação:</p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     { icon: Bot, text: "Análise completa do seu perfil", color: "text-pink-400" },
@@ -528,7 +519,7 @@ const VendasCompleta = () => {
             <h2 className="text-3xl md:text-5xl font-black mb-4">
               💰 MAIS RESULTADOS, <span className="text-red-400">ZERO ANÚNCIOS</span>
             </h2>
-            <p className="text-gray-400 text-lg">Com a Código InstaShop V7+ você:</p>
+            <p className="text-gray-400 text-lg">Com a Código InstaShop  você:</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -559,7 +550,7 @@ const VendasCompleta = () => {
                 <span className="text-pink-400 font-bold text-sm">RESUMO FINAL</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black mb-8">
-                A Código InstaShop V7+ Plus é uma <span className="text-pink-400">máquina de crescimento e vendas</span> no Instagram
+                A Código InstaShop  é uma <span className="text-pink-400">máquina de crescimento e vendas</span> no Instagram
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
@@ -854,7 +845,7 @@ const VendasCompleta = () => {
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Pronto para <span className="text-pink-400">Escalar</span> seu Instagram?
           </h2>
-          <p className="text-xl text-gray-400 mb-10">Junte-se a milhares de empreendedores que já transformaram seus perfis com a V7+ Plus</p>
+          <p className="text-xl text-gray-400 mb-10">Junte-se a milhares de empreendedores que já transformaram seus perfis com a </p>
           <Button size="lg" className="bg-gradient-to-r from-fuchsia-500 to-rose-500 hover:from-fuchsia-600 hover:to-rose-600 text-black font-bold text-base sm:text-lg md:text-xl px-6 sm:px-12 py-6 sm:py-8 rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transition-all hover:scale-105 whitespace-normal h-auto min-h-[60px] leading-tight"
             onClick={scrollToPricing}>
             <span className="flex items-center justify-center gap-2 flex-wrap text-center">
@@ -868,10 +859,8 @@ const VendasCompleta = () => {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-gray-800">
         <div className="max-w-6xl mx-auto text-center text-gray-500">
-          <img src={logoMro} alt="MRO" className="h-10 mx-auto mb-4 object-contain" />
-          <p className="font-medium text-gray-400">Mais Resultados Online</p>
-          <p className="text-sm mt-1">Gabriel Fernandes da Silva</p>
-          <p className="text-sm mt-1">CNPJ: 54.840.738/0001-96</p>
+          <img src={logoMro} alt="Código InstaShop" className="h-10 mx-auto mb-4 object-contain" />
+          <p className="font-medium text-gray-400">Código InstaShop</p>
           <p className="text-sm mt-3">© 2024. Todos os direitos reservados.</p>
         </div>
       </footer>

@@ -286,7 +286,7 @@ serve(async (req) => {
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
-<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#666;margin:10px 0 0 0;font-size:11px;">Este email foi enviado porque você cadastrou seu email na plataforma ZAPMRO.</p>
 </td>
 </tr>
@@ -296,7 +296,7 @@ serve(async (req) => {
 
       try {
         await client.send({
-          from: "ZAPMRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+          from: "ZAPCódigo InstaShop <suporte@codigoinstashop.com.br>",
           to: email,
           subject: "🎉 Bem-vindo à Área VIP ZAPMRO!",
           html: htmlContent,

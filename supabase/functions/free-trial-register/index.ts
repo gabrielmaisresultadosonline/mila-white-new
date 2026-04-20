@@ -300,7 +300,7 @@ Valorize suas 24 horas de teste! Após esse período, adquira um de nossos plano
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
 <p style="color:#667eea;margin:0 0 10px 0;font-weight:bold;">Bom teste! 💛</p>
-<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td>
 </tr>
 </table>
@@ -308,7 +308,7 @@ Valorize suas 24 horas de teste! Após esse período, adquira um de nossos plano
 </html>`;
 
         await client.send({
-          from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+          from: "Código InstaShop <suporte@codigoinstashop.com.br>",
           to: email,
           subject: "🎉 Seu Teste Grátis de 24h foi Liberado! - MRO",
           html: htmlContent,

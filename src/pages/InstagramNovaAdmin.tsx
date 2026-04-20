@@ -2048,7 +2048,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 <p style="color:#666;font-size:13px;line-height:1.5;">Envie seu email (<strong>${baseEmail}</strong>) junto com a mensagem no WhatsApp para que possamos identificar seu cadastro e liberar o desconto especial.</p>
 </div>
 <div style="background:#1a1a1a;padding:15px;text-align:center;">
-<p style="color:#888;margin:0;font-size:11px;">© ${new Date().getFullYear()} MRO - Mais Resultados Online</p>
+<p style="color:#888;margin:0;font-size:11px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </div>
 </div>`;
   };

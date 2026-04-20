@@ -211,9 +211,7 @@ const ToolSelector = () => {
 
       {/* Footer with business info */}
       <div className="mt-8 md:mt-12 text-center z-10 space-y-1 px-4">
-        <p className="text-gray-400 font-semibold text-sm md:text-base">Mais Resultados Online</p>
-        <p className="text-gray-500 text-xs md:text-sm">Gabriel Fernandes da Silva</p>
-        <p className="text-gray-500 text-xs md:text-sm">CNPJ: 54.840.738/0001-96</p>
+        <p className="text-gray-400 font-semibold text-sm md:text-base">Código InstaShop</p>
         <p className="text-gray-600 text-[10px] md:text-xs mt-2">© 2024. Todos os direitos reservados.</p>
       </div>
 

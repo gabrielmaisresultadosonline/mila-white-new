@@ -45,7 +45,7 @@ async function sendAccessEmail(
     ` : '';
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "🎉 Seu acesso ao Método de Correção MRO está pronto!",
       html: `
@@ -85,7 +85,7 @@ async function sendAccessEmail(
           
           <hr style="border-color: #333; margin: 30px 0;">
           <p style="color: #6b7280; text-align: center; font-size: 12px;">
-            MRO - Mais Resultados Online<br>
+            Código InstaShop<br>
             Este é um email automático, não responda.
           </p>
         </div>

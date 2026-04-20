@@ -202,7 +202,7 @@ export const StrategyGenerator = ({ profile, analysis, onStrategyGenerated, exis
 
       {/* Info */}
       <p className="text-xs text-muted-foreground text-center mt-4">
-        Usando I.A do Código InstaShop - Mais Resultados Online para gerar estratégia personalizada para o nicho: {analysis.niche}
+        Usando I.A do Código InstaShop para gerar estratégia personalizada para o nicho: {analysis.niche}
       </p>
     </div>
   );
