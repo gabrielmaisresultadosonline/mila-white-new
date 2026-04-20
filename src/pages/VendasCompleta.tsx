@@ -681,7 +681,7 @@ const VendasCompleta = () => {
                 ))}
                 <div className="flex items-center gap-2 text-xs text-gray-500 pt-1"><span>• {affiliateBonus}</span></div>
               </div>
-              <Button size="lg" className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-black font-bold py-4 rounded-xl hover:scale-105 transition-transform"
+              <Button size="lg" className="w-full text-white font-bold py-4 rounded-xl hover:scale-105 transition-transform border-0" style={{ background: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}
                 onClick={() => { trackLead('Instagram MRO - Plano Vitalício'); setSelectedPlan("lifetime"); setShowCheckoutModal(true); }}>
                 GARANTIR PLANO VITALÍCIO
               </Button>
