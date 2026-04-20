@@ -12,7 +12,7 @@ const PoliticaCancelamento = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-center">
-            <img src={logoMro3} alt="MRO - Mais Resultados Online" className="h-16 w-auto" />
+            <img src={logoMro3} alt="Código InstaShop" className="h-16 w-auto" />
           </div>
         </div>
       </header>
