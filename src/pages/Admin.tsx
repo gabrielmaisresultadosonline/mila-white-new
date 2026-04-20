@@ -30,11 +30,11 @@ import {
   Eye, TrendingUp, Calendar, Sparkles, Download, 
   Save, RefreshCw, Check, ExternalLink,
   Image as ImageIcon, BarChart3, User, CloudDownload,
-  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe
+  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2
 } from 'lucide-react';
 import ManualScraper from '@/components/admin/ManualScraper';
 
-type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp';
+type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados';
 type UserFilter = 'all' | 'instagram' | 'connected';
 
 const Admin = () => {
@@ -186,6 +186,8 @@ const Admin = () => {
 
   const tabs = [
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
+    { id: 'vendas', label: 'Vendas', icon: <ShoppingCart className="w-4 h-4" /> },
+    { id: 'afiliados', label: 'Afiliados', icon: <Users2 className="w-4 h-4" /> },
     { id: 'tutorials', label: 'Tutorial Ferramenta', icon: <Video className="w-4 h-4" /> },
     { id: 'estrutura', label: 'Tutorial Renda Extra', icon: <Video className="w-4 h-4" /> },
     { id: 'announcements', label: 'Avisos', icon: <Bell className="w-4 h-4" /> },
