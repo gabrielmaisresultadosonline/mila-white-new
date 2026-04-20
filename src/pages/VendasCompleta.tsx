@@ -216,10 +216,6 @@ const VendasCompleta = () => {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-1.5 border border-pink-500/40" style={{ background: 'linear-gradient(90deg,rgba(214,41,118,0.18),rgba(150,47,191,0.18),rgba(79,91,213,0.18))' }}>
-              <Crown className="w-4 h-4 text-pink-300" />
-              <span className="text-white text-xs font-bold">V7+ PLUS</span>
-            </div>
             <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
               Garantir Acesso
             </Button>
