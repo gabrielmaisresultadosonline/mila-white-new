@@ -26,14 +26,14 @@ const sendEmailViaSMTP = async (to: string, subject: string, html: string) => {
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
     });
 
     await client.send({
-      from: "Ads News <suporte@maisresultadosonline.com.br>",
+      from: "Ads News <suporte@codigoinstashop.com.br>",
       to: to,
       subject: subject,
       content: "auto",

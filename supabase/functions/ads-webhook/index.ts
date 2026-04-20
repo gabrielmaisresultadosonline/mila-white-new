@@ -27,7 +27,7 @@ const sendWelcomeEmail = async (email: string, name: string, password: string, s
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -227,7 +227,7 @@ const sendWelcomeEmail = async (email: string, name: string, password: string, s
 </html>`;
 
     await client.send({
-      from: "Ads News <suporte@maisresultadosonline.com.br>",
+      from: "Ads News <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "Pagamento Confirmado - Seu acesso ao Ads News esta liberado!",
       html: htmlContent,

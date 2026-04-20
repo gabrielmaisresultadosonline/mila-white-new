@@ -36,13 +36,13 @@ async function sendEmail(to: string, subject: string, html: string) {
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
     });
     await client.send({
-      from: "Prompts MRO <suporte@maisresultadosonline.com.br>",
+      from: "Prompts MRO <suporte@codigoinstashop.com.br>",
       to,
       subject,
       html,

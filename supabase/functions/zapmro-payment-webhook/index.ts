@@ -84,7 +84,7 @@ async function sendAccessEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -215,7 +215,7 @@ ${planType === "lifetime" ? "♾️ Acesso Vitalício - Sem data de expiração!
 </html>`;
 
     await client.send({
-      from: "ZAPMRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "ZAPMRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `ZAPMRO - Acesso Liberado à Ferramenta WhatsApp (${planLabel})!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email.",

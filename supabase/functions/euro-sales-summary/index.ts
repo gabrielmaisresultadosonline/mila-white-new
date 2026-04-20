@@ -100,7 +100,7 @@ serve(async (req) => {
             port: 465,
             tls: true,
             auth: {
-              username: "contato@maisresultadosonline.com.br",
+              username: "suporte@codigoinstashop.com.br",
               password: smtpPassword,
             },
           },
@@ -180,7 +180,7 @@ Este é um resumo automático gerado pelo sistema MRO.
 </html>`;
 
         await client.send({
-          from: "MRO Sistema <contato@maisresultadosonline.com.br>",
+          from: "MRO Sistema <suporte@codigoinstashop.com.br>",
           to: affiliateEmail,
           subject: `📊 Resumo de Vendas Euro - ${formattedDate} ${formattedTime}`,
           content: "Resumo de vendas Euro - MRO",

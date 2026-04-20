@@ -221,7 +221,7 @@ serve(async (req) => {
             port: 465,
             tls: true,
             auth: {
-              username: "suporte@maisresultadosonline.com.br",
+              username: "suporte@codigoinstashop.com.br",
               password: smtpPassword,
             },
           },
@@ -308,7 +308,7 @@ Valorize suas 24 horas de teste! Após esse período, adquira um de nossos plano
 </html>`;
 
         await client.send({
-          from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+          from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
           to: email,
           subject: "🎉 Seu Teste Grátis de 24h foi Liberado! - MRO",
           html: htmlContent,

@@ -132,7 +132,7 @@ async function sendAccessEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -263,7 +263,7 @@ async function sendAccessEmail(
 </html>`;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: customerEmail,
       subject: `MRO - Acesso Liberado à Ferramenta Instagram (${planLabel})!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email.",

@@ -157,7 +157,7 @@ serve(async (req) => {
           port: 465,
           tls: true,
           auth: {
-            username: "suporte@maisresultadosonline.com.br",
+            username: "suporte@codigoinstashop.com.br",
             password: smtpPassword,
           },
         },
@@ -296,7 +296,7 @@ serve(async (req) => {
 
       try {
         await client.send({
-          from: "ZAPMRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+          from: "ZAPMRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
           to: email,
           subject: "🎉 Bem-vindo à Área VIP ZAPMRO!",
           html: htmlContent,

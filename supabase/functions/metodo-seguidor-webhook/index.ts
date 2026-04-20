@@ -32,7 +32,7 @@ async function sendAccessEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -45,7 +45,7 @@ async function sendAccessEmail(
     ` : '';
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "🎉 Seu acesso ao Método de Correção MRO está pronto!",
       html: `

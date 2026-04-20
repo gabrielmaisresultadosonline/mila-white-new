@@ -27,7 +27,7 @@ async function sendExpirationWarningEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -86,7 +86,7 @@ async function sendExpirationWarningEmail(
     `;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "⚠️ Seu acesso MRO expira amanhã! Renove agora",
       content: `Seu acesso ao MRO expira em ${expDate}. Renove em maisresultadosonline.com.br`,
@@ -116,7 +116,7 @@ async function sendExpiredNotificationEmail(
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -177,7 +177,7 @@ async function sendExpiredNotificationEmail(
     `;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "❌ Seu acesso MRO expirou - Renove e continue crescendo!",
       content: `Seu acesso ao MRO expirou. Renove em maisresultadosonline.com.br`,

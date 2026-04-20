@@ -79,7 +79,7 @@ serve(async (req) => {
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -212,7 +212,7 @@ ${daysDisplay ? `<tr><td style="height:10px;"></td></tr><tr><td style="padding:1
 </html>`;
 
     await client.send({
-      from: "MRO - Mais Resultados Online <suporte@maisresultadosonline.com.br>",
+      from: "MRO - Mais Resultados Online <suporte@codigoinstashop.com.br>",
       to: email,
       subject: "🎉 Reconhecemos seu Primeiro Acesso à MRO!",
       html: htmlContent,

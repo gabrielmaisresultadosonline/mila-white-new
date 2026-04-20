@@ -26,7 +26,7 @@ const sendEmailViaSMTP = async (to: string, nome: string, groupLink: string) => 
         port: 465,
         tls: true,
         auth: {
-          username: "suporte@maisresultadosonline.com.br",
+          username: "suporte@codigoinstashop.com.br",
           password: smtpPassword,
         },
       },
@@ -84,7 +84,7 @@ const sendEmailViaSMTP = async (to: string, nome: string, groupLink: string) => 
 </html>`;
 
     await client.send({
-      from: "MRO Renda Extra <suporte@maisresultadosonline.com.br>",
+      from: "MRO Renda Extra <suporte@codigoinstashop.com.br>",
       to: to,
       subject: "LIVE GRATIS - Faca 5k mensal com a MRO! Participe agora",
       content: "Seu acesso foi liberado! Entre no grupo: " + groupLink,
