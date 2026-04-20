@@ -33,6 +33,8 @@ import {
   Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2
 } from 'lucide-react';
 import ManualScraper from '@/components/admin/ManualScraper';
+import { lazy, Suspense } from 'react';
+const InstagramNovaAdmin = lazy(() => import('./InstagramNovaAdmin'));
 
 type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados';
 type UserFilter = 'all' | 'instagram' | 'connected';
