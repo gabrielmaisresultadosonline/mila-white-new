@@ -61,16 +61,15 @@ const Admin = () => {
   useEffect(() => {
     const checkAdminAccess = async () => {
       setIsVerifying(true);
-      
-      // First check cached status for quick rejection
-      if (!isAdminLoggedIn()) {
-        // Verify with server to be sure
-        const isValid = await verifyAdmin();
-        if (!isValid) {
-          navigate('/admin/login');
-          return;
-        }
+
+      // Always require fresh login when accessing /admin directly
+      const cameFromLogin = sessionStorage.getItem('admin_just_logged_in');
+      if (!cameFromLogin) {
+        await logoutAdmin();
+        navigate('/admin/login');
+        return;
       }
+      sessionStorage.removeItem('admin_just_logged_in');
       
       // Load data from server on mount
       console.log('🔄 Admin: Carregando dados do servidor...');
