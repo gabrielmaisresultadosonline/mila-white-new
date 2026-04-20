@@ -44,7 +44,6 @@ import {
   MousePointerClick
 } from "lucide-react";
 import logoMro from "@/assets/logo-codigoinstashop.png";
-import zeroAnunciosBanner from "@/assets/zero-anuncios-banner.png";
 import ActiveClientsSection from "@/components/ActiveClientsSection";
 
 interface SalesSettings {
