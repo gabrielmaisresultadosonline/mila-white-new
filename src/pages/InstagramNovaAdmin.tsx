@@ -2144,7 +2144,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     const { error } = await supabase.functions.invoke("broadcast-email", {
       body: {
         to,
-        subject: "🚀 Instagram Turbinado sem gastar com anúncios! - Desconto Interno",
+        subject: getRemarketingSubject(),
         body: htmlBody,
         userName: "",
         rawHtml: true
@@ -2174,7 +2174,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         await supabase.from("broadcast_email_logs").insert({
           recipient_email: baseEmail,
           recipient_name: order.username,
-          subject: "🚀 Instagram Turbinado sem gastar com anúncios! - Desconto Interno",
+          subject: getRemarketingSubject(),
           body: html,
           status: "sent"
         });
@@ -2193,7 +2193,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         await supabase.from("broadcast_email_logs").insert({
           recipient_email: baseEmail,
           recipient_name: order.username,
-          subject: "🚀 Instagram Turbinado sem gastar com anúncios! - Desconto Interno",
+          subject: getRemarketingSubject(),
           body: "",
           status: "failed",
           error_message: String(e)
