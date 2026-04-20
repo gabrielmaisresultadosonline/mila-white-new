@@ -44,10 +44,10 @@ async function sendAccessEmail(
       },
     });
 
-    const serviceName = serviceType === 'whatsapp' ? 'ZAPMRO' : 'MRO Instagram';
-    const memberAreaUrl = 'https://maisresultadosonline.com.br';
+    const serviceName = serviceType === 'whatsapp' ? 'ZAPMRO' : 'Código InstaShop';
+    const memberAreaUrl = 'https://codigoinstashop.com.br';
 
-    const whatsappGroupLink = 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi';
+    const supportWhatsappUrl = 'https://codigoinstashop.com.br/whatsapp';
 
     const htmlContent = `<!DOCTYPE html>
 <html>
@@ -59,7 +59,7 @@ async function sendAccessEmail(
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;">
 <tr>
 <td style="background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);padding:30px;text-align:center;">
-<div style="background:#000;color:#fff;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">MRO</div>
+<div style="background:#000;color:#fff;display:inline-block;padding:12px 28px;border-radius:8px;font-size:22px;font-weight:bold;letter-spacing:1px;margin-bottom:10px;">Código InstaShop</div>
 <h1 style="color:#000;margin:15px 0 0 0;font-size:24px;">🎉 Acesso Liberado!</h1>
 </td>
 </tr>
@@ -158,14 +158,7 @@ async function sendAccessEmail(
 <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:25px;">
 <tr>
 <td align="center">
-<a href="${whatsappGroupLink}" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;text-decoration:none;border-radius:8px;font-weight:bold;font-size:14px;">📱 GRUPO DE AVISOS WHATSAPP</a>
-</td>
-</tr>
-</table>
-<table width="100%" cellpadding="0" cellspacing="0" style="margin-top:15px;">
-<tr>
-<td align="center">
-<a href="https://maisresultadosonline.com.br/whatsapp" style="display:inline-block;background:#128C7E;color:#fff;padding:14px 30px;text-decoration:none;border-radius:8px;font-weight:bold;font-size:14px;">📱 Falar no WhatsApp com Suporte</a>
+<a href="${supportWhatsappUrl}" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;text-decoration:none;border-radius:8px;font-weight:bold;font-size:14px;">📱 Falar no WhatsApp com Suporte</a>
 </td>
 </tr>
 </table>
