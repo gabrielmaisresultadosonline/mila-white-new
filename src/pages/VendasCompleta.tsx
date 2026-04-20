@@ -230,22 +230,22 @@ const VendasCompleta = () => {
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 px-4">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px]" />
-          <div className="absolute top-40 right-1/4 w-80 h-80 bg-orange-500/5 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-40 bg-gradient-to-t from-purple-500/5 to-transparent" />
+          <div className="absolute top-20 left-1/4 w-96 h-96 rounded-full blur-[120px]" style={{ background: 'radial-gradient(circle,rgba(214,41,118,0.18),transparent 70%)' }} />
+          <div className="absolute top-40 right-1/4 w-80 h-80 rounded-full blur-[100px]" style={{ background: 'radial-gradient(circle,rgba(250,126,30,0.15),transparent 70%)' }} />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-40" style={{ background: 'linear-gradient(to top,rgba(150,47,191,0.18),transparent)' }} />
         </div>
         <div className="max-w-5xl mx-auto text-center relative">
-          <img src={logoMro} alt="MRO" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-20 md:h-28 mx-auto mb-6 object-contain" />
           
-          {/* V7+ Badge */}
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600/30 to-pink-600/30 border border-purple-500/50 rounded-full px-6 py-2 mb-6">
-            <Flame className="w-5 h-5 text-orange-400 animate-pulse" />
+          {/* V7+ Badge - Instagram gradient */}
+          <div className="inline-flex items-center gap-2 rounded-full px-6 py-2 mb-6 border border-pink-500/50" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.25),rgba(214,41,118,0.3),rgba(150,47,191,0.3),rgba(79,91,213,0.25))' }}>
+            <Flame className="w-5 h-5 text-orange-300 animate-pulse" />
             <span className="text-white font-bold text-sm md:text-base">NOVA VERSÃO V7+ PLUS — A MAIS COMPLETA</span>
-            <Flame className="w-5 h-5 text-orange-400 animate-pulse" />
+            <Flame className="w-5 h-5 text-pink-300 animate-pulse" />
           </div>
           
           <div className="relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 blur-3xl rounded-full" />
+            <div className="absolute -inset-4 blur-3xl rounded-full" style={{ background: 'linear-gradient(90deg,rgba(254,218,117,0.2),rgba(250,126,30,0.2),rgba(214,41,118,0.25),rgba(150,47,191,0.2),rgba(79,91,213,0.2))' }} />
             <h1 className="relative text-3xl md:text-5xl lg:text-6xl font-black mb-3 leading-tight">
                <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">NÃO GASTE MAIS COM ANÚNCIOS</span>
              </h1>
