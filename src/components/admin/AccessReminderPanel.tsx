@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import EmailTemplateEditor, { getSavedTemplate, renderTemplate } from "./EmailTemplateEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -162,8 +163,8 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
     setUsers(prev => prev.filter(u => u.id !== id));
   };
 
-  const buildEmailBody = (user: AccessUser) => {
-    return `<p>Olá${user.customer_name ? ` ${user.customer_name}` : ""}! 👋</p>
+  const DEFAULT_REMINDER_SUBJECT = "Seu acesso MRO !";
+  const DEFAULT_REMINDER_BODY = `<p>Olá {{name}}! 👋</p>
 
 <p>Estou passando só para <strong>lembrar seu acesso MRO</strong> e como você vai fazer para entrar no seu acesso.</p>
 
@@ -172,8 +173,8 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
 <table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;background:#1a1a2e;border-radius:12px;border:1px solid #333;">
 <tr><td style="padding:20px;">
 <p style="color:#a78bfa;font-weight:bold;margin:0 0 10px;">🔐 Seu Acesso MRO:</p>
-<p style="color:#fff;margin:5px 0;">👤 Usuário: <strong>${user.username}</strong></p>
-<p style="color:#fff;margin:5px 0;">🔑 Senha: <strong>${user.password}</strong></p>
+<p style="color:#fff;margin:5px 0;">👤 Usuário: <strong>{{username}}</strong></p>
+<p style="color:#fff;margin:5px 0;">🔑 Senha: <strong>{{password}}</strong></p>
 </td></tr>
 </table>
 
@@ -184,6 +185,20 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
 [BOTAO_WHATSAPP]
 
 <p style="color:#888;font-size:13px;">Equipe Código InstaShop</p>`;
+
+  const buildEmailBody = (user: AccessUser) => {
+    const tpl = getSavedTemplate("reminder_template", DEFAULT_REMINDER_SUBJECT, DEFAULT_REMINDER_BODY);
+    return renderTemplate(tpl.body, {
+      name: user.customer_name || "",
+      username: user.username,
+      password: user.password,
+      email: user.customer_email,
+    });
+  };
+
+  const getReminderSubject = () => {
+    const tpl = getSavedTemplate("reminder_template", DEFAULT_REMINDER_SUBJECT, DEFAULT_REMINDER_BODY);
+    return tpl.subject;
   };
 
   const sendReminders = async () => {
@@ -207,7 +222,7 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         const { error } = await supabase.functions.invoke("broadcast-email", {
           body: {
             to: user.customer_email,
-            subject: "Seu acesso MRO !",
+            subject: getReminderSubject(),
             body,
             userName: user.customer_name || user.username,
           },
@@ -261,6 +276,13 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
+        <EmailTemplateEditor
+          storageKey="reminder_template"
+          defaultSubject={DEFAULT_REMINDER_SUBJECT}
+          defaultBody={DEFAULT_REMINDER_BODY}
+          sampleVariables={{ name: "João Silva", username: "joaosilva", password: "abc123", email: "joao@email.com" }}
+          accent="blue"
+        />
         {/* Controls */}
         <div className="flex flex-wrap gap-2 items-center">
           <div className="flex-1 min-w-[200px]">
