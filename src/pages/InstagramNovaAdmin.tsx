@@ -43,7 +43,8 @@ import {
   Eye,
   EyeOff,
   FileText,
-  Key
+  Key,
+  Ban
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format, differenceInDays, addDays } from "date-fns";
@@ -1893,6 +1894,67 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     }
   };
 
+  // Cancelar acesso do usuário (remove da SquareCloud + envia email)
+  const cancelAccess = async (order: MROOrder) => {
+    if (!confirm(`Cancelar o acesso de ${order.username} (${order.email})?\n\nIsso irá REMOVER o usuário da SquareCloud e enviar um email de cancelamento.`)) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 1. Remove from SquareCloud (try by username first, then email)
+      const tryRemove = async (valor: string) => {
+        const body = new URLSearchParams({ email: valor }).toString();
+        const res = await fetch("https://codigoinstashopapimro.squareweb.app/remover-usuario", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body,
+        });
+        return res.json().catch(() => ({}));
+      };
+
+      let result = await tryRemove(order.username);
+      if (!result?.removido) {
+        result = await tryRemove(getBaseEmail(order.email));
+      }
+
+      if (!result?.removido) {
+        toast.error(result?.mensagem || "Não foi possível remover na SquareCloud");
+        setLoading(false);
+        return;
+      }
+
+      // 2. Send cancellation email
+      const baseEmail = getBaseEmail(order.email);
+      const html = `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#fff;color:#222;">
+        <h1 style="color:#dc2626;margin:0 0 16px;">Acesso Cancelado - Codigo InstaShop</h1>
+        <p style="font-size:15px;line-height:1.6;">Olá,</p>
+        <p style="font-size:15px;line-height:1.6;">Seu acesso ao <strong>Codigo InstaShop</strong> foi cancelado, e o seu reembolso será ativado.</p>
+        <p style="font-size:15px;line-height:1.6;">Qualquer dúvida, entre em contato com nosso WhatsApp clicando no botão abaixo:</p>
+        <div style="text-align:center;margin:28px 0;">
+          <a href="https://maisresultadosonline.com.br/whatsapp" style="background:#25D366;color:#fff;padding:14px 32px;text-decoration:none;border-radius:8px;font-weight:bold;display:inline-block;">Falar no WhatsApp</a>
+        </div>
+        <p style="font-size:13px;color:#666;margin-top:32px;">Atenciosamente,<br/>Equipe Codigo InstaShop</p>
+      </div>`;
+
+      await supabase.functions.invoke("broadcast-email", {
+        body: {
+          to: baseEmail,
+          subject: "Acesso Cancelado - Codigo InstaShop",
+          html,
+        },
+      });
+
+      toast.success(`Acesso de ${order.username} cancelado e email enviado!`);
+      loadOrders();
+    } catch (error) {
+      console.error("Erro ao cancelar acesso:", error);
+      toast.error("Erro ao cancelar acesso");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Abrir modal para editar email
   const openEditEmailModal = (order: MROOrder) => {
     setEditingOrder(order);
@@ -2338,6 +2400,17 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     <Send className="w-3 h-3 mr-1" />
                   )}
                   Reenviar
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => cancelAccess(order)}
+                  className="border-red-500/50 text-red-400 hover:bg-red-500/10 h-7 px-2 text-xs"
+                  disabled={loading}
+                  title="Cancelar acesso na SquareCloud e notificar cliente"
+                >
+                  <Ban className="w-3 h-3 mr-1" />
+                  Cancelar Acesso
                 </Button>
               </>
             )}
