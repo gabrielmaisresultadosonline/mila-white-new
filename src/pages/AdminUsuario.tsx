@@ -71,8 +71,8 @@ interface AdminSettings {
 }
 
 // Admin credentials stored in Supabase
-const ADMIN_EMAIL = 'mro@gmail.com';
-const ADMIN_PASSWORD = 'Ga145523@';
+const ADMIN_EMAIL = 'milasouza@email.com';
+const ADMIN_PASSWORD = 'maisresultadosonline';
 
 const ACCESS_DAYS = {
   monthly: 30,
