@@ -1094,11 +1094,6 @@ const EstruturaRendaExtra = () => {
                 {[
                   { label: 'Crie sua Logomarca', icon: <PenTool className="h-5 w-5" />, hoverGradient: 'hover:from-rose-500 hover:via-fuchsia-500 hover:to-violet-500', hoverShadow: 'hover:shadow-rose-500/35', action: () => setShowLogoPopup(true) },
                   { label: 'Posts Creator', icon: <Image className="h-5 w-5" />, hoverGradient: 'hover:from-purple-600 hover:via-pink-500 hover:to-orange-400', hoverShadow: 'hover:shadow-purple-500/35', action: () => setCurrentView('posts-creator') },
-                  { label: 'Gerando sua Foto Profissional', icon: <Camera className="h-5 w-5" />, hoverGradient: 'hover:from-emerald-500 hover:via-teal-500 hover:to-cyan-500', hoverShadow: 'hover:shadow-emerald-500/35', action: () => {
-                    const guestUser = { id: 'estrutura-guest', name: 'Membro EUGência', email: 'eugencia@membro.com', copies_count: 0, copies_limit: 99999, is_paid: true, days_remaining: 99999 };
-                    sessionStorage.setItem('prompts_mro_user', JSON.stringify(guestUser));
-                    navigate('/prompts/dashboard');
-                  }},
                   { label: 'Materiais Disponíveis para Divulgação', icon: <Video className="h-5 w-5" />, hoverGradient: 'hover:from-blue-600 hover:to-cyan-500', hoverShadow: 'hover:shadow-blue-500/35', action: () => setCurrentView('materiais') },
                   { label: 'Gere um Contrato para seu Cliente', icon: <FileText className="h-5 w-5" />, hoverGradient: 'hover:from-amber-500 hover:to-orange-500', hoverShadow: 'hover:shadow-amber-500/35', action: () => setCurrentView('contrato') },
                   { label: 'Gerar Teste Grátis', icon: <TestTube className="h-5 w-5" />, hoverGradient: 'hover:from-yellow-500 hover:via-yellow-400 hover:to-orange-500', hoverShadow: 'hover:shadow-yellow-500/35', action: () => setCurrentView('testes') },
@@ -1116,19 +1111,6 @@ const EstruturaRendaExtra = () => {
                 ))}
               </div>
 
-              {/* Gerenciador Windows Section */}
-              <div className="mt-10 pt-8 border-t border-white/10">
-                <button
-                  onClick={() => setShowGerenciadorPopup(true)}
-                  className="group w-full relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 border-2 border-orange-400/50 hover:border-orange-300 transition-all duration-500 cursor-pointer p-6 flex items-center justify-center gap-4 shadow-xl shadow-orange-600/20 hover:shadow-orange-500/30 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-                  <Download className="h-6 w-6 relative z-10" />
-                  <span className="relative z-10 font-bold text-base md:text-lg uppercase tracking-wide">
-                    Utilizando mais de 10 contas ao mesmo tempo!
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
