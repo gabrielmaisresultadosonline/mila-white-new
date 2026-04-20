@@ -1067,7 +1067,13 @@ const Admin = () => {
         {activeTab === 'userlist' && (
           <UsersListPanel />
         )}
-        {/* Vendas/Afiliados tabs redirect via window.location — no inline render */}
+        {(activeTab === 'vendas' || activeTab === 'afiliados') && (
+          <div className="-mx-4 -my-8">
+            <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Carregando...</div>}>
+              <InstagramNovaAdmin key={activeTab} />
+            </Suspense>
+          </div>
+        )}
       </main>
     </div>
   );
