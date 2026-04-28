@@ -94,7 +94,7 @@ export const dashboardTutorial: TutorialSection[] = [
         id: 'mro-button',
         targetSelector: '[data-tutorial="mro-button"]',
         title: 'Ferramenta Código InstaShop',
-        description: 'Acesse a ferramenta de automação MRO para interagir com 200 pessoas por dia, seguir + curtir automaticamente e enviar mensagens em massa.',
+        description: 'Acesse a ferramenta de automação para interagir com 200 pessoas por dia, seguir + curtir automaticamente e enviar mensagens em massa.',
         position: 'bottom'
       }
     ]
@@ -122,7 +122,7 @@ export const dashboardTutorial: TutorialSection[] = [
         id: 'tab-estrategias',
         targetSelector: '[data-tutorial="tab-estrategias"]',
         title: 'Aba Estratégias',
-        description: 'Gere estratégias MRO personalizadas com calendário de posts, stories, scripts de vendas e mensagens em massa.',
+        description: 'Gere estratégias do Código InstaShop personalizadas com calendário de posts, stories, scripts de vendas e mensagens em massa.',
         position: 'bottom'
       },
       {
@@ -168,7 +168,7 @@ export const strategyTutorial: TutorialSection[] = [
         id: 'strategy-types',
         targetSelector: '[data-tutorial="strategy-types"]',
         title: 'Escolha o Tipo',
-        description: 'Selecione: MRO (interações + mensagens em massa), Conteúdo (calendário), Engajamento, Vendas (scripts) ou Bio (otimização).',
+        description: 'Selecione: Ferramenta (interações + mensagens em massa), Conteúdo (calendário), Engajamento, Vendas (scripts) ou Bio (otimização).',
         position: 'bottom'
       }
     ]
