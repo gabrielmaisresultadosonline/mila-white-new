@@ -40,6 +40,7 @@ interface DashboardProps {
   onSelectProfile: (profileId: string) => void;
   onRemoveProfile: (profileId: string) => void;
   onNavigateToRegister: () => void;
+  onAddProfile: (username: string) => void;
   isLoading?: boolean;
   onLogout?: () => void;
 }
@@ -192,7 +193,7 @@ export const Dashboard = ({
                       }
                       setActiveTab(tab.id as Tab);
                     }}
-                    data-tutorial={`tab-${tab.id === 'profile' ? 'perfil' : tab.id === 'analysis' ? 'analise' : tab.id === 'strategies' ? 'estrategias' : tab.id === 'creatives' ? 'criativos' : 'crescimento'}`}
+                    data-tutorial={`tab-${tab.id === 'profile' ? 'perfil' : tab.id === 'analysis' ? 'analise' : tab.id === 'strategies' ? 'estrategias' : tab.id === 'legendas' ? 'legendas' : 'growth'}`}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs whitespace-nowrap ${
                       tab.locked
                         ? 'text-muted-foreground/50 cursor-not-allowed opacity-60'
