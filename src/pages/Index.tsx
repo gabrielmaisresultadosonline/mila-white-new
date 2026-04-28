@@ -372,17 +372,43 @@ const Index = () => {
   };
 
   // Navega para área de membros SEM sincronizar automaticamente
-  const handleEnterMemberArea = () => {
-    const updatedSession = getSession();
-    setSession(updatedSession);
+  const handleEnterMemberArea = async () => {
+    setIsLoading(true);
+    setLoadingMessage('Carregando área de membros...');
     
-    if (updatedSession.profiles.length > 0) {
-      setShowDashboard(true);
-      setHasRegisteredProfiles(true);
-    } else {
-      // Se não tem perfis na sessão, apenas mostra o dashboard vazio
-      setShowDashboard(true);
-      setHasRegisteredProfiles(true);
+    try {
+      // Refresh session from storage to make sure we have latest added profiles
+      const updatedSession = getSession();
+      setSession(updatedSession);
+      
+      if (updatedSession.profiles.length > 0) {
+        setShowDashboard(true);
+        setHasRegisteredProfiles(true);
+      } else {
+        // Se não tem perfis na sessão, tenta carregar da nuvem uma última vez
+        const user = getCurrentUser();
+        if (user?.username) {
+          const { loadUserFromCloud } = await import('@/lib/userStorage');
+          const cloudData = await loadUserFromCloud(user.username);
+          if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
+            const { initializeFromCloud } = await import('@/lib/storage');
+            initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
+            const syncedSession = getSession();
+            setSession(syncedSession);
+            setShowDashboard(true);
+            setHasRegisteredProfiles(true);
+            setIsLoading(false);
+            return;
+          }
+        }
+        
+        setShowDashboard(true);
+        setHasRegisteredProfiles(true);
+      }
+    } catch (error) {
+      console.error('[Index] Error entering member area:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
