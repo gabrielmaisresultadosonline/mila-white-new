@@ -86,7 +86,7 @@ export const StrategyGenerator = ({ profile, analysis, onStrategyGenerated, exis
   };
 
   return (
-    <div className="glass-card glow-border p-6 animate-slide-up">
+    <div className="glass-card glow-border p-6 animate-slide-up" data-tutorial="strategy-types">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-display font-bold flex items-center gap-2">
           <Sparkles className="w-6 h-6 text-primary" />
@@ -178,6 +178,7 @@ export const StrategyGenerator = ({ profile, analysis, onStrategyGenerated, exis
         variant="gradient"
         size="lg"
         className="w-full cursor-pointer"
+        data-tutorial="generate-button"
       >
         {isGenerating ? (
           <div className="flex flex-col items-center gap-1">
