@@ -67,6 +67,17 @@ const Index = () => {
 
   // Set up cloud sync callback on mount (critical for strategies/creatives persistence)
   useEffect(() => {
+    const handleNavigate = () => {
+      handleNavigateToRegister();
+    };
+    window.addEventListener('navigateToRegister', handleNavigate);
+    
+    setCloudSyncCallback(saveUserToCloud);
+
+    return () => {
+      window.removeEventListener('navigateToRegister', handleNavigate);
+    };
+  }, []);
     setCloudSyncCallback(saveUserToCloud);
   }, []);
 
