@@ -59,6 +59,7 @@ const PLANS = {
 };
 
 const VendasCompleta = () => {
+  const navigate = useNavigate();
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState("");
   const [timeLeft, setTimeLeft] = useState({ hours: 47, minutes: 59, seconds: 59 });
