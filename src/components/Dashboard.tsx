@@ -151,7 +151,7 @@ export const Dashboard = ({
           {/* Desktop/Tablet Header */}
           {/* Desktop Header (xl+) */}
           <div className="hidden xl:flex items-center justify-between gap-2 min-w-0">
-            {/* Left: Logo + MRO Button */}
+            {/* Left: Logo + Código InstaShop Button */}
             <div className="flex items-center gap-2 shrink-0">
               <Logo size="sm" />
               <Button
@@ -160,7 +160,7 @@ export const Dashboard = ({
                 data-tutorial="mro-button"
               >
                 <Wrench className="w-4 h-4 mr-1 xl:mr-2 shrink-0" />
-                INSTALAR E UTILIZAR FERRAMENTA
+                INSTALAR E UTILIZAR CÓDIGO INSTASHOP
               </Button>
             </div>
 
@@ -226,7 +226,7 @@ export const Dashboard = ({
               <Logo size="sm" />
             </div>
 
-            {/* Linha 2: INSTALAR E UTILIZAR FERRAMENTA centralizado */}
+            {/* Linha 2: INSTALAR E UTILIZAR CÓDIGO INSTASHOP centralizado */}
             <div className="flex justify-center">
               <Button
                 onClick={() => navigate('/mro-ferramenta')}
@@ -234,7 +234,7 @@ export const Dashboard = ({
                 data-tutorial="mro-button"
               >
                 <Wrench className="w-4 h-4 mr-2" />
-                INSTALAR E UTILIZAR FERRAMENTA
+                INSTALAR E UTILIZAR CÓDIGO INSTASHOP
               </Button>
             </div>
 
@@ -293,7 +293,7 @@ export const Dashboard = ({
                   data-tutorial="mro-button"
                 >
                   <Wrench className="w-4 h-4 mr-2" />
-                  INSTALAR E UTILIZAR FERRAMENTA
+                  INSTALAR E UTILIZAR CÓDIGO INSTASHOP
                 </Button>
               </div>
 
