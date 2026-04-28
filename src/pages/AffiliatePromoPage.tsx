@@ -442,7 +442,7 @@ const AffiliatePromoPage = () => {
             </p>
           </div>
           
-          <img src={logoMro} alt="MRO" className="h-16 sm:h-20 md:h-28 mx-auto mb-6 sm:mb-8 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-16 sm:h-20 md:h-28 mx-auto mb-6 sm:mb-8 object-contain" />
           
           {/* Title */}
           <div className="relative group">
@@ -469,7 +469,7 @@ const AffiliatePromoPage = () => {
               <div className="aspect-video">
                 <iframe
                   src="https://www.youtube.com/embed/lecSwt54sa0?rel=0&modestbranding=1"
-                  title="Video MRO"
+                  title="Video Código InstaShop"
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -583,7 +583,7 @@ const AffiliatePromoPage = () => {
                     { icon: UserPlus, text: "Envio automático para novos seguidores" },
                     { icon: Users, text: "Envio para seus seguidores atuais" },
                     { icon: Target, text: "Envio para seguidores de qualquer página" },
-                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo MRO" },
+                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo Código InstaShop" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 hover:bg-blue-500/15 transition-colors">
                       <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
@@ -1202,7 +1202,7 @@ const AffiliatePromoPage = () => {
               </div>
               <div className="absolute bottom-2 left-2 right-2 text-center">
                 <span className="bg-black/70 text-white text-xs sm:text-sm px-3 py-1 rounded-full">
-                  🎬 VÍDEO: COMO FATURAR COM A MRO
+                  🎬 VÍDEO: COMO FATURAR COM O CÓDIGO INSTASHOP
                 </span>
               </div>
             </div>

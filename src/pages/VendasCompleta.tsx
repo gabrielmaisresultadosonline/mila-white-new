@@ -365,7 +365,7 @@ const VendasCompleta = () => {
                     { icon: UserPlus, text: "Envio automático para novos seguidores" },
                     { icon: Users, text: "Envio para seus seguidores atuais" },
                     { icon: Target, text: "Envio para seguidores de qualquer página" },
-                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo MRO" },
+                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo Código InstaShop" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 hover:bg-purple-500/15 transition-colors">
                       <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
@@ -484,7 +484,7 @@ const VendasCompleta = () => {
                     <h3 className="text-2xl md:text-3xl font-black text-pink-300">Inteligência Artificial Exclusiva</h3>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-5 text-lg">A MRO  vai além da automação:</p>
+                <p className="text-gray-300 mb-5 text-lg">O Código InstaShop vai além da automação:</p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     { icon: Bot, text: "Análise completa do seu perfil", color: "text-pink-400" },
