@@ -36,7 +36,6 @@ interface DashboardProps {
   session: MROSession;
   onSessionUpdate: (session: MROSession) => void;
   onReset: () => void;
-  onAddProfile: (username: string) => void;
   onSelectProfile: (profileId: string) => void;
   onRemoveProfile: (profileId: string) => void;
   onNavigateToRegister: () => void;
