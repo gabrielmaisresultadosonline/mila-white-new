@@ -518,14 +518,36 @@ export default function InstagramNovaAdmin() {
 
   // Check if already authenticated
   useEffect(() => {
-    const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
-    if (storedToken) {
-      setAdminSessionToken(storedToken);
-      setIsAuthenticated(true);
-      loadOrders(storedToken);
-    } else {
-      localStorage.removeItem("mro_admin_auth");
-    }
+    const checkAuth = async () => {
+      // Import dynamicamente para evitar dependência circular se houver
+      const { isAdminLoggedIn } = await import('@/lib/adminConfig');
+      
+      if (isAdminLoggedIn()) {
+        console.log("✅ Admin já logado no painel principal, autenticando automaticamente...");
+        setIsAuthenticated(true);
+        // Tenta pegar o token se existir, mas se for admin logado o backend deve aceitar ou precisamos de um token
+        const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
+        if (storedToken) {
+          setAdminSessionToken(storedToken);
+          loadOrders(storedToken);
+        } else {
+          // Se não tem token mas é admin, o ideal é que loadOrders funcione ou lidamos com isso
+          loadOrders();
+        }
+        return;
+      }
+
+      const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
+      if (storedToken) {
+        setAdminSessionToken(storedToken);
+        setIsAuthenticated(true);
+        loadOrders(storedToken);
+      } else {
+        localStorage.removeItem("mro_admin_auth");
+      }
+    };
+
+    checkAuth();
   }, []);
 
   // Verificação automática a cada 8 segundos (para pedidos recentes até 15 min)
