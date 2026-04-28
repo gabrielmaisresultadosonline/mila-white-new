@@ -484,7 +484,7 @@ const VendasCompleta = () => {
                     <h3 className="text-2xl md:text-3xl font-black text-pink-300">Inteligência Artificial Exclusiva</h3>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-5 text-lg">A MRO  vai além da automação:</p>
+                <p className="text-gray-300 mb-5 text-lg">O Código InstaShop vai além da automação:</p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     { icon: Bot, text: "Análise completa do seu perfil", color: "text-pink-400" },
