@@ -217,7 +217,7 @@ const VendasCompleta = () => {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button onClick={() => window.location.href = '/instagram'} variant="outline" className="bg-white text-black border-white hover:bg-gray-100 font-bold">
+            <Button onClick={() => navigate('/instagram')} variant="outline" className="bg-white text-black border-white hover:bg-gray-100 font-bold">
               Acessar
             </Button>
             <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
