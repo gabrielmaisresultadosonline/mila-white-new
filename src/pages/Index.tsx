@@ -377,36 +377,44 @@ const Index = () => {
     setLoadingMessage('Carregando área de membros...');
     
     try {
-      // Refresh session from storage to make sure we have latest added profiles
-      const updatedSession = getSession();
-      setSession(updatedSession);
-      
-      if (updatedSession.profiles.length > 0) {
+      // 1. Get current user
+      const user = getCurrentUser();
+      if (!user?.username) {
         setShowDashboard(true);
         setHasRegisteredProfiles(true);
-      } else {
-        // Se não tem perfis na sessão, tenta carregar da nuvem uma última vez
-        const user = getCurrentUser();
-        if (user?.username) {
-          const { loadUserFromCloud } = await import('@/lib/userStorage');
-          const cloudData = await loadUserFromCloud(user.username);
-          if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
-            const { initializeFromCloud } = await import('@/lib/storage');
-            initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
-            const syncedSession = getSession();
-            setSession(syncedSession);
-            setShowDashboard(true);
-            setHasRegisteredProfiles(true);
-            setIsLoading(false);
-            return;
-          }
-        }
-        
-        setShowDashboard(true);
-        setHasRegisteredProfiles(true);
+        return;
       }
+
+      // 2. Fetch latest data from cloud (SquareCloud is authoritative)
+      const { loadUserFromCloud } = await import('@/lib/userStorage');
+      const cloudData = await loadUserFromCloud(user.username);
+      
+      // 3. Initialize local session from cloud data if it exists
+      if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
+        const { initializeFromCloud } = await import('@/lib/storage');
+        initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
+        console.log(`☁️ [EnterMemberArea] Sessão inicializada com ${cloudData.profileSessions.length} perfis da nuvem`);
+      }
+
+      // 4. Verify with SquareCloud to handle any recent additions not yet in user_cloud_data
+      const squareResult = await verifyRegisteredIGs(user.username);
+      if (squareResult.success && squareResult.instagrams && squareResult.instagrams.length > 0) {
+        console.log(`🔄 [EnterMemberArea] Sincronizando ${squareResult.instagrams.length} perfis do SquareCloud`);
+        await handleSyncComplete(squareResult.instagrams);
+        // handleSyncComplete calls setSession, setShowDashboard, etc.
+        return; 
+      }
+
+      // 5. Fallback: just show what we have
+      const finalSession = getSession();
+      setSession(finalSession);
+      setShowDashboard(true);
+      setHasRegisteredProfiles(finalSession.profiles.length > 0);
+      
     } catch (error) {
       console.error('[Index] Error entering member area:', error);
+      // Ensure we still show the dashboard even if sync fails
+      setShowDashboard(true);
     } finally {
       setIsLoading(false);
     }
