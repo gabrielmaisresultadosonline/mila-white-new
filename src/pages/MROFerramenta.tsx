@@ -433,7 +433,7 @@ const MROFerramenta = () => {
                 className="cursor-pointer w-full md:w-auto"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Download MRO
+                Download Código InstaShop
               </Button>
             )}
           </div>
