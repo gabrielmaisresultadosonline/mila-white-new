@@ -950,7 +950,7 @@ const Admin = () => {
                   <Label>DeepSeek API Key</Label>
                   <div className="flex gap-2 mt-1">
                     <Input
-                      type="password"
+                      type="text"
                       value={settings.apis.deepseek}
                       onChange={(e) => setSettings(prev => ({ ...prev, apis: { ...prev.apis, deepseek: e.target.value }}))}
                       placeholder="sk-..."
@@ -967,60 +967,6 @@ const Admin = () => {
                     </Button>
                   </div>
                   {settings.apis.deepseek && (
-                    <p className="text-xs text-green-500 mt-1 flex items-center gap-1">
-                      <Check className="w-3 h-3" /> Chave salva
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label>Gemini API Key</Label>
-                  <div className="flex gap-2 mt-1">
-                    <Input
-                      type="password"
-                      value={settings.apis.gemini}
-                      onChange={(e) => setSettings(prev => ({ ...prev, apis: { ...prev.apis, gemini: e.target.value }}))}
-                      placeholder="AIza..."
-                      className="bg-secondary/50"
-                    />
-                    <Button 
-                      type="button"
-                      variant="outline" 
-                      onClick={() => testApi('Gemini', settings.apis.gemini)}
-                      disabled={testingApi === 'Gemini'}
-                      className="cursor-pointer"
-                    >
-                      {testingApi === 'Gemini' ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Testar'}
-                    </Button>
-                  </div>
-                  {settings.apis.gemini && (
-                    <p className="text-xs text-green-500 mt-1 flex items-center gap-1">
-                      <Check className="w-3 h-3" /> Chave salva
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label>Nano Banana (Gemini Image) API Key</Label>
-                  <div className="flex gap-2 mt-1">
-                    <Input
-                      type="password"
-                      value={settings.apis.nanoBanana}
-                      onChange={(e) => setSettings(prev => ({ ...prev, apis: { ...prev.apis, nanoBanana: e.target.value }}))}
-                      placeholder="..."
-                      className="bg-secondary/50"
-                    />
-                    <Button 
-                      type="button"
-                      variant="outline" 
-                      onClick={() => testApi('Nano Banana', settings.apis.nanoBanana)}
-                      disabled={testingApi === 'Nano Banana'}
-                      className="cursor-pointer"
-                    >
-                      {testingApi === 'Nano Banana' ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Testar'}
-                    </Button>
-                  </div>
-                  {settings.apis.nanoBanana && (
                     <p className="text-xs text-green-500 mt-1 flex items-center gap-1">
                       <Check className="w-3 h-3" /> Chave salva
                     </p>

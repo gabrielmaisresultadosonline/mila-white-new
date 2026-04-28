@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PixelInjector from "@/components/PixelInjector";
 import ToolSelector from "./pages/ToolSelector";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -31,6 +32,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PixelInjector />
         <Routes>
           <Route path="/" element={<VendasCompleta />} />
           <Route path="/ferramentas" element={<ToolSelector />} />

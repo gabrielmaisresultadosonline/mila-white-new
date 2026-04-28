@@ -49,7 +49,7 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
   // Default empty data for fresh state
   const getEmptyData = (): AdminData => ({
     settings: {
-      apis: { deepseek: '', gemini: '', nanoBanana: '' },
+      apis: { deepseek: '' },
       facebookPixel: '',
       facebookPixelCode: '',
       downloadLink: '',
