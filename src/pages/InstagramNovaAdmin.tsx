@@ -100,9 +100,17 @@ interface Affiliate {
 }
 
 export default function InstagramNovaAdmin() {
+  const ADMIN_NOVA_REMEMBER_KEY = 'mro_nova_admin_credentials';
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState(() => {
+    const saved = localStorage.getItem('mro_nova_admin_credentials');
+    return saved ? JSON.parse(saved).email : "";
+  });
+  const [loginPassword, setLoginPassword] = useState(() => {
+    const saved = localStorage.getItem('mro_nova_admin_credentials');
+    return saved ? JSON.parse(saved).password : "";
+  });
   const [loginLoading, setLoginLoading] = useState(false);
   const [adminSessionToken, setAdminSessionToken] = useState("");
   
@@ -646,6 +654,7 @@ export default function InstagramNovaAdmin() {
       }
 
       localStorage.setItem(ADMIN_SESSION_STORAGE_KEY, response.token);
+      localStorage.setItem('mro_nova_admin_credentials', JSON.stringify({ email: loginEmail, password: loginPassword }));
       localStorage.removeItem("mro_admin_auth");
       setAdminSessionToken(response.token);
       setIsAuthenticated(true);

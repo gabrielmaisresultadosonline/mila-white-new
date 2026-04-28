@@ -16,9 +16,17 @@ interface LoginPageProps {
   onLoginSuccess: () => void;
 }
 
+const USER_REMEMBER_KEY = 'mro_user_credentials';
+
 export const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(() => {
+    const saved = localStorage.getItem(USER_REMEMBER_KEY);
+    return saved ? JSON.parse(saved).username : '';
+  });
+  const [password, setPassword] = useState(() => {
+    const saved = localStorage.getItem(USER_REMEMBER_KEY);
+    return saved ? JSON.parse(saved).password : '';
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [showAnnouncements, setShowAnnouncements] = useState(false);
   const [pendingLoginSuccess, setPendingLoginSuccess] = useState(false);
@@ -121,6 +129,9 @@ export const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
             ? `Acesso vitalício ativado${profileCount > 0 ? ` • ${profileCount} perfil(is) carregado(s)` : ''}` 
             : `Você tem ${daysText} de acesso${profileCount > 0 ? ` • ${profileCount} perfil(is) carregado(s)` : ''}`,
         });
+
+        // Memorizar credenciais
+        localStorage.setItem(USER_REMEMBER_KEY, JSON.stringify({ username: username.trim(), password: password.trim() }));
 
         // Show announcements after successful login
         setShowAnnouncements(true);
