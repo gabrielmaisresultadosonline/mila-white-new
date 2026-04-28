@@ -57,8 +57,6 @@ export interface SalesPageSettings {
 export interface AdminSettings {
   apis: {
     deepseek: string;
-    gemini: string;
-    nanoBanana: string;
   };
   facebookPixel: string;
   facebookPixelCode: string; // Complete pixel code for manual injection
@@ -181,8 +179,6 @@ const DEFAULT_ADMIN_DATA: AdminData = {
   settings: {
     apis: {
       deepseek: '',
-      gemini: '',
-      nanoBanana: ''
     },
     facebookPixel: '569414052132145',
     facebookPixelCode: `!function(f,b,e,v,n,t,s)
