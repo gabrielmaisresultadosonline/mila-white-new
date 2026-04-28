@@ -385,17 +385,39 @@ const Index = () => {
         return;
       }
 
-      // Force authoritative sync from SquareCloud before entering
+      // 1. Force authoritative sync from SquareCloud before entering
       console.log(`🔄 [EnterMemberArea] Forçando sincronização autoritativa para @${user.username}`);
       const squareResult = await verifyRegisteredIGs(user.username);
       
       if (squareResult.success && squareResult.instagrams && squareResult.instagrams.length > 0) {
+        // This will update session, setHasRegisteredProfiles(true), and setShowDashboard(true)
         await handleSyncComplete(squareResult.instagrams);
       } else {
-        const finalSession = getSession();
-        setSession(finalSession);
-        setShowDashboard(true);
-        setHasRegisteredProfiles(finalSession.profiles.length > 0);
+        // 2. Check local session as fallback
+        const currentSession = getSession();
+        if (currentSession.profiles.length > 0) {
+          setSession(currentSession);
+          setHasRegisteredProfiles(true);
+          setShowDashboard(true);
+        } else {
+          // 3. Last attempt: Load from user cloud data
+          const { loadUserFromCloud } = await import('@/lib/userStorage');
+          const cloudData = await loadUserFromCloud(user.username);
+          if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
+            const { initializeFromCloud } = await import('@/lib/storage');
+            initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
+            setSession(getSession());
+            setHasRegisteredProfiles(true);
+            setShowDashboard(true);
+          } else {
+            // 4. Truly no profiles
+            toast({
+              title: "Nenhum perfil encontrado",
+              description: "Cadastre um perfil para acessar a área de membros.",
+              variant: "destructive"
+            });
+          }
+        }
       }
     } catch (error) {
       console.error('[Index] Error entering member area:', error);
