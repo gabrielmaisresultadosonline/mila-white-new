@@ -78,8 +78,6 @@ const Index = () => {
       window.removeEventListener('navigateToRegister', handleNavigate);
     };
   }, []);
-    setCloudSyncCallback(saveUserToCloud);
-  }, []);
 
   // Check auth status on mount and load persisted data
   useEffect(() => {
