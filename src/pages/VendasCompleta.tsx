@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,6 +59,7 @@ const PLANS = {
 };
 
 const VendasCompleta = () => {
+  const navigate = useNavigate();
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState("");
   const [timeLeft, setTimeLeft] = useState({ hours: 47, minutes: 59, seconds: 59 });
@@ -215,7 +217,7 @@ const VendasCompleta = () => {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={logoMro} alt="Código InstaShop" className="h-10 object-contain" />
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button onClick={() => window.location.href = '/instagram'} variant="outline" className="bg-white text-black border-white hover:bg-gray-100 font-bold">
+            <Button onClick={() => navigate('/instagram')} variant="outline" className="bg-white text-black border-white hover:bg-gray-100 font-bold">
               Acessar
             </Button>
             <Button onClick={scrollToPricing} className="text-white font-bold border-0 hover:opacity-90" style={{ background: 'linear-gradient(90deg,#fa7e1e,#d62976,#962fbf)' }}>
