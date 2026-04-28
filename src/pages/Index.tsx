@@ -374,46 +374,31 @@ const Index = () => {
   // Navega para área de membros SEM sincronizar automaticamente
   const handleEnterMemberArea = async () => {
     setIsLoading(true);
-    setLoadingMessage('Carregando área de membros...');
+    setLoadingMessage('Sincronizando contas...');
     
     try {
-      // 1. Get current user
       const user = getCurrentUser();
       if (!user?.username) {
         setShowDashboard(true);
         setHasRegisteredProfiles(true);
+        setIsLoading(false);
         return;
       }
 
-      // 2. Fetch latest data from cloud (SquareCloud is authoritative)
-      const { loadUserFromCloud } = await import('@/lib/userStorage');
-      const cloudData = await loadUserFromCloud(user.username);
-      
-      // 3. Initialize local session from cloud data if it exists
-      if (cloudData?.profileSessions && cloudData.profileSessions.length > 0) {
-        const { initializeFromCloud } = await import('@/lib/storage');
-        initializeFromCloud(cloudData.profileSessions, cloudData.archivedProfiles || []);
-        console.log(`☁️ [EnterMemberArea] Sessão inicializada com ${cloudData.profileSessions.length} perfis da nuvem`);
-      }
-
-      // 4. Verify with SquareCloud to handle any recent additions not yet in user_cloud_data
+      // Force authoritative sync from SquareCloud before entering
+      console.log(`🔄 [EnterMemberArea] Forçando sincronização autoritativa para @${user.username}`);
       const squareResult = await verifyRegisteredIGs(user.username);
-      if (squareResult.success && squareResult.instagrams && squareResult.instagrams.length > 0) {
-        console.log(`🔄 [EnterMemberArea] Sincronizando ${squareResult.instagrams.length} perfis do SquareCloud`);
-        await handleSyncComplete(squareResult.instagrams);
-        // handleSyncComplete calls setSession, setShowDashboard, etc.
-        return; 
-      }
-
-      // 5. Fallback: just show what we have
-      const finalSession = getSession();
-      setSession(finalSession);
-      setShowDashboard(true);
-      setHasRegisteredProfiles(finalSession.profiles.length > 0);
       
+      if (squareResult.success && squareResult.instagrams && squareResult.instagrams.length > 0) {
+        await handleSyncComplete(squareResult.instagrams);
+      } else {
+        const finalSession = getSession();
+        setSession(finalSession);
+        setShowDashboard(true);
+        setHasRegisteredProfiles(finalSession.profiles.length > 0);
+      }
     } catch (error) {
       console.error('[Index] Error entering member area:', error);
-      // Ensure we still show the dashboard even if sync fails
       setShowDashboard(true);
     } finally {
       setIsLoading(false);
