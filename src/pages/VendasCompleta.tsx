@@ -365,7 +365,7 @@ const VendasCompleta = () => {
                     { icon: UserPlus, text: "Envio automático para novos seguidores" },
                     { icon: Users, text: "Envio para seus seguidores atuais" },
                     { icon: Target, text: "Envio para seguidores de qualquer página" },
-                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo MRO" },
+                    { icon: Bot, text: "Copy otimizada com Corretor de IA exclusivo Código InstaShop" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 hover:bg-purple-500/15 transition-colors">
                       <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
