@@ -20,7 +20,7 @@ export const StrategyGenerator = ({ profile, analysis, onStrategyGenerated, exis
   const { toast } = useToast();
 
   const strategyTypes: { id: StrategyType; label: string; icon: React.ReactNode; description: string }[] = [
-    { id: 'mro', label: 'Estratégia MRO', icon: <Zap className="w-5 h-5" />, description: 'Interações orgânicas em massa' },
+    { id: 'mro', label: 'Estratégia InstaShop', icon: <Zap className="w-5 h-5" />, description: 'Interações orgânicas em massa' },
     { id: 'content', label: 'Conteúdo', icon: <Calendar className="w-5 h-5" />, description: 'Calendário de publicações' },
     { id: 'engagement', label: 'Engajamento', icon: <Users className="w-5 h-5" />, description: 'Stories e interação' },
     { id: 'sales', label: 'Vendas', icon: <MessageSquare className="w-5 h-5" />, description: 'Scripts e abordagem' },
