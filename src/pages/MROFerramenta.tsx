@@ -420,7 +420,7 @@ const MROFerramenta = () => {
               {/* Logo - hidden on mobile, shown on desktop */}
               <div className="hidden md:flex items-center gap-2">
                 <Logo size="sm" />
-                <span className="text-sm font-medium text-primary">MRO Ferramenta</span>
+                <span className="text-sm font-medium text-primary">Código InstaShop</span>
               </div>
             </div>
 
