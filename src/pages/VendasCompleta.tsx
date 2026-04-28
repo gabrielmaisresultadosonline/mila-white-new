@@ -903,6 +903,24 @@ const VendasCompleta = () => {
           </div>
         </div>
       )}
+
+      {/* Footer / Cancellation Policy */}
+      <footer className="py-12 border-t border-zinc-900 mt-20">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <img src={logoMro} alt="Código InstaShop" className="h-6 opacity-30 grayscale mb-2" />
+            <a 
+              href="/politica-de-cancelamento" 
+              className="text-[10px] text-zinc-600 hover:text-zinc-400 transition-colors uppercase tracking-widest font-medium"
+            >
+              Política de Cancelamento
+            </a>
+            <p className="text-[10px] text-zinc-700">
+              © 2026 Código InstaShop. Todos os direitos reservados.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
