@@ -1516,9 +1516,19 @@ const AffiliatePromoPage = () => {
       )}
 
       {/* Footer */}
-      <footer className="py-6 sm:py-8 px-3 sm:px-4 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center text-gray-500 text-xs sm:text-sm">
-          <p>© 2025 Código InstaShop. Todos os direitos reservados.</p>
+      <footer className="py-12 border-t border-gray-950 mt-10">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <a 
+              href="/politica-de-cancelamento" 
+              className="text-[10px] text-gray-700 hover:text-gray-500 transition-colors uppercase tracking-widest font-medium"
+            >
+              Política de Cancelamento
+            </a>
+            <p className="text-[10px] text-gray-800">
+              © 2026 Código InstaShop. Todos os direitos reservados.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
