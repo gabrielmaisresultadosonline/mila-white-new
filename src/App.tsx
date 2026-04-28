@@ -31,8 +31,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <PixelInjector />
       <BrowserRouter>
+        <PixelInjector />
         <Routes>
           <Route path="/" element={<VendasCompleta />} />
           <Route path="/ferramentas" element={<ToolSelector />} />
