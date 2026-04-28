@@ -122,9 +122,9 @@ const Index = () => {
                 saveSession(current);
               }
 
-              // If SquareCloud has IGs but session is empty -> auto-sync placeholders
-              if (current.profiles.length === 0 && squareResult.instagrams.length > 0) {
-                console.log(`🔄 Auto-sync no mount: ${squareResult.instagrams.length} IGs do SquareCloud`);
+              // If SquareCloud has IGs but session is empty OR fewer IGs -> auto-sync placeholders
+              if (squareResult.instagrams.length > 0 && current.profiles.length < squareResult.instagrams.length) {
+                console.log(`🔄 Auto-sync no mount: ${squareResult.instagrams.length} IGs do SquareCloud (Sessão tinha ${current.profiles.length})`);
                 setHasRegisteredProfiles(true);
                 await handleSyncComplete(squareResult.instagrams);
                 return;
