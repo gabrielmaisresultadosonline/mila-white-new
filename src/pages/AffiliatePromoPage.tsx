@@ -1202,7 +1202,7 @@ const AffiliatePromoPage = () => {
               </div>
               <div className="absolute bottom-2 left-2 right-2 text-center">
                 <span className="bg-black/70 text-white text-xs sm:text-sm px-3 py-1 rounded-full">
-                  🎬 VÍDEO: COMO FATURAR COM A MRO
+                  🎬 VÍDEO: COMO FATURAR COM O CÓDIGO INSTASHOP
                 </span>
               </div>
             </div>
