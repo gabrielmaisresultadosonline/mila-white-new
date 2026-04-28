@@ -369,6 +369,8 @@ const Index = () => {
 
   const handleNavigateToRegister = () => {
     setShowDashboard(false);
+    // Explicitly set hasRegisteredProfiles to false to ensure ProfileRegistration is shown
+    setHasRegisteredProfiles(false);
   };
 
   // Navega para área de membros SEM sincronizar automaticamente

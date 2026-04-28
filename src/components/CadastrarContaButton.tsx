@@ -1,9 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserPlus, X, ExternalLink, MessageCircle, Play } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export const CadastrarContaButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [whatsappNumber, setWhatsappNumber] = useState('555195781011'); // Fallback number
+
+  useEffect(() => {
+    const loadWhatsappSettings = async () => {
+      try {
+        // First try the new settings used in Index.tsx/Admin
+        const { data: salesData } = await supabase.functions.invoke('modules-storage', {
+          body: { action: 'load-call-settings' }
+        });
+
+        if (salesData?.success && salesData?.data?.salesPageSettings?.whatsappNumber) {
+          const number = salesData.data.salesPageSettings.whatsappNumber.replace(/\D/g, '');
+          if (number) {
+            setWhatsappNumber(number);
+            return;
+          }
+        }
+
+        // Fallback to whatsapp_page_settings table used in WhatsAppLanding.tsx
+        const { data: wpData } = await supabase.from('whatsapp_page_settings').select('whatsapp_number').limit(1).single();
+        if (wpData?.whatsapp_number) {
+          const number = wpData.whatsapp_number.replace(/\D/g, '');
+          if (number) setWhatsappNumber(number);
+        }
+      } catch (err) {
+        console.error('Error loading whatsapp settings for CadastrarContaButton:', err);
+      }
+    };
+
+    if (isOpen) {
+      loadWhatsappSettings();
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -82,15 +116,13 @@ export const CadastrarContaButton = () => {
               <div className="flex flex-col gap-3 pt-1">
                 <a
                   href="https://maisresultadosonline.com.br/instagram"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
                 >
                   <ExternalLink className="h-4 w-4" />
                   Cadastrar na Área do Instagram
                 </a>
                 <a
-                  href="https://wa.me/555195781011?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20minha%20conta%20do%20Instagram%20na%20MRO"
+                  href={`https://wa.me/${whatsappNumber}?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20minha%20conta%20do%20Instagram%20na%20MRO`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-green-600/20 border border-green-500/40 hover:bg-green-600/30 text-green-400 font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
