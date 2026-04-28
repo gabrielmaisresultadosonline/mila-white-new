@@ -114,13 +114,17 @@ export const CadastrarContaButton = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-3 pt-1">
-                <a
-                  href="https://maisresultadosonline.com.br/instagram"
+                <button
+                  onClick={() => {
+                    const event = new CustomEvent('navigateToRegister');
+                    window.dispatchEvent(event);
+                    setIsOpen(false);
+                  }}
                   className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
                 >
                   <ExternalLink className="h-4 w-4" />
                   Cadastrar na Área do Instagram
-                </a>
+                </button>
                 <a
                   href={`https://wa.me/${whatsappNumber}?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20minha%20conta%20do%20Instagram%20na%20MRO`}
                   target="_blank"
