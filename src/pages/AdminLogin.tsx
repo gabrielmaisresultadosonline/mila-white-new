@@ -8,9 +8,17 @@ import { Lock, Mail, AlertCircle } from 'lucide-react';
 import { loginAdmin } from '@/lib/adminConfig';
 import { useToast } from '@/hooks/use-toast';
 
+const ADMIN_REMEMBER_KEY = 'mro_admin_credentials';
+
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(() => {
+    const saved = localStorage.getItem(ADMIN_REMEMBER_KEY);
+    return saved ? JSON.parse(saved).email : '';
+  });
+  const [password, setPassword] = useState(() => {
+    const saved = localStorage.getItem(ADMIN_REMEMBER_KEY);
+    return saved ? JSON.parse(saved).password : '';
+  });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,6 +32,9 @@ const AdminLogin = () => {
     const result = await loginAdmin(email, password);
 
     if (result.success) {
+      // Memorizar credenciais no localStorage para o navegador preencher na próxima vez
+      localStorage.setItem(ADMIN_REMEMBER_KEY, JSON.stringify({ email, password }));
+      
       toast({
         title: "Login realizado!",
         description: "Bem-vindo ao painel administrativo",
