@@ -353,16 +353,12 @@ export const ProfileRegistration = ({ onProfileRegistered, onSyncComplete, onEnt
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <Button
-                  variant={registeredIGs.length > 0 ? "default" : "outline"}
+                  variant="default"
                   size="sm"
                   onClick={() => {
-                    if (registeredIGs.length > 0) {
-                      if (onEnterMemberArea) onEnterMemberArea();
-                    } else {
-                      toast({ title: 'Nenhum perfil cadastrado', description: 'Cadastre um perfil para acessar a análise completa', variant: 'default' });
-                    }
+                    if (onEnterMemberArea) onEnterMemberArea();
                   }}
-                  className={registeredIGs.length > 0 ? "bg-primary hover:bg-primary/90" : ""}
+                  className="bg-primary hover:bg-primary/90"
                 >
                   <LayoutDashboard className="w-4 h-4 mr-1" />
                   Área de Membros
