@@ -355,7 +355,7 @@ const AffiliatePromoPage = () => {
     "Recomenda hashtags quentes e relevantes"
   ];
 
-  const mroFeatures = [
+  const instaShopFeatures = [
     { icon: Heart, title: "Curte fotos" },
     { icon: UserPlus, title: "Segue perfis estratégicos" },
     { icon: Users, title: "Segue e deixa de seguir também" },
@@ -442,7 +442,7 @@ const AffiliatePromoPage = () => {
             </p>
           </div>
           
-          <img src={logoMro} alt="MRO" className="h-16 sm:h-20 md:h-28 mx-auto mb-6 sm:mb-8 object-contain" />
+          <img src={logoMro} alt="Código InstaShop" className="h-16 sm:h-20 md:h-28 mx-auto mb-6 sm:mb-8 object-contain" />
           
           {/* Title */}
           <div className="relative group">
@@ -469,7 +469,7 @@ const AffiliatePromoPage = () => {
               <div className="aspect-video">
                 <iframe
                   src="https://www.youtube.com/embed/lecSwt54sa0?rel=0&modestbranding=1"
-                  title="Video MRO"
+                  title="Video Código InstaShop"
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
