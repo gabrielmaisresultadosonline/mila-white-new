@@ -31,7 +31,7 @@ import {
   Eye, TrendingUp, Calendar, Sparkles, Download, 
   Save, RefreshCw, Check, ExternalLink,
   Image as ImageIcon, BarChart3, User, CloudDownload,
-  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2
+  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2, UserPlus
 } from 'lucide-react';
 import ManualScraper from '@/components/admin/ManualScraper';
 import { lazy, Suspense } from 'react';
