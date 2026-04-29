@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -37,8 +37,16 @@ import {
   Bell,
   AlertTriangle,
   Clock,
-  MailOpen
+  MailOpen,
+  Loader2,
+  User,
+  ShieldCheck,
+  Power,
+  PowerOff,
+  Instagram,
+  Key
 } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CreatedAccess {
   id: string;
@@ -171,14 +179,120 @@ export default function AdminUsuario() {
     createInApi: true, // Criar usuário na API (SquareCloud)
   });
 
+  // SquareCloud Admin State
+  const [squareAdminPass, setSquareAdminPass] = useState(() => localStorage.getItem('square_admin_pass') || '');
+  const [squareUsers, setSquareUsers] = useState<any[]>([]);
+  const [loadingSquare, setLoadingSquare] = useState(false);
+  const [squareSearch, setSquareSearch] = useState('');
+
   useEffect(() => {
     const savedAuth = localStorage.getItem('adminusuario_auth');
     if (savedAuth === 'true') {
       setIsAuthenticated(true);
       loadAccesses();
       loadSettings();
+      // Auto-load Square users if pass exists
+      if (squareAdminPass) {
+        loadSquareUsers();
+      }
     }
-  }, []);
+  }, [squareAdminPass]);
+
+  const loadSquareUsers = async () => {
+    if (!squareAdminPass) return;
+    setLoadingSquare(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+        headers: {
+          'x-admin-pass': squareAdminPass
+        }
+      });
+
+      if (error) throw error;
+      
+      if (Array.isArray(data)) {
+        setSquareUsers(data);
+        localStorage.setItem('square_admin_pass', squareAdminPass);
+      } else if (data.message === "Senha admin incorreta") {
+        toast.error("Senha admin SquareCloud incorreta");
+        setSquareAdminPass('');
+        localStorage.removeItem('square_admin_pass');
+      }
+    } catch (err) {
+      console.error("Error loading Square users:", err);
+      // toast.error("Erro ao carregar usuários da SquareCloud");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const removeSquareUser = async (userId: string) => {
+    if (!confirm(`Tem certeza que deseja remover o usuário ${userId}?`)) return;
+    
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-user', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Usuário removido");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao remover usuário");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const removeInstagram = async (userId: string, instagram: string) => {
+    if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
+
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId, instagram }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Instagram removido");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao remover Instagram");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const clearInstagrams = async (userId: string) => {
+    if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
+
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Contas removidas");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao limpar Instagrams");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const filteredSquareUsers = squareUsers.filter(u => 
+    u.userId.toLowerCase().includes(squareSearch.toLowerCase()) ||
+    (u.instagrams && u.instagrams.some((ig: string) => ig.toLowerCase().includes(squareSearch.toLowerCase())))
+  );
 
   const loadSettings = async () => {
     try {
@@ -682,24 +796,28 @@ export default function AdminUsuario() {
             <p className="text-gray-400">Gerencie acessos WhatsApp e Instagram</p>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <Button onClick={checkExpirations} variant="outline" disabled={loading} className="border-orange-500 text-orange-500 hover:bg-orange-500/20 text-xs sm:text-sm">
-              <Bell className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Verificar Expirações</span>
-            </Button>
-            <Button onClick={exportToCSV} variant="outline" className="border-green-500 text-green-500 hover:bg-green-500/20 text-xs sm:text-sm">
-              <Download className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Exportar CSV</span>
-            </Button>
-            <Button onClick={loadAccesses} variant="outline" disabled={loading} className="text-xs sm:text-sm">
+            <Button onClick={loadAccesses} variant="outline" disabled={loading} className="border-blue-500 text-blue-500 hover:bg-blue-500/20 text-xs sm:text-sm">
               <RefreshCw className={`w-4 h-4 sm:mr-2 ${loading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Atualizar</span>
+              <span className="hidden sm:inline">Atualizar Lista</span>
             </Button>
-            <Button onClick={handleLogout} variant="destructive" className="text-xs sm:text-sm">
+            <Button onClick={handleLogout} variant="ghost" className="text-red-400 hover:text-red-300 hover:bg-red-500/10 text-xs sm:text-sm">
               <LogOut className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Sair</span>
             </Button>
           </div>
         </div>
+
+        <Tabs defaultValue="list" className="space-y-6">
+          <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto p-1">
+            <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Criar Acesso</TabsTrigger>
+            <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Lista Acessos</TabsTrigger>
+            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
+            <TabsTrigger value="mass-email" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">Email em Massa</TabsTrigger>
+            <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
+            <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
+          </TabsList>
+
+        {/* Content */}
 
         {/* Stats Bar */}
         {(expiringCount > 0 || expiredCount > 0) && (
@@ -719,29 +837,6 @@ export default function AdminUsuario() {
           </div>
         )}
 
-        <Tabs defaultValue="create" className="space-y-6">
-          <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto gap-1 p-1">
-            <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <UserPlus className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Criar</span>
-            </TabsTrigger>
-            <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Users className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Acessos</span> ({accesses.length})
-            </TabsTrigger>
-            <TabsTrigger value="test" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <TestTube className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Testar</span>
-            </TabsTrigger>
-            <TabsTrigger value="mass-email" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Send className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Disparo</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Settings className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Config</span>
-            </TabsTrigger>
-          </TabsList>
 
           {/* Create Access Tab */}
           <TabsContent value="create">
@@ -1125,6 +1220,159 @@ export default function AdminUsuario() {
             </div>
           </TabsContent>
 
+          {/* List SquareCloud Users Tab */}
+          <TabsContent value="squarecloud" className="space-y-4">
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-blue-400" />
+                      Usuários SquareCloud (Ativos)
+                    </CardTitle>
+                    <CardDescription className="text-gray-400">
+                      Gerenciamento direto no banco de dados da API
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!squareAdminPass ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="password"
+                          placeholder="Senha Admin Square"
+                          value={squareAdminPass}
+                          onChange={(e) => setSquareAdminPass(e.target.value)}
+                          className="w-48 bg-gray-700 border-gray-600 h-9 text-xs"
+                        />
+                        <Button size="sm" onClick={loadSquareUsers} className="bg-blue-600 hover:bg-blue-700">
+                          Autenticar
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          Autenticado
+                        </Badge>
+                        <Button size="sm" variant="ghost" onClick={() => { setSquareAdminPass(''); localStorage.removeItem('square_admin_pass'); setSquareUsers([]); }} className="text-red-400 hover:text-red-300">
+                          Sair
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={loadSquareUsers} disabled={loadingSquare}>
+                          <RefreshCw className={`w-4 h-4 ${loadingSquare ? 'animate-spin' : ''}`} />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {!squareAdminPass ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Lock className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                    <p>Autentique com a senha admin para ver a lista em tempo real</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        placeholder="Buscar por usuário ou instagram..."
+                        value={squareSearch}
+                        onChange={(e) => setSquareSearch(e.target.value)}
+                        className="pl-10 bg-gray-900/50 border-gray-700 text-white"
+                      />
+                    </div>
+
+                    <ScrollArea className="h-[600px] pr-4">
+                      {loadingSquare && squareUsers.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20">
+                          <Loader2 className="w-10 h-10 animate-spin text-blue-500 mb-4" />
+                          <p className="text-gray-400">Carregando usuários da API...</p>
+                        </div>
+                      ) : filteredSquareUsers.length === 0 ? (
+                        <div className="text-center py-20 text-gray-500">
+                          <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                          <p>Nenhum usuário encontrado na SquareCloud</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {filteredSquareUsers.map((user) => (
+                            <div key={user.userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
+                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="text-white font-bold text-lg">{user.userId}</h3>
+                                    {user.fullAccess ? (
+                                      <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
+                                    ) : (
+                                      <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
+                                    )}
+                                  </div>
+                                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
+                                    <span className="flex items-center gap-1">
+                                      <Zap className="w-3 h-3 text-yellow-500" />
+                                      Testes Restantes: <strong className="text-white">{user.testsRemaining}</strong>
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <RefreshCw className="w-3 h-3 text-blue-400" />
+                                      Testes Ativos: <strong className="text-white">{user.activeTestsCount}</strong>
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    className="border-red-500/30 text-red-400 hover:bg-red-500/10 h-8"
+                                    onClick={() => removeSquareUser(user.userId)}
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+                                    Apagar Usuário
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-8"
+                                    onClick={() => clearInstagrams(user.userId)}
+                                  >
+                                    <X className="w-3.5 h-3.5 mr-1.5" />
+                                    Limpar IGs
+                                  </Button>
+                                </div>
+                              </div>
+
+                              {/* Instagrams List */}
+                              <div className="mt-4 pt-4 border-t border-gray-800/50">
+                                <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2">Contas de Instagram:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {user.instagrams && user.instagrams.length > 0 ? (
+                                    user.instagrams.map((ig: string) => (
+                                      <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-3 py-1 flex items-center gap-2 group">
+                                        <Instagram className="w-3 h-3 text-pink-500" />
+                                        <span className="text-xs text-gray-300 font-medium">@{ig}</span>
+                                        <button 
+                                          onClick={() => removeInstagram(user.userId, ig)}
+                                          className="text-gray-500 hover:text-red-400 transition-colors"
+                                        >
+                                          <Trash2 className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <span className="text-xs text-gray-600 italic">Nenhuma conta cadastrada</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </ScrollArea>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
           {/* Test APIs Tab */}
           <TabsContent value="test">
             <div className="grid md:grid-cols-3 gap-6">
