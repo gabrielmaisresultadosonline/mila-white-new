@@ -125,15 +125,14 @@ const Admin = () => {
   const allMergedProfiles = getAllMergedProfiles();
   
   const filteredSyncedProfiles = allMergedProfiles.filter(p => {
+    // Only show profiles connected to dashboard
+    if (!p.isConnectedToDashboard) return false;
+
     const matchesSearch = p.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.ownerUserName.toLowerCase().includes(searchTerm.toLowerCase());
     
-    if (!matchesSearch) return false;
-    
-    if (userFilter === 'connected') return p.isConnectedToDashboard;
-    if (userFilter === 'instagram') return true;
-    return true;
+    return matchesSearch;
   });
 
   // Get combined count for stats
@@ -332,7 +331,7 @@ const Admin = () => {
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-center justify-between sm:justify-start gap-3">
-                <h2 className="text-xl sm:text-2xl font-display font-bold">Perfis Instagram</h2>
+                <h2 className="text-xl sm:text-2xl font-display font-bold">Perfis Instagram (Conectados)</h2>
                 <Button
                   type="button"
                   variant="outline"
@@ -351,44 +350,7 @@ const Admin = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                {/* Filter Buttons */}
-                <div className="flex gap-1 bg-secondary/50 rounded-full p-1 w-full sm:w-auto overflow-x-auto scrollbar-none">
-                  <button
-                    type="button"
-                    onClick={() => setUserFilter('all')}
-                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      userFilter === 'all' 
-                        ? 'bg-primary text-primary-foreground shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    Todos
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setUserFilter('instagram')}
-                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      userFilter === 'instagram' 
-                        ? 'bg-pink-500 text-white shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    <Instagram className="w-3 h-3 inline mr-1" />
-                    Instagram
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setUserFilter('connected')}
-                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      userFilter === 'connected' 
-                        ? 'bg-green-500 text-white shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    <CheckCircle className="w-3 h-3 inline mr-1" />
-                    Cadastrados
-                  </button>
-                </div>
+                {/* Filter section removed as requested - showing only connected */}
 
                 {/* Search */}
                 <div className="relative w-full sm:w-64 md:w-72">
