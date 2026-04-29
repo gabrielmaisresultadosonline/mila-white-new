@@ -7,6 +7,8 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log(`[affiliate-storage] Request received: ${req.method}`);
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -16,7 +18,8 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { action, data, key } = await req.json();
+    const body = await req.json();
+    const { action, data, key } = body;
     
     const filePath = key === 'settings' ? 'admin/affiliate-settings.json' : 'admin/affiliates.json';
     console.log(`[affiliate-storage] Action: ${action}, Key: ${key || 'affiliates'}`);
@@ -54,7 +57,8 @@ serve(async (req) => {
         .download(filePath);
 
       if (error) {
-        if (error.message.includes('not found') || error.message.includes('Object not found')) {
+        console.log(`[affiliate-storage] Load error (might be expected if file doesn't exist):`, error.message);
+        if (error.message.includes('not found') || error.message.includes('Object not found') || error.message.includes('404')) {
           return new Response(
             JSON.stringify({ success: true, data: key === 'settings' ? {} : [] }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -67,7 +71,14 @@ serve(async (req) => {
       }
 
       const text = await fileData.text();
-      const parsed = JSON.parse(text);
+      let parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch (e) {
+        console.error('[affiliate-storage] JSON Parse error:', e);
+        parsed = key === 'settings' ? {} : [];
+      }
+      
       return new Response(
         JSON.stringify({ success: true, data: parsed }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -80,7 +91,7 @@ serve(async (req) => {
       );
     }
   } catch (error) {
-    console.error('[affiliate-storage] Error:', error);
+    console.error('[affiliate-storage] Global Error:', error);
     return new Response(
       JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
