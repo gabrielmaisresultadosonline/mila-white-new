@@ -89,7 +89,7 @@ const ACCESS_DAYS = {
 };
 
 const DEFAULT_SETTINGS: AdminSettings = {
-  memberAreaLink: 'https://maisresultadosonline.com.br',
+  memberAreaLink: 'https://codigoinstashop.com.br/instagram',
   whatsappGroupLink: 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi',
   messageTemplateInstagram: `Obrigado por fazer parte do nosso sistema!✅
 
@@ -97,7 +97,7 @@ const DEFAULT_SETTINGS: AdminSettings = {
 
 Preciso que assista os vídeos da área de membros com o link abaixo:
 
-( {MEMBER_LINK} ) 
+https://codigoinstashop.com.br/instagram
 
 1 - Acesse Área Membros
 
@@ -111,28 +111,9 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 ⚠ Assista todos os vídeos, por favor!
 
-Participe também do nosso GRUPO DE AVISOS
-
-{GROUP_LINK}`,
-  messageTemplateWhatsapp: `Obrigado por fazer parte do nosso sistema!
-
-🚀 ZAPMRO - Ferramenta para WhatsApp Vip acesso!
-
-▪️ Vou colocar você no grupo de avisos sobre nossa ferramenta.
-
-Preciso que assista os vídeos da área de membros com o link abaixo:
-
-( {MEMBER_LINK} ) 
-
-Para acessar a ferramenta, utilize os acessos:
-
-usuário: {USERNAME}
-senha: {PASSWORD}
-
-⚠ Assista todos os vídeos, por favor!
-
-Participe também do nosso GRUPO DE AVISOS
-{GROUP_LINK}`,
+Atenciosamente,
+*Codigo InstaShop*`,
+  messageTemplateWhatsapp: '',
 };
 
 export default function AdminUsuario() {
