@@ -26,7 +26,7 @@ serve(async (req) => {
     if (adminPass) headers['x-admin-pass'] = adminPass;
     if (adminName) headers['x-admin-name'] = adminName;
 
-    let targetUrl = `${API_BASE}/admin/usuarios`;
+    let targetUrl = `${API_BASE}/usuarios`; // Removing /admin to test if the endpoint is at the root
     let method = 'GET';
     let body = null;
 
