@@ -54,7 +54,7 @@ interface CreatedAccess {
   customer_name: string | null;
   username: string;
   password: string;
-  service_type: 'whatsapp' | 'instagram';
+  service_type: 'instagram';
   access_type: 'annual' | 'lifetime' | 'monthly';
   days_access: number;
   api_created: boolean;
@@ -89,7 +89,7 @@ const ACCESS_DAYS = {
 };
 
 const DEFAULT_SETTINGS: AdminSettings = {
-  memberAreaLink: 'https://maisresultadosonline.com.br',
+  memberAreaLink: 'https://codigoinstashop.com.br/instagram',
   whatsappGroupLink: 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi',
   messageTemplateInstagram: `Obrigado por fazer parte do nosso sistema!✅
 
@@ -97,7 +97,7 @@ const DEFAULT_SETTINGS: AdminSettings = {
 
 Preciso que assista os vídeos da área de membros com o link abaixo:
 
-( {MEMBER_LINK} ) 
+https://codigoinstashop.com.br/instagram
 
 1 - Acesse Área Membros
 
@@ -111,28 +111,9 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 ⚠ Assista todos os vídeos, por favor!
 
-Participe também do nosso GRUPO DE AVISOS
-
-{GROUP_LINK}`,
-  messageTemplateWhatsapp: `Obrigado por fazer parte do nosso sistema!
-
-🚀 ZAPMRO - Ferramenta para WhatsApp Vip acesso!
-
-▪️ Vou colocar você no grupo de avisos sobre nossa ferramenta.
-
-Preciso que assista os vídeos da área de membros com o link abaixo:
-
-( {MEMBER_LINK} ) 
-
-Para acessar a ferramenta, utilize os acessos:
-
-usuário: {USERNAME}
-senha: {PASSWORD}
-
-⚠ Assista todos os vídeos, por favor!
-
-Participe também do nosso GRUPO DE AVISOS
-{GROUP_LINK}`,
+Atenciosamente,
+*Codigo InstaShop*`,
+  messageTemplateWhatsapp: '',
 };
 
 export default function AdminUsuario() {
@@ -156,7 +137,7 @@ export default function AdminUsuario() {
   }>({});
 
   // Mass email state
-  const [massEmailSubject, setMassEmailSubject] = useState('📢 Novidades do Código InstaShop!');
+  const [massEmailSubject, setMassEmailSubject] = useState('📢 Novidades do Codigo InstaShop!');
   const [massEmailMessage, setMassEmailMessage] = useState('');
   const [manualEmails, setManualEmails] = useState('');
   const [selectedEmails, setSelectedEmails] = useState<Set<string>>(new Set());
@@ -173,7 +154,7 @@ export default function AdminUsuario() {
     customerEmail: '',
     username: '',
     password: '',
-    serviceType: 'instagram' as 'whatsapp' | 'instagram',
+    serviceType: 'instagram' as 'instagram',
     accessType: 'annual' as 'annual' | 'lifetime' | 'monthly',
     notes: '',
     createInApi: true, // Criar usuário na API (SquareCloud)
@@ -356,9 +337,7 @@ export default function AdminUsuario() {
   };
 
   const generateCopyMessage = (access: CreatedAccess) => {
-    const template = access.service_type === 'instagram' 
-      ? settings.messageTemplateInstagram 
-      : settings.messageTemplateWhatsapp;
+    const template = settings.messageTemplateInstagram;
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
@@ -879,16 +858,16 @@ export default function AdminUsuario() {
                     <Label className="text-gray-300">Serviço</Label>
                     <Select
                       value={form.serviceType}
-                      onValueChange={(value: 'whatsapp' | 'instagram') =>
+                      onValueChange={(value: 'instagram') =>
                         setForm({ ...form, serviceType: value })
                       }
+                      disabled
                     >
                       <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="whatsapp">WhatsApp</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1047,8 +1026,8 @@ export default function AdminUsuario() {
                         <div className="space-y-3">
                           {/* Badges row */}
                           <div className="flex items-center gap-2 flex-wrap">
-                            <Badge className={access.service_type === 'instagram' ? 'bg-pink-600' : 'bg-green-600'}>
-                              {access.service_type === 'instagram' ? 'Instagram' : 'WhatsApp'}
+                            <Badge className="bg-pink-600">
+                              Instagram
                             </Badge>
                             <Badge variant="outline" className="text-yellow-500 border-yellow-500 text-xs">
                               {access.access_type === 'lifetime' ? 'Vitalício' : access.access_type === 'annual' ? 'Anual' : 'Mensal'}
@@ -1081,7 +1060,7 @@ export default function AdminUsuario() {
                             <div className="bg-gray-900/50 rounded-lg p-2">
                               <span className="text-gray-500 text-xs block">Serviço</span>
                               <span className="text-white font-medium">
-                                {access.service_type === 'instagram' ? 'Instagram' : 'WhatsApp'}
+                                Instagram
                               </span>
                             </div>
 

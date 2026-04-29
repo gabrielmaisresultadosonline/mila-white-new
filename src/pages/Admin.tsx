@@ -186,7 +186,7 @@ const Admin = () => {
   };
 
   const tabs = [
-    { id: 'userlist', label: 'Lista Usuários e Senhas (SquareCloud)', icon: <User className="w-4 h-4" /> },
+    { id: 'userlist', label: 'Lista Usuários (SquareCloud)', icon: <User className="w-4 h-4" /> },
     { id: 'create_user', label: 'Criar Usuário', icon: <UserPlus className="w-4 h-4" /> },
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
     { id: 'vendas', label: 'Vendas', icon: <ShoppingCart className="w-4 h-4" /> },

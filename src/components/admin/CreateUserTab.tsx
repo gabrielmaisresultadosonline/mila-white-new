@@ -20,7 +20,7 @@ interface CreatedAccess {
   customer_name: string | null;
   username: string;
   password: string;
-  service_type: 'whatsapp' | 'instagram';
+  service_type: 'instagram';
   access_type: 'annual' | 'lifetime' | 'monthly';
   days_access: number;
   api_created: boolean;
@@ -65,23 +65,11 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 *senha:* {PASSWORD}
 
-⚠ Assista todos os vídeos, por favor!`,
-  messageTemplateWhatsapp: `Obrigado por fazer parte do nosso sistema!
+⚠ Assista todos os vídeos, por favor!
 
-🚀 ZAPMRO - Ferramenta para WhatsApp Vip acesso!
-
-▪️ Vou colocar você no grupo de avisos sobre nossa ferramenta.
-
-Preciso que assista os vídeos da área de membros com o link abaixo:
-
-{MEMBER_LINK}
-
-Para acessar a ferramenta, utilize os acessos:
-
-usuário: {USERNAME}
-senha: {PASSWORD}
-
-⚠ Assista todos os vídeos, por favor!`,
+Atenciosamente,
+*Codigo InstaShop*`,
+  messageTemplateWhatsapp: '',
 };
 
 export const CreateUserTab = () => {
@@ -93,7 +81,7 @@ export const CreateUserTab = () => {
     customerEmail: '',
     username: '',
     password: '',
-    serviceType: 'instagram' as 'whatsapp' | 'instagram',
+    serviceType: 'instagram' as 'instagram',
     accessType: 'annual' as 'annual' | 'lifetime' | 'monthly',
     notes: '',
     createInApi: true,
@@ -126,9 +114,7 @@ export const CreateUserTab = () => {
   };
 
   const generateCopyMessage = (access: any) => {
-    const template = access.service_type === 'instagram' 
-      ? settings.messageTemplateInstagram 
-      : settings.messageTemplateWhatsapp;
+    const template = settings.messageTemplateInstagram;
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
@@ -226,13 +212,13 @@ export const CreateUserTab = () => {
               <Select
                 value={form.serviceType}
                 onValueChange={(v: any) => setForm({ ...form, serviceType: v })}
+                disabled
               >
                 <SelectTrigger className="bg-secondary/30">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="instagram">Instagram VIP (InstaShop)</SelectItem>
-                  <SelectItem value="whatsapp">WhatsApp VIP (ZAPMRO)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
