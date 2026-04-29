@@ -215,88 +215,93 @@ const UsersListPanel = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {filteredUsers.map((user) => (
-                    <div key={user.id} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="text-white font-bold text-lg">{user.id}</h3>
-                            <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5">
-                              <Key className="w-3 h-3" />
-                              Senha: {user.password || '******'}
-                            </Badge>
-                            {user.acessFull ? (
-                              <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
+                  {filteredUsers.map((user) => {
+                    const userId = user.id || (user as any).userId;
+                    const instagrams = user.igInstagram || (user as any).instagrams || [];
+                    
+                    return (
+                      <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="text-white font-bold text-lg">{userId}</h3>
+                              <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5">
+                                <Key className="w-3 h-3" />
+                                Senha: {user.password || (user as any).senha || '******'}
+                              </Badge>
+                              {user.acessFull || (user as any).fullAccess ? (
+                                <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
+                              )}
+                            </div>
+                            
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
+                              <span className="flex items-center gap-1">
+                                <Zap className="w-3 h-3 text-yellow-500" />
+                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? (user as any).testesRestantes ?? 0}</strong>
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <RefreshCw className="w-3 h-3 text-blue-400" />
+                                Testes Ativos: <strong className="text-white">{user.activeTests ?? (user as any).testesAtivos ?? 0}</strong>
+                              </span>
+                              {(user.dataDeExpiracao || (user as any).expiracao) && (
+                                <span className="text-blue-300">Expira: {user.dataDeExpiracao || (user as any).expiracao}</span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="destructive" 
+                              className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white h-8"
+                              onClick={() => handleRemoveUser(userId)}
+                              disabled={isDeleting === userId}
+                            >
+                              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+                              {isDeleting === userId ? 'Apagando...' : 'Apagar Perfil'}
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-8"
+                              onClick={() => handleClearInstagrams(userId)}
+                            >
+                              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+                              Limpar IGs
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Instagrams List */}
+                        <div className="mt-4 pt-4 border-t border-gray-800/50">
+                          <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2 flex items-center gap-1.5">
+                            <Instagram className="w-3 h-3" />
+                            Contas Conectadas ({instagrams.length}):
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {instagrams.length > 0 ? (
+                              instagrams.map((ig: string) => (
+                                <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-3 py-1 flex items-center gap-2 group transition-all hover:border-pink-500/50">
+                                  <span className="text-xs text-gray-300 font-medium">@{ig}</span>
+                                  <button 
+                                    onClick={() => handleRemoveInstagram(userId, ig)}
+                                    className="text-gray-500 hover:text-red-400 transition-colors"
+                                    title="Remover apenas esta conta"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              ))
                             ) : (
-                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
-                            <span className="flex items-center gap-1">
-                              <Zap className="w-3 h-3 text-yellow-500" />
-                              Testes Restantes: <strong className="text-white">{user.testsRemaining}</strong>
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <RefreshCw className="w-3 h-3 text-blue-400" />
-                              Testes Ativos: <strong className="text-white">{user.activeTests}</strong>
-                            </span>
-                            {user.dataDeExpiracao && (
-                              <span className="text-blue-300">Expira: {user.dataDeExpiracao}</span>
+                              <span className="text-xs text-gray-600 italic">Nenhum Instagram vinculado</span>
                             )}
                           </div>
                         </div>
-
-                        <div className="flex items-center gap-2">
-                          <Button 
-                            size="sm" 
-                            variant="destructive" 
-                            className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white h-8"
-                            onClick={() => handleRemoveUser(user.id)}
-                            disabled={isDeleting === user.id}
-                          >
-                            <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                            {isDeleting === user.id ? 'Apagando...' : 'Apagar Perfil'}
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-8"
-                            onClick={() => handleClearInstagrams(user.id)}
-                          >
-                            <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                            Limpar IGs
-                          </Button>
-                        </div>
                       </div>
-
-                      {/* Instagrams List */}
-                      <div className="mt-4 pt-4 border-t border-gray-800/50">
-                        <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2 flex items-center gap-1.5">
-                          <Instagram className="w-3 h-3" />
-                          Contas Conectadas ({user.igInstagram?.length || 0}):
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {user.igInstagram && user.igInstagram.length > 0 ? (
-                            user.igInstagram.map((ig: string) => (
-                              <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-3 py-1 flex items-center gap-2 group transition-all hover:border-pink-500/50">
-                                <span className="text-xs text-gray-300 font-medium">@{ig}</span>
-                                <button 
-                                  onClick={() => handleRemoveInstagram(user.id, ig)}
-                                  className="text-gray-500 hover:text-red-400 transition-colors"
-                                  title="Remover apenas esta conta"
-                                >
-                                  <Trash2 className="w-3 h-3" />
-                                </button>
-                              </div>
-                            ))
-                          ) : (
-                            <span className="text-xs text-gray-600 italic">Nenhum Instagram vinculado</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </ScrollArea>
