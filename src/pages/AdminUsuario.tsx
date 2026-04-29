@@ -72,10 +72,8 @@ interface CreatedAccess {
 }
 
 interface AdminSettings {
-  memberAreaLink: string;
   whatsappGroupLink: string;
   messageTemplateInstagram: string;
-  messageTemplateWhatsapp: string;
 }
 
 // Admin credentials stored in Supabase
