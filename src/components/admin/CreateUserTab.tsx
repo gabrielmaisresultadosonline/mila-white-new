@@ -81,7 +81,7 @@ export const CreateUserTab = () => {
     customerEmail: '',
     username: '',
     password: '',
-    serviceType: 'instagram' as 'whatsapp' | 'instagram',
+    serviceType: 'instagram' as 'instagram',
     accessType: 'annual' as 'annual' | 'lifetime' | 'monthly',
     notes: '',
     createInApi: true,
