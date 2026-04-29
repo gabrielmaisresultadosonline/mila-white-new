@@ -149,6 +149,11 @@ const UsersListPanel = () => {
   };
 
   useEffect(() => {
+    // Check if we are already authenticated via localStorage (from AdminUsuario page logic)
+    const savedPass = localStorage.getItem('square_admin_pass');
+    if (savedPass) {
+        // We use the default pass for now as requested, but we could use savedPass if needed
+    }
     fetchData();
   }, []);
 
