@@ -36,7 +36,7 @@ serve(async (req) => {
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
     } else if (action === 'remove-instagram' || url.pathname.includes('/remove-instagram')) {
-      targetUrl = `${API_BASE}/admin/remover-ig`;
+      targetUrl = `${API_BASE}/remover-instagram`;
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
