@@ -305,11 +305,16 @@ const Admin = () => {
         {activeTab === 'users' && (
           <div className="space-y-6">
             {/* Stats Cards - Simplified to show only VIP Users Total */}
-            <div className="grid grid-cols-1 gap-4">
-              <div className="glass-card p-4 sm:p-6 text-center max-w-sm mx-auto w-full border-primary/30 shadow-lg bg-gradient-to-br from-primary/5 to-transparent">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="glass-card p-4 sm:p-6 text-center border-primary/30 shadow-lg bg-gradient-to-br from-primary/5 to-transparent">
                 <Users className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-primary mb-2 sm:mb-3" />
                 <p className="text-3xl sm:text-4xl font-bold text-primary">{syncData.users.length}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Total de Usuários VIP</p>
+                <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Total Usuários (API)</p>
+              </div>
+              <div className="glass-card p-4 sm:p-6 text-center border-pink-500/30 shadow-lg bg-gradient-to-br from-pink-500/5 to-transparent">
+                <Instagram className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-pink-500 mb-2 sm:mb-3" />
+                <p className="text-3xl sm:text-4xl font-bold text-pink-500">{totalSyncedProfiles}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Perfis Instagram</p>
               </div>
             </div>
 
