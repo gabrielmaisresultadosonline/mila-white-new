@@ -762,7 +762,7 @@ export default function AdminUsuario() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold text-white">Admin Usuários</h1>
-            <p className="text-gray-400">Gerencie acessos WhatsApp e Instagram</p>
+            <p className="text-gray-400">Gerencie acessos Instagram</p>
           </div>
           <div className="flex gap-2 flex-wrap">
             <Button onClick={loadAccesses} variant="outline" disabled={loading} className="border-blue-500 text-blue-500 hover:bg-blue-500/20 text-xs sm:text-sm">
@@ -966,7 +966,7 @@ export default function AdminUsuario() {
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4"
                       >
                         <Copy className="w-5 h-5 mr-2" />
-                        Copiar Mensagem para WhatsApp
+                        Copiar Mensagem para Cliente
                       </Button>
                     </div>
                   ) : (
