@@ -797,11 +797,11 @@ export default function AdminUsuario() {
           </div>
         </div>
 
-        <Tabs defaultValue="list" className="space-y-6">
+        <Tabs defaultValue="squarecloud" className="space-y-6">
           <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto p-1">
+            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
             <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Criar Acesso</TabsTrigger>
             <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Lista Acessos</TabsTrigger>
-            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
             <TabsTrigger value="mass-email" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">Email em Massa</TabsTrigger>
             <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
@@ -1218,7 +1218,7 @@ export default function AdminUsuario() {
                   <div>
                     <CardTitle className="text-white flex items-center gap-2">
                       <ShieldCheck className="w-5 h-5 text-blue-400" />
-                      Usuários SquareCloud (Ativos)
+                      Lista Usuários e Senhas (SquareCloud)
                     </CardTitle>
                     <CardDescription className="text-gray-400">
                       Gerenciamento direto no banco de dados da API
@@ -1263,6 +1263,9 @@ export default function AdminUsuario() {
                                 <div className="space-y-1">
                                   <div className="flex items-center gap-2">
                                     <h3 className="text-white font-bold text-lg">{user.userId}</h3>
+                                    <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 font-mono">
+                                      Senha: {user.password || '******'}
+                                    </Badge>
                                     {user.fullAccess ? (
                                       <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
                                     ) : (
