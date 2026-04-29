@@ -34,21 +34,17 @@ const UsersListPanel = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      console.log('[UsersListPanel] Fetching SquareCloud users...');
+      console.log('[UsersListPanel] Fetching SquareCloud users via Proxy...');
       
-      const response = await fetch(`${API_BASE}/admin/usuarios`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
-      }
+      if (error) throw error;
 
-      const data = await response.json();
       console.log('[UsersListPanel] API full response:', data);
       
       const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
@@ -64,7 +60,7 @@ const UsersListPanel = () => {
       console.error('[UsersListPanel] Error:', error);
       toast({ 
         title: 'Erro na API SquareCloud', 
-        description: error?.message || 'Não foi possível carregar a lista de usuários ativos', 
+        description: error?.message || 'Não foi possível carregar a lista de usuários ativos. Verifique se a Edge Function square-admin-proxy está implantada.', 
         variant: 'destructive' 
       });
     } finally {
