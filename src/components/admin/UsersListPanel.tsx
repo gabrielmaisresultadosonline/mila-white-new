@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap } from 'lucide-react';
+import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -19,6 +19,16 @@ interface SquareUser {
   acessFull?: boolean;
   blackList?: boolean;
   dataDeExpiracao?: string;
+  // New nested structure support
+  ID?: string;
+  data?: {
+    igInstagram?: string[];
+    dataDeExpiracao?: number;
+    blackList?: boolean;
+    userTeste?: boolean;
+    testsRemainingMonth?: number;
+    numero?: string;
+  };
 }
 
 const UsersListPanel = () => {
