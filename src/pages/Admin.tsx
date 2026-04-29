@@ -58,6 +58,25 @@ const Admin = () => {
   const [settings, setSettings] = useState(adminData.settings);
   const [zapmroDownloadLink, setZapmroDownloadLink] = useState('');
   const [testingApi, setTestingApi] = useState<string | null>(null);
+  const [squareUsersCount, setSquareUsersCount] = useState<number>(0);
+
+  const fetchSquareUsersCount = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+        headers: {
+          'x-admin-pass': "maisresultadosonline",
+          'x-admin-name': "ADMIN"
+        }
+      });
+      if (error) throw error;
+      const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
+      if (Array.isArray(userList)) {
+        setSquareUsersCount(userList.length);
+      }
+    } catch (err) {
+      console.error('Error fetching square users count:', err);
+    }
+  };
 
   useEffect(() => {
     const checkAdminAccess = async () => {
