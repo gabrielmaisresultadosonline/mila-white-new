@@ -836,27 +836,6 @@ export default function AdminUsuario() {
           </div>
         )}
 
-            <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <UserPlus className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Criar</span>
-            </TabsTrigger>
-            <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Users className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Acessos</span> ({accesses.length})
-            </TabsTrigger>
-            <TabsTrigger value="test" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <TestTube className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Testar</span>
-            </TabsTrigger>
-            <TabsTrigger value="mass-email" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Send className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Disparo</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
-              <Settings className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Config</span>
-            </TabsTrigger>
-          </TabsList>
 
           {/* Create Access Tab */}
           <TabsContent value="create">
