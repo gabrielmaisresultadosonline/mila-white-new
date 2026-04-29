@@ -338,129 +338,131 @@ senha: ${password || '******'}
                     const extraSlots = user.extraIgSlots ?? user.data?.extraIgSlots ?? 0;
                     
                     return (
-                      <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-white font-bold text-lg">{userId}</h3>
-                              <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5">
-                                <Key className="w-3 h-3" />
-                                Senha: {user.password || (user as any).senha || user.data?.numero || '******'}
-                              </Badge>
-                              {isFullAccess ? (
-                                <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
+                      <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-3 sm:p-4 hover:border-blue-500/30 transition-all">
+                        <div className="flex flex-col gap-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h3 className="text-white font-bold text-base sm:text-lg truncate max-w-[150px] sm:max-w-none">{userId}</h3>
+                                <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5 text-[10px] sm:text-xs">
+                                  <Key className="w-3 h-3" />
+                                  <span className="hidden xs:inline">Senha:</span> {user.password || (user as any).senha || user.data?.numero || '******'}
+                                </Badge>
+                                {isFullAccess ? (
+                                  <Badge className="bg-amber-500 text-black font-bold text-[9px] sm:text-[10px] h-5">FULL</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-gray-400 border-gray-600 text-[9px] sm:text-[10px] h-5">NORMAL</Badge>
+                                )}
+                                {isBlacklisted && (
+                                  <Badge variant="destructive" className="flex items-center gap-1 text-[9px] sm:text-[10px] h-5">
+                                    <Ban className="w-3 h-3" /> BLACKLIST
+                                  </Badge>
+                                )}
+                                {extraSlots > 0 && (
+                                  <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/30 text-[9px] sm:text-[10px] h-5">
+                                    +{extraSlots} EXTRAS
+                                  </Badge>
+                                )}
+                              </div>
+                              
+                              <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-[10px] sm:text-xs text-gray-400">
+                                <span className="flex items-center gap-1">
+                                  <Zap className="w-3 h-3 text-yellow-500" />
+                                  Testes: <strong className="text-white">{user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0}</strong>
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <RefreshCw className="w-3 h-3 text-blue-400" />
+                                  Ativos: <strong className="text-white">{user.activeTests ?? (user as any).testesAtivos ?? 0}</strong>
+                                </span>
+                                {expiration && (
+                                  <span className="text-blue-300">Expira: {expiration}d</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                              <Button 
+                                size="sm" 
+                                variant="destructive" 
+                                className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs flex-1 sm:flex-none"
+                                onClick={() => handleRemoveUser(userId)}
+                                disabled={isDeleting === userId}
+                              >
+                                <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                {isDeleting === userId ? '...' : 'Apagar'}
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs flex-1 sm:flex-none"
+                                onClick={() => handleClearInstagrams(userId)}
+                              >
+                                <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                Limpar
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className={`h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs flex-1 sm:flex-none ${isBlacklisted ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'border-gray-600 text-gray-400 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30'}`}
+                                onClick={() => handleToggleBlacklist(userId, !!isBlacklisted)}
+                              >
+                                <Ban className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                {isBlacklisted ? 'Sair' : 'Ban'}
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs flex-1 sm:flex-none"
+                                onClick={() => handleResetTests(userId)}
+                              >
+                                <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                Reset
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-green-500/30 text-green-400 hover:bg-green-500/10 h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs flex-1 sm:flex-none"
+                                onClick={() => handleAddExtraSlots(userId)}
+                              >
+                                <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                +Slots
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10 h-7 sm:h-8 px-2 sm:px-3 text-[10px] sm:text-xs w-full sm:w-auto mt-1 sm:mt-0"
+                                onClick={() => handleCopyAccess(userId, user.password || (user as any).senha || user.data?.numero)}
+                              >
+                                <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                                Copiar Acesso
+                              </Button>
+                            </div>
+                          </div>
+
+                          {/* Instagrams List */}
+                          <div className="pt-3 border-t border-gray-800/50">
+                            <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2 flex items-center gap-1.5">
+                              <Instagram className="w-3 h-3" />
+                              Contas ({instagrams.length}):
+                            </p>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                              {instagrams.length > 0 ? (
+                                instagrams.map((ig: string) => (
+                                  <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-2 sm:px-3 py-0.5 sm:py-1 flex items-center gap-1.5 sm:gap-2 group transition-all hover:border-pink-500/50">
+                                    <span className="text-[10px] sm:text-xs text-gray-300 font-medium">@{ig}</span>
+                                    <button 
+                                      onClick={() => handleRemoveInstagram(userId, ig)}
+                                      className="text-gray-500 hover:text-red-400 transition-colors"
+                                      title="Remover apenas esta conta"
+                                    >
+                                      <Trash2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                    </button>
+                                  </div>
+                                ))
                               ) : (
-                                <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
-                              )}
-                              {isBlacklisted && (
-                                <Badge variant="destructive" className="flex items-center gap-1 text-[10px] h-5">
-                                  <Ban className="w-3 h-3" /> BLACKLIST
-                                </Badge>
-                              )}
-                              {extraSlots > 0 && (
-                                <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/30 text-[10px] h-5">
-                                  +{extraSlots} EXTRAS
-                                </Badge>
+                                <span className="text-[10px] sm:text-xs text-gray-600 italic">Nenhum Instagram</span>
                               )}
                             </div>
-                            
-                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
-                              <span className="flex items-center gap-1">
-                                <Zap className="w-3 h-3 text-yellow-500" />
-                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0}</strong>
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <RefreshCw className="w-3 h-3 text-blue-400" />
-                                Testes Ativos: <strong className="text-white">{user.activeTests ?? (user as any).testesAtivos ?? 0}</strong>
-                              </span>
-                              {expiration && (
-                                <span className="text-blue-300">Expira: {expiration} dias</span>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Button 
-                              size="sm" 
-                              variant="destructive" 
-                              className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500 hover:text-white h-8"
-                              onClick={() => handleRemoveUser(userId)}
-                              disabled={isDeleting === userId}
-                            >
-                              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                              {isDeleting === userId ? 'Apagando...' : 'Apagar Perfil'}
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-8"
-                              onClick={() => handleClearInstagrams(userId)}
-                            >
-                              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                              Limpar IGs
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className={`h-8 ${isBlacklisted ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'border-gray-600 text-gray-400 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30'}`}
-                              onClick={() => handleToggleBlacklist(userId, !!isBlacklisted)}
-                            >
-                              <Ban className="w-3.5 h-3.5 mr-1.5" />
-                              {isBlacklisted ? 'Sair Blacklist' : 'Blacklist'}
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 h-8"
-                              onClick={() => handleResetTests(userId)}
-                            >
-                              <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-                              Zerar Testes
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-green-500/30 text-green-400 hover:bg-green-500/10 h-8"
-                              onClick={() => handleAddExtraSlots(userId)}
-                            >
-                              <Plus className="w-3.5 h-3.5 mr-1.5" />
-                              Add Extras
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10 h-8"
-                              onClick={() => handleCopyAccess(userId, user.password || (user as any).senha || user.data?.numero)}
-                            >
-                              <Copy className="w-3.5 h-3.5 mr-1.5" />
-                              Copiar Acesso
-                            </Button>
-                          </div>
-                        </div>
-
-                        {/* Instagrams List */}
-                        <div className="mt-4 pt-4 border-t border-gray-800/50">
-                          <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2 flex items-center gap-1.5">
-                            <Instagram className="w-3 h-3" />
-                            Contas Conectadas ({instagrams.length}):
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {instagrams.length > 0 ? (
-                              instagrams.map((ig: string) => (
-                                <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-3 py-1 flex items-center gap-2 group transition-all hover:border-pink-500/50">
-                                  <span className="text-xs text-gray-300 font-medium">@{ig}</span>
-                                  <button 
-                                    onClick={() => handleRemoveInstagram(userId, ig)}
-                                    className="text-gray-500 hover:text-red-400 transition-colors"
-                                    title="Remover apenas esta conta"
-                                  >
-                                    <Trash2 className="w-3 h-3" />
-                                  </button>
-                                </div>
-                              ))
-                            ) : (
-                              <span className="text-xs text-gray-600 italic">Nenhum Instagram vinculado</span>
-                            )}
                           </div>
                         </div>
                       </div>

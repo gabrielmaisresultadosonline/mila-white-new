@@ -251,21 +251,26 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-40 glass-card border-b border-border">
-        <div className="container mx-auto px-4 py-3">
+      <header className="sticky top-0 z-50 glass-card border-b border-border shadow-md">
+        <div className="container mx-auto px-4 py-2 sm:py-3">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <Logo size="sm" />
-              <span className="text-sm font-medium text-primary">Admin Panel</span>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Logo size="sm" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <div className="flex flex-col">
+                <span className="text-xs sm:text-sm font-bold text-primary leading-tight">MRO VIP</span>
+                <span className="text-[10px] text-muted-foreground leading-tight hidden sm:block">Admin Panel</span>
+              </div>
             </div>
-            <Button type="button" variant="outline" size="sm" onClick={handleLogout} className="cursor-pointer">
-              <LogOut className="w-4 h-4" />
-              <span className="hidden md:inline ml-2">Sair</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button type="button" variant="outline" size="sm" onClick={handleLogout} className="cursor-pointer h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3">
+                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="ml-1 sm:ml-2">Sair</span>
+              </Button>
+            </div>
           </div>
 
-          <div className="overflow-x-auto -mx-4 px-4 pb-2" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <nav className="flex items-center gap-1 w-max min-w-full">
+          <div className="overflow-x-auto -mx-4 px-4 pb-1 sm:pb-2 scrollbar-none" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <nav className="flex items-center gap-1 w-max min-w-full pb-1">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -278,13 +283,13 @@ const Admin = () => {
                     }
                     setActiveTab(tab.id as Tab);
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap text-sm shrink-0 ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap text-xs sm:text-sm shrink-0 font-medium ${
                     activeTab === tab.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
                   }`}
                 >
-                  {tab.icon}
+                  <span className="shrink-0">{tab.icon}</span>
                   <span>{tab.label}</span>
                 </button>
               ))}
@@ -299,61 +304,61 @@ const Admin = () => {
         {activeTab === 'users' && (
           <div className="space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-4 gap-4">
-              <div className="glass-card p-4 text-center">
-                <Instagram className="w-6 h-6 mx-auto text-pink-500 mb-2" />
-                <p className="text-2xl font-bold">{totalSyncedProfiles}</p>
-                <p className="text-xs text-muted-foreground">Perfis Instagram Total</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="glass-card p-3 sm:p-4 text-center">
+                <Instagram className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-pink-500 mb-1 sm:mb-2" />
+                <p className="text-xl sm:text-2xl font-bold">{totalSyncedProfiles}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Instagram Total</p>
               </div>
-              <div className="glass-card p-4 text-center">
-                <CheckCircle className="w-6 h-6 mx-auto text-green-500 mb-2" />
-                <p className="text-2xl font-bold">{connectedProfiles}</p>
-                <p className="text-xs text-muted-foreground">Conectados Dashboard</p>
+              <div className="glass-card p-3 sm:p-4 text-center">
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-green-500 mb-1 sm:mb-2" />
+                <p className="text-xl sm:text-2xl font-bold">{connectedProfiles}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Cadastrados</p>
               </div>
-              <div className="glass-card p-4 text-center">
-                <XCircle className="w-6 h-6 mx-auto text-yellow-500 mb-2" />
-                <p className="text-2xl font-bold">{notConnectedProfiles}</p>
-                <p className="text-xs text-muted-foreground">Não Conectados</p>
+              <div className="glass-card p-3 sm:p-4 text-center">
+                <XCircle className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-yellow-500 mb-1 sm:mb-2" />
+                <p className="text-xl sm:text-2xl font-bold">{notConnectedProfiles}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Pendentes</p>
               </div>
-              <div className="glass-card p-4 text-center">
-                <Users className="w-6 h-6 mx-auto text-primary mb-2" />
-                <p className="text-2xl font-bold">{syncData.users.length}</p>
-                <p className="text-xs text-muted-foreground">Usuários MRO</p>
+              <div className="glass-card p-3 sm:p-4 text-center">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-primary mb-1 sm:mb-2" />
+                <p className="text-xl sm:text-2xl font-bold">{syncData.users.length}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Usuários VIP</p>
               </div>
             </div>
 
             {/* Connected Users Panel */}
             <ConnectedUsersPanel />
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-display font-bold">Perfis Instagram</h2>
-                {/* Refresh Button */}
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center justify-between sm:justify-start gap-3">
+                <h2 className="text-xl sm:text-2xl font-display font-bold">Perfis Instagram</h2>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={refreshUserList}
-                  className="cursor-pointer"
+                  className="cursor-pointer h-8 sm:h-9"
                 >
-                  <RefreshCw className={`w-4 h-4 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
-                  Atualizar Lista
+                  <RefreshCw className={`w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  <span className="text-xs sm:text-sm">Atualizar</span>
                 </Button>
                 {syncData.currentlySyncing && (
-                  <span className="text-xs px-2 py-1 bg-primary/20 text-primary rounded-full animate-pulse">
+                  <span className="hidden sm:inline-flex text-[10px] px-2 py-1 bg-primary/20 text-primary rounded-full animate-pulse font-medium">
                     Sincronizando: @{syncData.currentlySyncing}
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3">
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 {/* Filter Buttons */}
-                <div className="flex gap-1 bg-secondary/50 rounded-lg p-1">
+                <div className="flex gap-1 bg-secondary/50 rounded-full p-1 w-full sm:w-auto overflow-x-auto scrollbar-none">
                   <button
                     type="button"
                     onClick={() => setUserFilter('all')}
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       userFilter === 'all' 
-                        ? 'bg-primary text-primary-foreground' 
+                        ? 'bg-primary text-primary-foreground shadow-sm' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
@@ -362,37 +367,37 @@ const Admin = () => {
                   <button
                     type="button"
                     onClick={() => setUserFilter('instagram')}
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       userFilter === 'instagram' 
-                        ? 'bg-pink-500 text-white' 
+                        ? 'bg-pink-500 text-white shadow-sm' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    <Instagram className="w-4 h-4 inline mr-1" />
+                    <Instagram className="w-3 h-3 inline mr-1" />
                     Instagram
                   </button>
                   <button
                     type="button"
                     onClick={() => setUserFilter('connected')}
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    className={`flex-1 sm:flex-none px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       userFilter === 'connected' 
-                        ? 'bg-green-500 text-white' 
+                        ? 'bg-green-500 text-white shadow-sm' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    <CheckCircle className="w-4 h-4 inline mr-1" />
+                    <CheckCircle className="w-3 h-3 inline mr-1" />
                     Cadastrados
                   </button>
                 </div>
 
                 {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <div className="relative w-full sm:w-64 md:w-72">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar por @username ou usuário..."
+                    placeholder="Buscar username..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-72 bg-secondary/50"
+                    className="pl-9 h-9 text-xs sm:text-sm bg-secondary/30 border-border/50 rounded-full focus-visible:ring-primary/30"
                   />
                 </div>
               </div>
