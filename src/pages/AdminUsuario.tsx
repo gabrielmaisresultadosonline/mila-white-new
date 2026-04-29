@@ -110,7 +110,6 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 Atenciosamente,
 *Codigo InstaShop*`,
-  messageTemplateWhatsapp: '',
 };
 
 export default function AdminUsuario() {
