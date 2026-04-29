@@ -280,7 +280,7 @@ const Admin = () => {
             <div className="flex items-center gap-2 sm:gap-3">
               <Logo size="sm" className="w-8 h-8 sm:w-10 sm:h-10" />
               <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-bold text-primary leading-tight">MRO VIP</span>
+                <span className="text-xs sm:text-sm font-bold text-primary leading-tight">Administrativo Codigo InstaShop</span>
                 <span className="text-[10px] text-muted-foreground leading-tight hidden sm:block">Admin Panel</span>
               </div>
             </div>
