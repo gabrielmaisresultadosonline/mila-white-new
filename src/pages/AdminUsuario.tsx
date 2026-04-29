@@ -1331,7 +1331,7 @@ export default function AdminUsuario() {
                       )}
                     </ScrollArea>
                   </div>
-                )}
+                  </div>
               </CardContent>
             </Card>
           </TabsContent>
