@@ -178,14 +178,120 @@ export default function AdminUsuario() {
     createInApi: true, // Criar usuário na API (SquareCloud)
   });
 
+  // SquareCloud Admin State
+  const [squareAdminPass, setSquareAdminPass] = useState(() => localStorage.getItem('square_admin_pass') || '');
+  const [squareUsers, setSquareUsers] = useState<any[]>([]);
+  const [loadingSquare, setLoadingSquare] = useState(false);
+  const [squareSearch, setSquareSearch] = useState('');
+
   useEffect(() => {
     const savedAuth = localStorage.getItem('adminusuario_auth');
     if (savedAuth === 'true') {
       setIsAuthenticated(true);
       loadAccesses();
       loadSettings();
+      // Auto-load Square users if pass exists
+      if (squareAdminPass) {
+        loadSquareUsers();
+      }
     }
-  }, []);
+  }, [squareAdminPass]);
+
+  const loadSquareUsers = async () => {
+    if (!squareAdminPass) return;
+    setLoadingSquare(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+        headers: {
+          'x-admin-pass': squareAdminPass
+        }
+      });
+
+      if (error) throw error;
+      
+      if (Array.isArray(data)) {
+        setSquareUsers(data);
+        localStorage.setItem('square_admin_pass', squareAdminPass);
+      } else if (data.message === "Senha admin incorreta") {
+        toast.error("Senha admin SquareCloud incorreta");
+        setSquareAdminPass('');
+        localStorage.removeItem('square_admin_pass');
+      }
+    } catch (err) {
+      console.error("Error loading Square users:", err);
+      // toast.error("Erro ao carregar usuários da SquareCloud");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const removeSquareUser = async (userId: string) => {
+    if (!confirm(`Tem certeza que deseja remover o usuário ${userId}?`)) return;
+    
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-user', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Usuário removido");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao remover usuário");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const removeInstagram = async (userId: string, instagram: string) => {
+    if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
+
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId, instagram }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Instagram removido");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao remover Instagram");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const clearInstagrams = async (userId: string) => {
+    if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
+
+    try {
+      setLoadingSquare(true);
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
+        method: 'POST',
+        headers: { 'x-admin-pass': squareAdminPass },
+        body: { userId }
+      });
+
+      if (error) throw error;
+      toast.success(data.message || "Contas removidas");
+      loadSquareUsers();
+    } catch (err) {
+      toast.error("Erro ao limpar Instagrams");
+    } finally {
+      setLoadingSquare(false);
+    }
+  };
+
+  const filteredSquareUsers = squareUsers.filter(u => 
+    u.userId.toLowerCase().includes(squareSearch.toLowerCase()) ||
+    (u.instagrams && u.instagrams.some((ig: string) => ig.toLowerCase().includes(squareSearch.toLowerCase())))
+  );
 
   const loadSettings = async () => {
     try {
