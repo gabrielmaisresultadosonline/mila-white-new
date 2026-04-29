@@ -1263,6 +1263,9 @@ export default function AdminUsuario() {
                                 <div className="space-y-1">
                                   <div className="flex items-center gap-2">
                                     <h3 className="text-white font-bold text-lg">{user.userId}</h3>
+                                    <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 font-mono">
+                                      Senha: {user.password || '******'}
+                                    </Badge>
                                     {user.fullAccess ? (
                                       <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
                                     ) : (
