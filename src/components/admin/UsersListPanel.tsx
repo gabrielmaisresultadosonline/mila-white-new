@@ -389,7 +389,7 @@ senha: ${password || '******'}
                                 disabled={isDeleting === userId}
                               >
                                 <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                {isDeleting === userId ? '...' : 'Apagar'}
+                                {isDeleting === userId ? '...' : 'apagar'}
                               </Button>
                               <Button 
                                 size="sm" 
@@ -398,7 +398,7 @@ senha: ${password || '******'}
                                 onClick={() => handleClearInstagrams(userId)}
                               >
                                 <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                Limpar
+                                limpar Ig total
                               </Button>
                               <Button 
                                 size="sm" 
@@ -407,7 +407,7 @@ senha: ${password || '******'}
                                 onClick={() => handleToggleBlacklist(userId, !!isBlacklisted)}
                               >
                                 <Ban className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                {isBlacklisted ? 'Sair' : 'Ban'}
+                                {isBlacklisted ? 'desativar blacklist' : 'ativar blacklist'}
                               </Button>
                               <Button 
                                 size="sm" 
@@ -416,7 +416,7 @@ senha: ${password || '******'}
                                 onClick={() => handleResetTests(userId)}
                               >
                                 <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                Reset
+                                teste reset
                               </Button>
                               <Button 
                                 size="sm" 
@@ -425,7 +425,7 @@ senha: ${password || '******'}
                                 onClick={() => handleAddExtraSlots(userId)}
                               >
                                 <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                +Slots
+                                adcional de IG
                               </Button>
                               <Button 
                                 size="sm" 
@@ -434,7 +434,7 @@ senha: ${password || '******'}
                                 onClick={() => handleCopyAccess(userId, user.password || (user as any).senha || user.data?.numero)}
                               >
                                 <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-                                Copiar Acesso
+                                copiar acesso
                               </Button>
                             </div>
                           </div>
