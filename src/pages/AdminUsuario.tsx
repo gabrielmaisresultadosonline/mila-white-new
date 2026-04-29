@@ -74,7 +74,6 @@ interface CreatedAccess {
 interface AdminSettings {
   memberAreaLink: string;
   messageTemplateInstagram: string;
-  messageTemplateWhatsapp: string;
 }
 
 // Admin credentials stored in Supabase
@@ -89,7 +88,6 @@ const ACCESS_DAYS = {
 
 const DEFAULT_SETTINGS: AdminSettings = {
   memberAreaLink: 'https://codigoinstashop.com.br/instagram',
-  whatsappGroupLink: 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi',
   messageTemplateInstagram: `Obrigado por fazer parte do nosso sistema!✅
 
 🚀🔥 *Ferramenta para Instagram Vip acesso!*
@@ -340,7 +338,6 @@ export default function AdminUsuario() {
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
-      .replace(/{GROUP_LINK}/g, settings.whatsappGroupLink)
       .replace(/{USERNAME}/g, access.username)
       .replace(/{PASSWORD}/g, access.password);
   };
