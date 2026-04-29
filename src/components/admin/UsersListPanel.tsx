@@ -455,14 +455,6 @@ const UsersListPanel = () => {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          {!adminAuth.pass && (
-            <Button variant="outline" size="sm" onClick={() => setShowAuthDialog(true)} className="border-amber-500/50 text-amber-500">
-              <ShieldAlert className="w-4 h-4 mr-1" /> Autenticar SquareCloud
-            </Button>
-          )}
-          <Button variant="outline" size="sm" onClick={() => exportCSV('full')}>
-            <Download className="w-4 h-4 mr-1" /> CSV Completo
-          </Button>
           <Button variant="outline" size="sm" onClick={() => exportCSV('simple')}>
             <Download className="w-4 h-4 mr-1" /> Só Usuários + Data
           </Button>
