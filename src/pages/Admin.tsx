@@ -739,78 +739,51 @@ const Admin = () => {
                     return (
                       <div 
                         key={profile.username} 
-                        className={`glass-card p-4 hover:border-primary/50 transition-colors ${
-                          profile.isConnectedToDashboard ? 'border-l-4 border-l-green-500' : ''
-                        } ${profile.isBlocked ? 'opacity-60' : ''}`}
+                        className="glass-card p-3 sm:p-4 hover:border-primary/30 transition-all border-l-4 border-l-green-500"
                       >
-                        <div className="flex items-center gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <div 
-                            className="flex items-center gap-4 flex-1 cursor-pointer"
+                            className="flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                             onClick={() => setSelectedSyncedProfile(profile)}
                           >
                             {profile.profilePicUrl && !profile.profilePicUrl.includes('dicebear') ? (
                               <img 
                                 src={profile.profilePicUrl}
                                 alt={profile.username}
-                                className={`w-16 h-16 rounded-full object-cover border-2 ${
-                                  profile.isBlocked ? 'border-red-500 grayscale' :
-                                  profile.isConnectedToDashboard ? 'border-green-500' : 'border-border'
-                                }`}
+                                className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-green-500"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                               />
                             ) : (
-                              <div className={`w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center border-2 ${
-                                profile.isBlocked ? 'border-red-500' :
-                                profile.isConnectedToDashboard ? 'border-green-500' : 'border-border'
-                              }`}>
-                                <span className="text-xl font-bold text-muted-foreground">{profile.username?.charAt(0).toUpperCase()}</span>
+                              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-muted/50 flex items-center justify-center border-2 border-green-500">
+                                <span className="text-lg sm:text-xl font-bold text-muted-foreground">{profile.username?.charAt(0).toUpperCase()}</span>
                               </div>
                             )}
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <p className="font-semibold">@{profile.username}</p>
-                                {profile.isBlocked && (
-                                  <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-500 flex items-center gap-1">
-                                    Bloqueado
-                                  </span>
-                                )}
-                                {!profile.isBlocked && profile.isConnectedToDashboard ? (
-                                  <div className="relative group">
-                                    <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-                                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-background border border-border rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                      Conectado
-                                    </span>
-                                  </div>
-                                ) : !profile.isBlocked && (
-                                  <div className="relative group">
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-background border border-border rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                      Não conectado
-                                    </span>
-                                  </div>
-                                )}
-                                <span className="text-xs px-2 py-0.5 rounded bg-secondary text-muted-foreground">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                <p className="font-bold text-sm sm:text-base truncate">@{profile.username}</p>
+                                <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground font-medium">
                                   <User className="w-3 h-3 inline mr-1" />
                                   {profile.ownerUserName}
                                 </span>
                               </div>
-                              <p className="text-sm text-muted-foreground">{profile.fullName}</p>
-                              <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
-                                <span>{profile.followers.toLocaleString()} seguidores</span>
-                                <span>{profile.following.toLocaleString()} seguindo</span>
-                                <span>{getPostsCount(profile).toLocaleString('pt-BR')} posts</span>
+                              <p className="text-xs sm:text-sm text-muted-foreground truncate">{profile.fullName}</p>
+                              <div className="flex gap-3 sm:gap-4 mt-1 text-[10px] sm:text-xs text-muted-foreground overflow-x-auto scrollbar-none whitespace-nowrap">
+                                <span><strong>{profile.followers.toLocaleString()}</strong> seg</span>
+                                <span><strong>{getPostsCount(profile).toLocaleString('pt-BR')}</strong> posts</span>
                                 {growth > 0 && (
-                                  <span className="text-green-500 font-medium">+{growth.toLocaleString()}</span>
+                                  <span className="text-green-500 font-bold">+{growth.toLocaleString()}</span>
                                 )}
                               </div>
                             </div>
                           </div>
                           
                           {/* Profile Actions */}
-                          <ProfileActions 
-                            profile={profile} 
-                            onUpdate={() => setSyncData(getSyncData())} 
-                          />
+                          <div className="sm:shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/30">
+                            <ProfileActions 
+                              profile={profile} 
+                              onUpdate={() => setSyncData(getSyncData())} 
+                            />
+                          </div>
                         </div>
                       </div>
                     );
