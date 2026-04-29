@@ -29,6 +29,7 @@ interface CreatedAccess {
   notes: string | null;
   created_at: string;
   expiration_date: string | null;
+  service_type: 'instagram';
 }
 
 interface AdminSettings {
