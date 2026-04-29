@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -37,8 +37,15 @@ import {
   Bell,
   AlertTriangle,
   Clock,
-  MailOpen
+  MailOpen,
+  User,
+  ShieldCheck,
+  Power,
+  PowerOff,
+  Instagram,
+  Key
 } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CreatedAccess {
   id: string;
