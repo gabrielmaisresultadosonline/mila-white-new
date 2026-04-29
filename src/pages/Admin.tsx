@@ -5,6 +5,7 @@ import { getSession } from '@/lib/storage';
 import { getUserSession } from '@/lib/userStorage';
 import { getSyncData, SyncedInstagramProfile, SyncData, getAllMergedProfiles, loadSyncDataFromServer } from '@/lib/syncStorage';
 import { ProfileSession, MROSession } from '@/types/instagram';
+import { supabase } from '@/integrations/supabase/client';
 import type { UserSession } from '@/types/user';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
