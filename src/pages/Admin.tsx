@@ -302,27 +302,12 @@ const Admin = () => {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <div className="space-y-6">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="glass-card p-3 sm:p-4 text-center">
-                <Instagram className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-pink-500 mb-1 sm:mb-2" />
-                <p className="text-xl sm:text-2xl font-bold">{totalSyncedProfiles}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Instagram Total</p>
-              </div>
-              <div className="glass-card p-3 sm:p-4 text-center">
-                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-green-500 mb-1 sm:mb-2" />
-                <p className="text-xl sm:text-2xl font-bold">{connectedProfiles}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Cadastrados</p>
-              </div>
-              <div className="glass-card p-3 sm:p-4 text-center">
-                <XCircle className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-yellow-500 mb-1 sm:mb-2" />
-                <p className="text-xl sm:text-2xl font-bold">{notConnectedProfiles}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Pendentes</p>
-              </div>
-              <div className="glass-card p-3 sm:p-4 text-center">
-                <Users className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-primary mb-1 sm:mb-2" />
-                <p className="text-xl sm:text-2xl font-bold">{syncData.users.length}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Usuários VIP</p>
+            {/* Stats Cards - Simplified to show only VIP Users Total */}
+            <div className="grid grid-cols-1 gap-4">
+              <div className="glass-card p-4 sm:p-6 text-center max-w-sm mx-auto w-full border-primary/30 shadow-lg bg-gradient-to-br from-primary/5 to-transparent">
+                <Users className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-primary mb-2 sm:mb-3" />
+                <p className="text-3xl sm:text-4xl font-bold text-primary">{syncData.users.length}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Total de Usuários VIP</p>
               </div>
             </div>
 
