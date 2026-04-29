@@ -337,9 +337,7 @@ export default function AdminUsuario() {
   };
 
   const generateCopyMessage = (access: CreatedAccess) => {
-    const template = access.service_type === 'instagram' 
-      ? settings.messageTemplateInstagram 
-      : settings.messageTemplateWhatsapp;
+    const template = settings.messageTemplateInstagram;
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)

@@ -114,9 +114,7 @@ export const CreateUserTab = () => {
   };
 
   const generateCopyMessage = (access: any) => {
-    const template = access.service_type === 'instagram' 
-      ? settings.messageTemplateInstagram 
-      : settings.messageTemplateWhatsapp;
+    const template = settings.messageTemplateInstagram;
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
