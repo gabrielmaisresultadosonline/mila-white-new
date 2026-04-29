@@ -193,7 +193,7 @@ async function sendAccessEmail(
     await client.send({
       from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: customerEmail,
-      subject: `MRO - Acesso Liberado ao ${serviceName}!`,
+      subject: `Código InstaShop - Acesso Liberado!`,
       content: "Seu acesso foi liberado! Veja os detalhes no email HTML.",
       html: finalHtml,
     });
