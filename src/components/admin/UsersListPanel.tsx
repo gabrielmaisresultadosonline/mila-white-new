@@ -161,8 +161,8 @@ const UsersListPanel = () => {
   }, []);
 
   const filteredUsers = squareUsers.filter(u => {
-    const userId = u.id || (u as any).userId || '';
-    const instagrams = u.igInstagram || (u as any).instagrams || [];
+    const userId = u?.id || (u as any)?.userId || '';
+    const instagrams = u?.igInstagram || (u as any)?.instagrams || [];
     
     return userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       instagrams.some((ig: string) => ig.toLowerCase().includes(searchTerm.toLowerCase()));
