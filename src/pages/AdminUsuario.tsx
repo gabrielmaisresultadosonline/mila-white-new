@@ -1238,10 +1238,160 @@ export default function AdminUsuario() {
             </div>
           </TabsContent>
 
-          {/* Test APIs Tab */}
-          <TabsContent value="test">
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="bg-gray-800 border-gray-700">
+          {/* List SquareCloud Users Tab */}
+          <TabsContent value="squarecloud" className="space-y-4">
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-blue-400" />
+                      Usuários SquareCloud (Ativos)
+                    </CardTitle>
+                    <CardDescription className="text-gray-400">
+                      Gerenciamento direto no banco de dados da API
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!squareAdminPass ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="password"
+                          placeholder="Senha Admin Square"
+                          value={squareAdminPass}
+                          onChange={(e) => setSquareAdminPass(e.target.value)}
+                          className="w-48 bg-gray-700 border-gray-600 h-9 text-xs"
+                        />
+                        <Button size="sm" onClick={loadSquareUsers} className="bg-blue-600 hover:bg-blue-700">
+                          Autenticar
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          Autenticado
+                        </Badge>
+                        <Button size="sm" variant="ghost" onClick={() => { setSquareAdminPass(''); localStorage.removeItem('square_admin_pass'); setSquareUsers([]); }} className="text-red-400 hover:text-red-300">
+                          Sair
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={loadSquareUsers} disabled={loadingSquare}>
+                          <RefreshCw className={`w-4 h-4 ${loadingSquare ? 'animate-spin' : ''}`} />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {!squareAdminPass ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Lock className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                    <p>Autentique com a senha admin para ver a lista em tempo real</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        placeholder="Buscar por usuário ou instagram..."
+                        value={squareSearch}
+                        onChange={(e) => setSquareSearch(e.target.value)}
+                        className="pl-10 bg-gray-900/50 border-gray-700 text-white"
+                      />
+                    </div>
+
+                    <ScrollArea className="h-[600px] pr-4">
+                      {loadingSquare && squareUsers.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20">
+                          <Loader2 className="w-10 h-10 animate-spin text-blue-500 mb-4" />
+                          <p className="text-gray-400">Carregando usuários da API...</p>
+                        </div>
+                      ) : filteredSquareUsers.length === 0 ? (
+                        <div className="text-center py-20 text-gray-500">
+                          <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                          <p>Nenhum usuário encontrado na SquareCloud</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {filteredSquareUsers.map((user) => (
+                            <div key={user.userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
+                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="text-white font-bold text-lg">{user.userId}</h3>
+                                    {user.fullAccess ? (
+                                      <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
+                                    ) : (
+                                      <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
+                                    )}
+                                  </div>
+                                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
+                                    <span className="flex items-center gap-1">
+                                      <Zap className="w-3 h-3 text-yellow-500" />
+                                      Testes Restantes: <strong className="text-white">{user.testsRemaining}</strong>
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <RefreshCw className="w-3 h-3 text-blue-400" />
+                                      Testes Ativos: <strong className="text-white">{user.activeTestsCount}</strong>
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    className="border-red-500/30 text-red-400 hover:bg-red-500/10 h-8"
+                                    onClick={() => removeSquareUser(user.userId)}
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+                                    Apagar Usuário
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline" 
+                                    className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 h-8"
+                                    onClick={() => clearInstagrams(user.userId)}
+                                  >
+                                    <X className="w-3.5 h-3.5 mr-1.5" />
+                                    Limpar IGs
+                                  </Button>
+                                </div>
+                              </div>
+
+                              {/* Instagrams List */}
+                              <div className="mt-4 pt-4 border-t border-gray-800/50">
+                                <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2">Contas de Instagram:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {user.instagrams && user.instagrams.length > 0 ? (
+                                    user.instagrams.map((ig: string) => (
+                                      <div key={ig} className="bg-gray-800/80 border border-gray-700 rounded-full px-3 py-1 flex items-center gap-2 group">
+                                        <Instagram className="w-3 h-3 text-pink-500" />
+                                        <span className="text-xs text-gray-300 font-medium">@{ig}</span>
+                                        <button 
+                                          onClick={() => removeInstagram(user.userId, ig)}
+                                          className="text-gray-500 hover:text-red-400 transition-colors"
+                                        >
+                                          <Trash2 className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <span className="text-xs text-gray-600 italic">Nenhuma conta cadastrada</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </ScrollArea>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <Zap className="w-5 h-5 text-green-500" />
