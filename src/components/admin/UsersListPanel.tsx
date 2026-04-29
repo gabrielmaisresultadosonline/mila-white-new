@@ -208,8 +208,11 @@ const UsersListPanel = () => {
               ) : (
                 <div className="space-y-3">
                   {filteredUsers.map((user) => {
-                    const userId = user.id || (user as any).userId;
-                    const instagrams = user.igInstagram || (user as any).instagrams || [];
+                    const userId = user.id || user.ID || (user as any).userId;
+                    const instagrams = user.igInstagram || user.data?.igInstagram || (user as any).instagrams || [];
+                    const isBlacklisted = user.blackList || user.data?.blackList || (user as any).blackList;
+                    const expiration = user.dataDeExpiracao || user.data?.dataDeExpiracao || (user as any).expiracao;
+                    const isFullAccess = user.acessFull || (expiration && Number(expiration) > 365) || (user as any).fullAccess;
                     
                     return (
                       <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
@@ -219,26 +222,31 @@ const UsersListPanel = () => {
                               <h3 className="text-white font-bold text-lg">{userId}</h3>
                               <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5">
                                 <Key className="w-3 h-3" />
-                                Senha: {user.password || (user as any).senha || '******'}
+                                Senha: {user.password || (user as any).senha || user.data?.numero || '******'}
                               </Badge>
-                              {user.acessFull || (user as any).fullAccess ? (
+                              {isFullAccess ? (
                                 <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
                               ) : (
                                 <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
+                              )}
+                              {isBlacklisted && (
+                                <Badge variant="destructive" className="flex items-center gap-1 text-[10px] h-5">
+                                  <Ban className="w-3 h-3" /> BLACKLIST
+                                </Badge>
                               )}
                             </div>
                             
                             <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
                               <span className="flex items-center gap-1">
                                 <Zap className="w-3 h-3 text-yellow-500" />
-                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? (user as any).testesRestantes ?? 0}</strong>
+                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0}</strong>
                               </span>
                               <span className="flex items-center gap-1">
                                 <RefreshCw className="w-3 h-3 text-blue-400" />
                                 Testes Ativos: <strong className="text-white">{user.activeTests ?? (user as any).testesAtivos ?? 0}</strong>
                               </span>
-                              {(user.dataDeExpiracao || (user as any).expiracao) && (
-                                <span className="text-blue-300">Expira: {user.dataDeExpiracao || (user as any).expiracao}</span>
+                              {expiration && (
+                                <span className="text-blue-300">Expira: {expiration} dias</span>
                               )}
                             </div>
                           </div>
