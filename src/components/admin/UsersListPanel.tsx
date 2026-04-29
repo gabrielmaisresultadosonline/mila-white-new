@@ -98,24 +98,19 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const response = await fetch(`${API_BASE}/admin/remover-instagram`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: JSON.stringify({ userId, instagram })
+        body: { userId, instagram }
       });
 
-      const data = await response.json();
+      if (error) throw error;
 
-      if (response.ok) {
-        toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
-        fetchData();
-      } else {
-        throw new Error(data.message || 'Erro ao remover Instagram');
-      }
+      toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
+      fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
