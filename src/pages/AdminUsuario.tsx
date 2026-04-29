@@ -836,8 +836,6 @@ export default function AdminUsuario() {
           </div>
         )}
 
-        <Tabs defaultValue="create" className="space-y-6">
-          <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto gap-1 p-1">
             <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black text-xs sm:text-sm">
               <UserPlus className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Criar</span>
