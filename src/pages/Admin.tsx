@@ -330,7 +330,7 @@ const Admin = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-card p-4 sm:p-6 text-center border-primary/30 shadow-lg bg-gradient-to-br from-primary/5 to-transparent">
                 <Users className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-primary mb-2 sm:mb-3" />
-                <p className="text-3xl sm:text-4xl font-bold text-primary">{syncData.users.length}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-primary">{squareUsersCount}</p>
                 <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Total Usuários (API)</p>
               </div>
               <div className="glass-card p-4 sm:p-6 text-center border-pink-500/30 shadow-lg bg-gradient-to-br from-pink-500/5 to-transparent">
