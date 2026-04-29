@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap } from 'lucide-react';
+import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SquareUser {
   id: string;
@@ -18,6 +19,16 @@ interface SquareUser {
   acessFull?: boolean;
   blackList?: boolean;
   dataDeExpiracao?: string;
+  // New nested structure support
+  ID?: string;
+  data?: {
+    igInstagram?: string[];
+    dataDeExpiracao?: number;
+    blackList?: boolean;
+    userTeste?: boolean;
+    testsRemainingMonth?: number;
+    numero?: string;
+  };
 }
 
 const UsersListPanel = () => {
@@ -34,21 +45,17 @@ const UsersListPanel = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      console.log('[UsersListPanel] Fetching SquareCloud users...');
+      console.log('[UsersListPanel] Fetching SquareCloud users via Proxy...');
       
-      const response = await fetch(`${API_BASE}/admin/usuarios`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
-      }
+      if (error) throw error;
 
-      const data = await response.json();
       console.log('[UsersListPanel] API full response:', data);
       
       const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
@@ -64,7 +71,7 @@ const UsersListPanel = () => {
       console.error('[UsersListPanel] Error:', error);
       toast({ 
         title: 'Erro na API SquareCloud', 
-        description: error?.message || 'Não foi possível carregar a lista de usuários ativos', 
+        description: error?.message || 'Não foi possível carregar a lista de usuários ativos. Verifique se a Edge Function square-admin-proxy está implantada.', 
         variant: 'destructive' 
       });
     } finally {
@@ -77,24 +84,19 @@ const UsersListPanel = () => {
 
     setIsDeleting(userId);
     try {
-      const response = await fetch(`${API_BASE}/admin/remover-usuario`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-user', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: JSON.stringify({ userId })
+        body: { userId }
       });
 
-      const data = await response.json();
+      if (error) throw error;
 
-      if (response.ok) {
-        toast({ title: 'Usuário removido', description: data.message || 'Perfil excluído com sucesso' });
-        fetchData();
-      } else {
-        throw new Error(data.message || 'Erro ao remover usuário');
-      }
+      toast({ title: 'Usuário removido', description: data.message || 'Perfil excluído com sucesso' });
+      fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     } finally {
@@ -106,24 +108,19 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const response = await fetch(`${API_BASE}/admin/remover-instagram`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: JSON.stringify({ userId, instagram })
+        body: { userId, instagram }
       });
 
-      const data = await response.json();
+      if (error) throw error;
 
-      if (response.ok) {
-        toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
-        fetchData();
-      } else {
-        throw new Error(data.message || 'Erro ao remover Instagram');
-      }
+      toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
+      fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
@@ -133,36 +130,36 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const response = await fetch(`${API_BASE}/admin/limpar-instagrams`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: JSON.stringify({ userId })
+        body: { userId }
       });
 
-      const data = await response.json();
+      if (error) throw error;
 
-      if (response.ok) {
-        toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
-        fetchData();
-      } else {
-        throw new Error(data.message || 'Erro ao limpar Instagrams');
-      }
+      toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
+      fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
   };
 
   useEffect(() => {
+    // Check if we are already authenticated via localStorage (from AdminUsuario page logic)
+    const savedPass = localStorage.getItem('square_admin_pass');
+    if (savedPass) {
+        // We use the default pass for now as requested, but we could use savedPass if needed
+    }
     fetchData();
   }, []);
 
   const filteredUsers = squareUsers.filter(u => {
-    const userId = u?.id || (u as any)?.userId || '';
-    const instagrams = u?.igInstagram || (u as any)?.instagrams || [];
+    const userId = u?.id || u?.ID || (u as any)?.userId || '';
+    const instagrams = u?.igInstagram || u?.data?.igInstagram || (u as any)?.instagrams || [];
     
     return userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       instagrams.some((ig: string) => ig.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -216,8 +213,11 @@ const UsersListPanel = () => {
               ) : (
                 <div className="space-y-3">
                   {filteredUsers.map((user) => {
-                    const userId = user.id || (user as any).userId;
-                    const instagrams = user.igInstagram || (user as any).instagrams || [];
+                    const userId = user.id || user.ID || (user as any).userId;
+                    const instagrams = user.igInstagram || user.data?.igInstagram || (user as any).instagrams || [];
+                    const isBlacklisted = user.blackList || user.data?.blackList || (user as any).blackList;
+                    const expiration = user.dataDeExpiracao || user.data?.dataDeExpiracao || (user as any).expiracao;
+                    const isFullAccess = user.acessFull || (expiration && Number(expiration) > 365) || (user as any).fullAccess;
                     
                     return (
                       <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
@@ -227,26 +227,31 @@ const UsersListPanel = () => {
                               <h3 className="text-white font-bold text-lg">{userId}</h3>
                               <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/30 font-mono flex items-center gap-1.5">
                                 <Key className="w-3 h-3" />
-                                Senha: {user.password || (user as any).senha || '******'}
+                                Senha: {user.password || (user as any).senha || user.data?.numero || '******'}
                               </Badge>
-                              {user.acessFull || (user as any).fullAccess ? (
+                              {isFullAccess ? (
                                 <Badge className="bg-amber-500 text-black font-bold text-[10px] h-5">FULL ACCESS</Badge>
                               ) : (
                                 <Badge variant="outline" className="text-gray-400 border-gray-600 text-[10px] h-5">NORMAL</Badge>
+                              )}
+                              {isBlacklisted && (
+                                <Badge variant="destructive" className="flex items-center gap-1 text-[10px] h-5">
+                                  <Ban className="w-3 h-3" /> BLACKLIST
+                                </Badge>
                               )}
                             </div>
                             
                             <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
                               <span className="flex items-center gap-1">
                                 <Zap className="w-3 h-3 text-yellow-500" />
-                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? (user as any).testesRestantes ?? 0}</strong>
+                                Testes Restantes: <strong className="text-white">{user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0}</strong>
                               </span>
                               <span className="flex items-center gap-1">
                                 <RefreshCw className="w-3 h-3 text-blue-400" />
                                 Testes Ativos: <strong className="text-white">{user.activeTests ?? (user as any).testesAtivos ?? 0}</strong>
                               </span>
-                              {(user.dataDeExpiracao || (user as any).expiracao) && (
-                                <span className="text-blue-300">Expira: {user.dataDeExpiracao || (user as any).expiracao}</span>
+                              {expiration && (
+                                <span className="text-blue-300">Expira: {expiration} dias</span>
                               )}
                             </div>
                           </div>
