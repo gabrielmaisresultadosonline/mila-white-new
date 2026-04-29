@@ -42,7 +42,7 @@ type UserFilter = 'all' | 'instagram' | 'connected';
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<Tab>('users');
+  const [activeTab, setActiveTab] = useState<Tab>('userlist');
   const [session, setSession] = useState<MROSession | null>(null);
   const [userSession, setUserSession] = useState<UserSession | null>(null);
   const [syncData, setSyncData] = useState<SyncData>(getSyncData());
@@ -194,7 +194,7 @@ const Admin = () => {
     { id: 'announcements', label: 'Avisos', icon: <Bell className="w-4 h-4" /> },
     { id: 'settings', label: 'APIs', icon: <Settings className="w-4 h-4" /> },
     { id: 'whatsapp', label: 'WhatsApp', icon: <MessageCircle className="w-4 h-4" /> },
-    { id: 'userlist', label: 'Usuarios Lista', icon: <User className="w-4 h-4" /> },
+    { id: 'userlist', label: 'Lista Usuários e Senhas (SquareCloud)', icon: <User className="w-4 h-4" /> },
   ];
 
   const getSelectedProfileData = () => {

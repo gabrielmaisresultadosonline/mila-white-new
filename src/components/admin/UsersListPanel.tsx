@@ -37,6 +37,11 @@ interface MergedUser {
 }
 
 const UsersListPanel = () => {
+  useEffect(() => {
+    // Auto-fetch with default credentials on mount
+    fetchData();
+  }, []);
+
   const { toast } = useToast();
   const [users, setUsers] = useState<MergedUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +50,7 @@ const UsersListPanel = () => {
   const [downloadingAll, setDownloadingAll] = useState(false);
 
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [adminAuth, setAdminAuth] = useState({ name: '', pass: '' });
+  const [adminAuth, setAdminAuth] = useState({ name: '', pass: 'maisresultadosonline' });
   const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const fetchData = async () => {
@@ -185,7 +190,9 @@ const UsersListPanel = () => {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { 
+    // Data already fetched via useEffect at the top
+  }, []);
 
   const filteredUsers = users.filter(u => {
     const matchesSearch = 
@@ -448,11 +455,6 @@ const UsersListPanel = () => {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          {!adminAuth.pass && (
-            <Button variant="outline" size="sm" onClick={() => setShowAuthDialog(true)} className="border-amber-500/50 text-amber-500">
-              <ShieldAlert className="w-4 h-4 mr-1" /> Autenticar SquareCloud
-            </Button>
-          )}
           <Button variant="outline" size="sm" onClick={() => exportCSV('full')}>
             <Download className="w-4 h-4 mr-1" /> CSV Completo
           </Button>
