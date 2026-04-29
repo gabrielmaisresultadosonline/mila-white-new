@@ -815,21 +815,25 @@ export default function AdminUsuario() {
             <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
           </TabsList>
-            </Button>
-            <Button onClick={exportToCSV} variant="outline" className="border-green-500 text-green-500 hover:bg-green-500/20 text-xs sm:text-sm">
-              <Download className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Exportar CSV</span>
-            </Button>
-            <Button onClick={loadAccesses} variant="outline" disabled={loading} className="text-xs sm:text-sm">
-              <RefreshCw className={`w-4 h-4 sm:mr-2 ${loading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Atualizar</span>
-            </Button>
-            <Button onClick={handleLogout} variant="destructive" className="text-xs sm:text-sm">
-              <LogOut className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Sair</span>
-            </Button>
-          </div>
         </div>
+
+        {/* Stats Bar */}
+        {(expiringCount > 0 || expiredCount > 0) && (
+          <div className="flex gap-4 mb-6 flex-wrap">
+            {expiringCount > 0 && (
+              <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg px-4 py-2 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                <span className="text-yellow-400 text-sm font-medium">{expiringCount} expirando em 7 dias</span>
+              </div>
+            )}
+            {expiredCount > 0 && (
+              <div className="bg-red-900/30 border border-red-500/50 rounded-lg px-4 py-2 flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-red-500" />
+                <span className="text-red-400 text-sm font-medium">{expiredCount} acessos expirados</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Stats Bar */}
         {(expiringCount > 0 || expiredCount > 0) && (
