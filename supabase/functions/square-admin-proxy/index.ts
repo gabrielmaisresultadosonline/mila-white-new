@@ -50,6 +50,11 @@ serve(async (req) => {
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
+    } else if (action === 'zerar-testes' || url.pathname.includes('/zerar-testes')) {
+      targetUrl = `${API_BASE}/admin/zerar-testes`;
+      method = 'POST';
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
