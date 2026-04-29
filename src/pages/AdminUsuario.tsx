@@ -54,7 +54,7 @@ interface CreatedAccess {
   customer_name: string | null;
   username: string;
   password: string;
-  service_type: 'whatsapp' | 'instagram';
+  service_type: 'instagram';
   access_type: 'annual' | 'lifetime' | 'monthly';
   days_access: number;
   api_created: boolean;
@@ -154,7 +154,7 @@ export default function AdminUsuario() {
     customerEmail: '',
     username: '',
     password: '',
-    serviceType: 'instagram' as 'whatsapp' | 'instagram',
+    serviceType: 'instagram' as 'instagram',
     accessType: 'annual' as 'annual' | 'lifetime' | 'monthly',
     notes: '',
     createInApi: true, // Criar usuário na API (SquareCloud)
