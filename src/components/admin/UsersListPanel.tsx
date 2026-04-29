@@ -45,7 +45,7 @@ const UsersListPanel = () => {
   const [downloadingAll, setDownloadingAll] = useState(false);
 
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [adminAuth, setAdminAuth] = useState({ name: '', pass: '' });
+  const [adminAuth, setAdminAuth] = useState({ name: '', pass: 'maisresultadosonline' });
   const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const fetchData = async () => {
