@@ -160,10 +160,13 @@ const UsersListPanel = () => {
     fetchData();
   }, []);
 
-  const filteredUsers = squareUsers.filter(u => 
-    u.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (u.igInstagram && u.igInstagram.some(ig => ig.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
+  const filteredUsers = squareUsers.filter(u => {
+    const userId = u.id || (u as any).userId || '';
+    const instagrams = u.igInstagram || (u as any).instagrams || [];
+    
+    return userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      instagrams.some((ig: string) => ig.toLowerCase().includes(searchTerm.toLowerCase()));
+  });
 
   return (
     <div className="space-y-6">
