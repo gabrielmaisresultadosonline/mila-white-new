@@ -26,30 +26,21 @@ serve(async (req) => {
     if (adminPass) headers['x-admin-pass'] = adminPass;
     if (adminName) headers['x-admin-name'] = adminName;
 
-    let targetUrl = `${API_BASE}/admin/usuarios`; // Fixed the missing slash from previous thought process logic if any, but wait, the error is 404. Let's try without /admin if needed or check documentation.
-    // The user provided: GET https://codigoinstashopapimro.squareweb.app/admin/usuarios
-    // The current targetUrl matches this.
-    // Wait, let's verify if the API_BASE should end with / or not.
-    // Const API_BASE = "https://codigoinstashopapimro.squareweb.app";
-    // targetUrl = `${API_BASE}/admin/usuarios` -> https://codigoinstashopapimro.squareweb.app/admin/usuarios
-    // This is correct according to the prompt.
-    // Maybe the server expects no HTTPS? No, squareweb.app usually is HTTPS.
-    // Let's try a direct test with one more variant.
-
+    let targetUrl = `${API_BASE}/admin/usuarios`;
     let method = 'GET';
     let body = null;
 
-    if (action === 'remove-user') {
+    if (action === 'remove-user' || url.pathname.includes('/remove-user')) {
       targetUrl = `${API_BASE}/admin/remover-usuario`;
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
-    } else if (action === 'remove-instagram') {
+    } else if (action === 'remove-instagram' || url.pathname.includes('/remove-instagram')) {
       targetUrl = `${API_BASE}/admin/remover-instagram`;
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
-    } else if (action === 'clear-instagrams') {
+    } else if (action === 'clear-instagrams' || url.pathname.includes('/clear-instagrams')) {
       targetUrl = `${API_BASE}/admin/limpar-instagrams`;
       method = 'POST';
       const json = await req.json().catch(() => ({}));
@@ -71,7 +62,7 @@ serve(async (req) => {
     if (responseText.trim().startsWith('<!') || responseText.trim().startsWith('<html')) {
         return new Response(JSON.stringify({ 
             success: false, 
-            message: `Erro na API SquareCloud (${response.status}). O servidor retornou uma página de erro.`,
+            message: `Erro na API SquareCloud (${response.status}). O servidor retornou uma página de erro (404/500). Verifique se o endpoint ${targetUrl} está correto.`,
             debug: responseText.substring(0, 200)
         }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
