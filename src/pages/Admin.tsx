@@ -42,7 +42,7 @@ type UserFilter = 'all' | 'instagram' | 'connected';
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<Tab>('users');
+  const [activeTab, setActiveTab] = useState<Tab>('userlist');
   const [session, setSession] = useState<MROSession | null>(null);
   const [userSession, setUserSession] = useState<UserSession | null>(null);
   const [syncData, setSyncData] = useState<SyncData>(getSyncData());
