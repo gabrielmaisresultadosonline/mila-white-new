@@ -55,6 +55,11 @@ serve(async (req) => {
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
+    } else if (action === 'add-ig-extra' || url.pathname.includes('/add-ig-extra')) {
+      targetUrl = `${API_BASE}/adicionar-ig-extra`;
+      method = 'POST';
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban } from 'lucide-react';
+import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +28,7 @@ interface SquareUser {
     userTeste?: boolean;
     testsRemainingMonth?: number;
     numero?: string;
+    extraIgSlots?: number;
   };
 }
 
@@ -201,6 +202,38 @@ const UsersListPanel = () => {
     }
   };
 
+  const handleAddExtraSlots = async (userId: string) => {
+    const qty = prompt('Quantas contas extras (IG disponíveis) deseja adicionar?', '1');
+    if (qty === null) return;
+    
+    const quantidade = parseInt(qty, 10);
+    if (isNaN(quantidade) || quantidade <= 0) {
+      toast({ title: 'Valor inválido', description: 'Por favor, insira um número maior que zero.', variant: 'destructive' });
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/add-ig-extra', {
+        method: 'POST',
+        headers: {
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: { username: userId, quantidade }
+      });
+
+      if (error) throw error;
+
+      toast({ 
+        title: 'Slots adicionados', 
+        description: `Foram adicionados +${quantidade} slots extras para o usuário ${userId}.` 
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -266,6 +299,7 @@ const UsersListPanel = () => {
                     const isBlacklisted = user.blackList || user.data?.blackList || (user as any).blackList;
                     const expiration = user.dataDeExpiracao || user.data?.dataDeExpiracao || (user as any).expiracao;
                     const isFullAccess = user.acessFull || (expiration && Number(expiration) > 365) || (user as any).fullAccess;
+                    const extraSlots = user.extraIgSlots ?? user.data?.extraIgSlots ?? 0;
                     
                     return (
                       <div key={userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
@@ -285,6 +319,11 @@ const UsersListPanel = () => {
                               {isBlacklisted && (
                                 <Badge variant="destructive" className="flex items-center gap-1 text-[10px] h-5">
                                   <Ban className="w-3 h-3" /> BLACKLIST
+                                </Badge>
+                              )}
+                              {extraSlots > 0 && (
+                                <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/30 text-[10px] h-5">
+                                  +{extraSlots} EXTRAS
                                 </Badge>
                               )}
                             </div>
@@ -341,6 +380,15 @@ const UsersListPanel = () => {
                             >
                               <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
                               Zerar Testes
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="border-green-500/30 text-green-400 hover:bg-green-500/10 h-8"
+                              onClick={() => handleAddExtraSlots(userId)}
+                            >
+                              <Plus className="w-3.5 h-3.5 mr-1.5" />
+                              Add Extras
                             </Button>
                           </div>
                         </div>
