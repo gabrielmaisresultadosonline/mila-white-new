@@ -20,7 +20,7 @@ interface CreatedAccess {
   customer_name: string | null;
   username: string;
   password: string;
-  service_type: 'whatsapp' | 'instagram';
+  service_type: 'instagram';
   access_type: 'annual' | 'lifetime' | 'monthly';
   days_access: number;
   api_created: boolean;
@@ -29,7 +29,6 @@ interface CreatedAccess {
   notes: string | null;
   created_at: string;
   expiration_date: string | null;
-  service_type: 'instagram';
 }
 
 interface AdminSettings {
