@@ -455,6 +455,9 @@ const UsersListPanel = () => {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => exportCSV('full')}>
+            <Download className="w-4 h-4 mr-1" /> CSV Completo
+          </Button>
           <Button variant="outline" size="sm" onClick={() => exportCSV('simple')}>
             <Download className="w-4 h-4 mr-1" /> Só Usuários + Data
           </Button>
