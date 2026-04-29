@@ -43,13 +43,22 @@ const UsersListPanel = () => {
         }
       });
 
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
+      }
+
       const data = await response.json();
+      console.log('[UsersListPanel] API full response:', data);
       
-      if (data && Array.isArray(data.usuarios)) {
-        setSquareUsers(data.usuarios);
-        console.log(`[UsersListPanel] ${data.usuarios.length} users loaded from SquareCloud`);
+      const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
+
+      if (Array.isArray(userList)) {
+        setSquareUsers(userList);
+        console.log(`[UsersListPanel] ${userList.length} users loaded from SquareCloud`);
       } else {
-        throw new Error(data.message || 'Falha ao carregar usuários da API');
+        console.error('[UsersListPanel] Data structure is unexpected:', data);
+        throw new Error('Formato de resposta inesperado da API');
       }
     } catch (error: any) {
       console.error('[UsersListPanel] Error:', error);
