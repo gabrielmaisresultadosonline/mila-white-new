@@ -196,12 +196,11 @@ export default function AdminUsuario() {
   }, []);
 
   const loadSquareUsers = async () => {
-    if (!squareAdminPass) return;
     setLoadingSquare(true);
     try {
       const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         headers: {
-          'x-admin-pass': squareAdminPass
+          'x-admin-pass': 'maisresultadosonline'
         }
       });
 
@@ -209,15 +208,9 @@ export default function AdminUsuario() {
       
       if (Array.isArray(data)) {
         setSquareUsers(data);
-        localStorage.setItem('square_admin_pass', squareAdminPass);
-      } else if (data.message === "Senha admin incorreta") {
-        toast.error("Senha admin SquareCloud incorreta");
-        setSquareAdminPass('');
-        localStorage.removeItem('square_admin_pass');
       }
     } catch (err) {
       console.error("Error loading Square users:", err);
-      // toast.error("Erro ao carregar usuários da SquareCloud");
     } finally {
       setLoadingSquare(false);
     }
