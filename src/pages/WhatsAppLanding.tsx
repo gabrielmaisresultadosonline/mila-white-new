@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MessageCircle, Sparkles, Headset, HelpCircle, X } from "lucide-react";
+import { MessageCircle, Sparkles, Headset, HelpCircle, X, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackPageView, trackLead } from "@/lib/facebookTracking";
 import logoMroWhite from "@/assets/logo-codigoinstashop.png";
@@ -24,6 +24,11 @@ const WhatsAppLanding = () => {
     whatsapp_number: "",
     page_title: "Gabriel está disponível agora para te ajudar",
     page_subtitle: "Sobre o que gostaria de falar clique no botão abaixo.",
+    profile_photo_url: "",
+    is_direct_button: false,
+    options_title: "Sobre o que deseja falar?",
+    button_text: "FALAR NO WHATSAPP",
+    whatsapp_message: "Olá, gostaria de saber mais sobre o Código InstaShop",
   });
   const [options, setOptions] = useState<OptionItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,9 +43,14 @@ const WhatsAppLanding = () => {
       ]);
       if (settingsRes.data) {
         setSettings({
-          whatsapp_number: settingsRes.data.whatsapp_number,
-          page_title: settingsRes.data.page_title,
-          page_subtitle: settingsRes.data.page_subtitle,
+          whatsapp_number: settingsRes.data.whatsapp_number || "",
+          page_title: settingsRes.data.page_title || "",
+          page_subtitle: settingsRes.data.page_subtitle || "",
+          profile_photo_url: settingsRes.data.profile_photo_url || "",
+          is_direct_button: settingsRes.data.is_direct_button || false,
+          options_title: settingsRes.data.options_title || "Sobre o que deseja falar?",
+          button_text: settingsRes.data.button_text || "FALAR NO WHATSAPP",
+          whatsapp_message: settingsRes.data.whatsapp_message || "Olá, gostaria de saber mais sobre o Código InstaShop",
         });
       }
       if (optionsRes.data) {
@@ -50,6 +60,17 @@ const WhatsAppLanding = () => {
     };
     load();
   }, []);
+
+  const handleMainButtonClick = () => {
+    if (settings.is_direct_button) {
+      const phone = settings.whatsapp_number.replace(/\D/g, "");
+      const msg = encodeURIComponent(settings.whatsapp_message);
+      trackLead("WhatsApp Landing - Direct Button");
+      window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+    } else {
+      setShowOptions(true);
+    }
+  };
 
   const handleOptionClick = (option: OptionItem) => {
     trackLead(`WhatsApp Landing - ${option.label}`);
@@ -86,8 +107,12 @@ const WhatsAppLanding = () => {
 
         {/* Photo */}
         <div className="flex justify-center">
-          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-green-500 overflow-hidden shadow-[0_0_30px_rgba(37,211,102,0.3)]">
-            <img src="/gabriel-photo.webp" alt="Gabriel" className="w-full h-full object-cover" />
+          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-green-500 overflow-hidden shadow-[0_0_30px_rgba(37,211,102,0.3)] bg-zinc-900 flex items-center justify-center">
+            {settings.profile_photo_url ? (
+              <img src={settings.profile_photo_url} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <User className="w-12 h-12 text-zinc-700" />
+            )}
           </div>
         </div>
 
@@ -101,32 +126,32 @@ const WhatsAppLanding = () => {
 
         {/* Single CTA Button */}
         <button
-          onClick={() => setShowOptions(true)}
+          onClick={handleMainButtonClick}
           className="w-full py-5 px-6 rounded-2xl font-bold text-lg sm:text-xl text-white flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(37,211,102,0.4)]"
           style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
         >
           <MessageCircle className="w-7 h-7 flex-shrink-0" />
-          FALAR NO WHATSAPP
+          {settings.button_text}
         </button>
 
         <p className="text-gray-500 text-xs">Você será redirecionado para o WhatsApp</p>
       </div>
 
       {/* Options Popup */}
-      {showOptions && (
+      {!settings.is_direct_button && showOptions && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={() => setShowOptions(false)}>
           <div
             className="bg-[#1a1a2e] w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl border-t sm:border border-gray-700 p-6 space-y-5 animate-in slide-in-from-bottom duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-white font-bold text-lg">Sobre o que deseja falar?</h2>
+              <h2 className="text-white font-bold text-lg">{settings.options_title}</h2>
               <button onClick={() => setShowOptions(false)} className="text-gray-400 hover:text-white p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1 custom-scrollbar">
               {options.map((option) => {
                 const Icon = ICON_MAP[option.icon_type] || MessageCircle;
                 return (
@@ -144,6 +169,9 @@ const WhatsAppLanding = () => {
                   </button>
                 );
               })}
+              {options.length === 0 && (
+                <p className="text-center text-zinc-500 py-4 text-sm">Nenhuma opção configurada.</p>
+              )}
             </div>
           </div>
         </div>

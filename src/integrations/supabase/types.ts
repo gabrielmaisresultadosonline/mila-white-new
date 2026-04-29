@@ -2752,8 +2752,11 @@ export type Database = {
           button_text: string
           created_at: string
           id: string
+          is_direct_button: boolean | null
+          options_title: string | null
           page_subtitle: string
           page_title: string
+          profile_photo_url: string | null
           updated_at: string
           whatsapp_message: string
           whatsapp_number: string
@@ -2764,8 +2767,11 @@ export type Database = {
           button_text?: string
           created_at?: string
           id?: string
+          is_direct_button?: boolean | null
+          options_title?: string | null
           page_subtitle?: string
           page_title?: string
+          profile_photo_url?: string | null
           updated_at?: string
           whatsapp_message?: string
           whatsapp_number?: string
@@ -2776,8 +2782,11 @@ export type Database = {
           button_text?: string
           created_at?: string
           id?: string
+          is_direct_button?: boolean | null
+          options_title?: string | null
           page_subtitle?: string
           page_title?: string
+          profile_photo_url?: string | null
           updated_at?: string
           whatsapp_message?: string
           whatsapp_number?: string

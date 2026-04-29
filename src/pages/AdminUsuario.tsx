@@ -73,9 +73,7 @@ interface CreatedAccess {
 
 interface AdminSettings {
   memberAreaLink: string;
-  whatsappGroupLink: string;
   messageTemplateInstagram: string;
-  messageTemplateWhatsapp: string;
 }
 
 // Admin credentials stored in Supabase
@@ -90,7 +88,6 @@ const ACCESS_DAYS = {
 
 const DEFAULT_SETTINGS: AdminSettings = {
   memberAreaLink: 'https://codigoinstashop.com.br/instagram',
-  whatsappGroupLink: 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi',
   messageTemplateInstagram: `Obrigado por fazer parte do nosso sistema!✅
 
 🚀🔥 *Ferramenta para Instagram Vip acesso!*
@@ -113,7 +110,6 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 Atenciosamente,
 *Codigo InstaShop*`,
-  messageTemplateWhatsapp: '',
 };
 
 export default function AdminUsuario() {
@@ -341,7 +337,6 @@ export default function AdminUsuario() {
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
-      .replace(/{GROUP_LINK}/g, settings.whatsappGroupLink)
       .replace(/{USERNAME}/g, access.username)
       .replace(/{PASSWORD}/g, access.password);
   };
@@ -762,7 +757,7 @@ export default function AdminUsuario() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold text-white">Admin Usuários</h1>
-            <p className="text-gray-400">Gerencie acessos WhatsApp e Instagram</p>
+            <p className="text-gray-400">Gerencie acessos Instagram</p>
           </div>
           <div className="flex gap-2 flex-wrap">
             <Button onClick={loadAccesses} variant="outline" disabled={loading} className="border-blue-500 text-blue-500 hover:bg-blue-500/20 text-xs sm:text-sm">
@@ -966,7 +961,7 @@ export default function AdminUsuario() {
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4"
                       >
                         <Copy className="w-5 h-5 mr-2" />
-                        Copiar Mensagem para WhatsApp
+                        Copiar Mensagem para Cliente
                       </Button>
                     </div>
                   ) : (
@@ -1322,27 +1317,6 @@ export default function AdminUsuario() {
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-green-500" />
-                    WhatsApp API
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button onClick={testWhatsAppAPI} disabled={loading} className="w-full bg-green-600 hover:bg-green-700">
-                    {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <TestTube className="w-4 h-4 mr-2" />}
-                    Testar
-                  </Button>
-                  {testResults.whatsapp && (
-                    <div className={`p-3 rounded-lg flex items-center gap-2 text-sm ${testResults.whatsapp.success ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`}>
-                      {testResults.whatsapp.success ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-                      {testResults.whatsapp.message}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
                     <Zap className="w-5 h-5 text-pink-500" />
                     Instagram API
                   </CardTitle>
@@ -1580,15 +1554,6 @@ export default function AdminUsuario() {
                       className="bg-gray-700 border-gray-600 text-white"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label className="text-gray-300">Link do Grupo WhatsApp</Label>
-                    <Input
-                      value={settings.whatsappGroupLink}
-                      onChange={(e) => setSettings({ ...settings, whatsappGroupLink: e.target.value })}
-                      placeholder="https://chat.whatsapp.com/..."
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -1600,14 +1565,6 @@ export default function AdminUsuario() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-gray-300">Mensagem para WhatsApp (use {'{USERNAME}'}, {'{PASSWORD}'}, {'{MEMBER_LINK}'}, {'{GROUP_LINK}'})</Label>
-                  <Textarea
-                    value={settings.messageTemplateWhatsapp}
-                    onChange={(e) => setSettings({ ...settings, messageTemplateWhatsapp: e.target.value })}
-                    className="bg-gray-700 border-gray-600 text-white min-h-[200px] font-mono text-sm"
-                  />
-                </div>
 
                 <Button onClick={saveSettings} disabled={loading} className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
                   {loading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
