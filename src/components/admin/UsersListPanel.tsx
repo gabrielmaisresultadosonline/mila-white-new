@@ -120,24 +120,19 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const response = await fetch(`${API_BASE}/admin/limpar-instagrams`, {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: JSON.stringify({ userId })
+        body: { userId }
       });
 
-      const data = await response.json();
+      if (error) throw error;
 
-      if (response.ok) {
-        toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
-        fetchData();
-      } else {
-        throw new Error(data.message || 'Erro ao limpar Instagrams');
-      }
+      toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
+      fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
