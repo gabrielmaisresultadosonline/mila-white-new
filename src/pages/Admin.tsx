@@ -5,6 +5,7 @@ import { getSession } from '@/lib/storage';
 import { getUserSession } from '@/lib/userStorage';
 import { getSyncData, SyncedInstagramProfile, SyncData, getAllMergedProfiles, loadSyncDataFromServer } from '@/lib/syncStorage';
 import { ProfileSession, MROSession } from '@/types/instagram';
+import { supabase } from '@/integrations/supabase/client';
 import type { UserSession } from '@/types/user';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
@@ -58,6 +59,25 @@ const Admin = () => {
   const [settings, setSettings] = useState(adminData.settings);
   const [zapmroDownloadLink, setZapmroDownloadLink] = useState('');
   const [testingApi, setTestingApi] = useState<string | null>(null);
+  const [squareUsersCount, setSquareUsersCount] = useState<number>(0);
+
+  const fetchSquareUsersCount = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+        headers: {
+          'x-admin-pass': "maisresultadosonline",
+          'x-admin-name': "ADMIN"
+        }
+      });
+      if (error) throw error;
+      const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
+      if (Array.isArray(userList)) {
+        setSquareUsersCount(userList.length);
+      }
+    } catch (err) {
+      console.error('Error fetching square users count:', err);
+    }
+  };
 
   useEffect(() => {
     const checkAdminAccess = async () => {
@@ -90,6 +110,7 @@ const Admin = () => {
       
       console.log(`✅ Admin: ${serverSyncData.profiles.length} perfis carregados do servidor`);
       setIsVerifying(false);
+      fetchSquareUsersCount();
     };
     
     checkAdminAccess();
@@ -97,7 +118,8 @@ const Admin = () => {
     // Refresh sync data periodically (from local cache)
     const interval = setInterval(() => {
       setSyncData(getSyncData());
-    }, 5000);
+      fetchSquareUsersCount();
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [navigate]);
@@ -308,7 +330,7 @@ const Admin = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="glass-card p-4 sm:p-6 text-center border-primary/30 shadow-lg bg-gradient-to-br from-primary/5 to-transparent">
                 <Users className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-primary mb-2 sm:mb-3" />
-                <p className="text-3xl sm:text-4xl font-bold text-primary">{syncData.users.length}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-primary">{squareUsersCount}</p>
                 <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-bold">Total Usuários (API)</p>
               </div>
               <div className="glass-card p-4 sm:p-6 text-center border-pink-500/30 shadow-lg bg-gradient-to-br from-pink-500/5 to-transparent">
