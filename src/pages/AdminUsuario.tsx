@@ -180,7 +180,6 @@ export default function AdminUsuario() {
   });
 
   // SquareCloud Admin State
-  const [squareAdminPass, setSquareAdminPass] = useState(() => localStorage.getItem('square_admin_pass') || '');
   const [squareUsers, setSquareUsers] = useState<any[]>([]);
   const [loadingSquare, setLoadingSquare] = useState(false);
   const [squareSearch, setSquareSearch] = useState('');
@@ -191,12 +190,10 @@ export default function AdminUsuario() {
       setIsAuthenticated(true);
       loadAccesses();
       loadSettings();
-      // Auto-load Square users if pass exists
-      if (squareAdminPass) {
-        loadSquareUsers();
-      }
+      // Auto-load Square users
+      loadSquareUsers();
     }
-  }, [squareAdminPass]);
+  }, []);
 
   const loadSquareUsers = async () => {
     if (!squareAdminPass) return;
