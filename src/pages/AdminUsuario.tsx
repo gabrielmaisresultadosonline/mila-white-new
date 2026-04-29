@@ -860,16 +860,16 @@ export default function AdminUsuario() {
                     <Label className="text-gray-300">Serviço</Label>
                     <Select
                       value={form.serviceType}
-                      onValueChange={(value: 'whatsapp' | 'instagram') =>
+                      onValueChange={(value: 'instagram') =>
                         setForm({ ...form, serviceType: value })
                       }
+                      disabled
                     >
                       <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="whatsapp">WhatsApp</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
