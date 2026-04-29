@@ -1,44 +1,153 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { RefreshCw, Download, Image, User, Mail, Calendar, Instagram, Search, CheckCircle, XCircle, Trash2, ShieldAlert } from 'lucide-react';
+import { RefreshCw, Download, Image, User, Mail, Calendar, Instagram, Search, CheckCircle, XCircle, Trash2, ShieldAlert, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import JSZip from 'jszip';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface IgEntry {
-  username: string;
-  screenshot_url: string | null;
-  registered_at: string;
-}
-
-interface MergedUser {
-  squarecloud_username: string;
-  email: string | null;
-  first_registered: string;
-  instagrams: IgEntry[];
-  days_since_first: number;
-  // SquareCloud admin fields
+interface SquareUser {
+  id: string;
+  password?: string;
+  igInstagram?: string[];
   igCount?: number;
   testsRemaining?: number;
   activeTests?: number;
+  extraIgSlots?: number;
   acessFull?: boolean;
+  blackList?: boolean;
   dataDeExpiracao?: string;
 }
 
 const UsersListPanel = () => {
+  const { toast } = useToast();
+  const [squareUsers, setSquareUsers] = useState<SquareUser[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
+  const API_BASE = "https://codigoinstashopapimro.squareweb.app";
+  const ADMIN_PASS = "maisresultadosonline";
+  const ADMIN_NAME = "ADMIN";
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      console.log('[UsersListPanel] Fetching SquareCloud users...');
+      
+      const response = await fetch(`${API_BASE}/admin/usuarios`, {
+        headers: {
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        }
+      });
+
+      const data = await response.json();
+      
+      if (data && Array.isArray(data.usuarios)) {
+        setSquareUsers(data.usuarios);
+        console.log(`[UsersListPanel] ${data.usuarios.length} users loaded from SquareCloud`);
+      } else {
+        throw new Error(data.message || 'Falha ao carregar usuários da API');
+      }
+    } catch (error: any) {
+      console.error('[UsersListPanel] Error:', error);
+      toast({ 
+        title: 'Erro na API SquareCloud', 
+        description: error?.message || 'Não foi possível carregar a lista de usuários ativos', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveUser = async (userId: string) => {
+    if (!confirm(`Tem certeza que deseja remover permanentemente o usuário ${userId}?`)) return;
+
+    setIsDeleting(userId);
+    try {
+      const response = await fetch(`${API_BASE}/admin/remover-usuario`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: JSON.stringify({ userId })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({ title: 'Usuário removido', description: data.message || 'Perfil excluído com sucesso' });
+        fetchData();
+      } else {
+        throw new Error(data.message || 'Erro ao remover usuário');
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
+  const handleRemoveInstagram = async (userId: string, instagram: string) => {
+    if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
+
+    try {
+      const response = await fetch(`${API_BASE}/admin/remover-instagram`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: JSON.stringify({ userId, instagram })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
+        fetchData();
+      } else {
+        throw new Error(data.message || 'Erro ao remover Instagram');
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const handleClearInstagrams = async (userId: string) => {
+    if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
+
+    try {
+      const response = await fetch(`${API_BASE}/admin/limpar-instagrams`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: JSON.stringify({ userId })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
+        fetchData();
+      } else {
+        throw new Error(data.message || 'Erro ao limpar Instagrams');
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
+
   useEffect(() => {
-    // Auto-fetch with default credentials on mount
     fetchData();
   }, []);
 
