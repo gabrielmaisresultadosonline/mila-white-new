@@ -244,7 +244,7 @@ export default function AdminUsuario() {
       setLoadingSquare(true);
       const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
         method: 'POST',
-        headers: { 'x-admin-pass': squareAdminPass },
+        headers: { 'x-admin-pass': 'maisresultadosonline' },
         body: { userId, instagram }
       });
 
@@ -265,7 +265,7 @@ export default function AdminUsuario() {
       setLoadingSquare(true);
       const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
         method: 'POST',
-        headers: { 'x-admin-pass': squareAdminPass },
+        headers: { 'x-admin-pass': 'maisresultadosonline' },
         body: { userId }
       });
 
