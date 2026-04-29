@@ -110,6 +110,7 @@ const Admin = () => {
       
       console.log(`✅ Admin: ${serverSyncData.profiles.length} perfis carregados do servidor`);
       setIsVerifying(false);
+      fetchSquareUsersCount();
     };
     
     checkAdminAccess();
@@ -117,7 +118,8 @@ const Admin = () => {
     // Refresh sync data periodically (from local cache)
     const interval = setInterval(() => {
       setSyncData(getSyncData());
-    }, 5000);
+      fetchSquareUsersCount();
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [navigate]);
