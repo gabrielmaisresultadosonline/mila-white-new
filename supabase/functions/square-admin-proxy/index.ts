@@ -33,15 +33,18 @@ serve(async (req) => {
     if (action === 'remove-user') {
       targetUrl = `${API_BASE}/admin/remover-usuario`;
       method = 'POST';
-      body = await req.text();
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     } else if (action === 'remove-instagram') {
       targetUrl = `${API_BASE}/admin/remover-instagram`;
       method = 'POST';
-      body = await req.text();
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     } else if (action === 'clear-instagrams') {
       targetUrl = `${API_BASE}/admin/limpar-instagrams`;
       method = 'POST';
-      body = await req.text();
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
@@ -52,7 +55,34 @@ serve(async (req) => {
       body: method === 'POST' ? body : null,
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    console.log(`[square-admin-proxy] SquareCloud raw response (${response.status}):`, responseText.substring(0, 500));
+
+    // If response is HTML, it's an error from the server (like 404 or 500)
+    if (responseText.trim().startsWith('<!') || responseText.trim().startsWith('<html')) {
+        return new Response(JSON.stringify({ 
+            success: false, 
+            message: `Erro na API SquareCloud (${response.status}). O servidor retornou uma página de erro.`,
+            debug: responseText.substring(0, 200)
+        }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 500,
+        });
+    }
+
+    let data;
+    try {
+        data = JSON.parse(responseText);
+    } catch (e) {
+        return new Response(JSON.stringify({ 
+            success: false, 
+            message: "A API retornou um formato inválido (não é JSON).",
+            debug: responseText.substring(0, 100)
+        }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 500,
+        });
+    }
     
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
