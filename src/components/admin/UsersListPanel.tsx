@@ -37,6 +37,11 @@ interface MergedUser {
 }
 
 const UsersListPanel = () => {
+  useEffect(() => {
+    // Auto-fetch with default credentials on mount
+    fetchData();
+  }, []);
+
   const { toast } = useToast();
   const [users, setUsers] = useState<MergedUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
