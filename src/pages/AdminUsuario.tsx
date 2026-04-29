@@ -797,11 +797,11 @@ export default function AdminUsuario() {
           </div>
         </div>
 
-        <Tabs defaultValue="list" className="space-y-6">
+        <Tabs defaultValue="squarecloud" className="space-y-6">
           <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto p-1">
+            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
             <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Criar Acesso</TabsTrigger>
             <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Lista Acessos</TabsTrigger>
-            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
             <TabsTrigger value="mass-email" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">Email em Massa</TabsTrigger>
             <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
