@@ -815,7 +815,6 @@ export default function AdminUsuario() {
             <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
           </TabsList>
-        </div>
 
         {/* Stats Bar */}
         {(expiringCount > 0 || expiredCount > 0) && (
