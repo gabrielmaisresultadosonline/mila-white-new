@@ -25,6 +25,7 @@ import CreativesProManager from '@/components/admin/CreativesProManager';
 import TicketsManager from '@/components/admin/TicketsManager';
 import UsersListPanel from '@/components/admin/UsersListPanel';
 import WhatsAppSettingsTab from '@/components/admin/WhatsAppSettingsTab';
+import { CreateUserTab } from '@/components/admin/CreateUserTab';
 import {
   Users, Settings, Video, LogOut, Search, 
   Eye, TrendingUp, Calendar, Sparkles, Download, 
@@ -36,7 +37,7 @@ import ManualScraper from '@/components/admin/ManualScraper';
 import { lazy, Suspense } from 'react';
 const InstagramNovaAdmin = lazy(() => import('./InstagramNovaAdmin'));
 
-type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados';
+type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados' | 'create_user';
 type UserFilter = 'all' | 'instagram' | 'connected';
 
 const Admin = () => {
@@ -185,6 +186,8 @@ const Admin = () => {
   };
 
   const tabs = [
+    { id: 'userlist', label: 'Lista Usuários e Senhas (SquareCloud)', icon: <User className="w-4 h-4" /> },
+    { id: 'create_user', label: 'Criar Usuário', icon: <UserPlus className="w-4 h-4" /> },
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
     { id: 'vendas', label: 'Vendas', icon: <ShoppingCart className="w-4 h-4" /> },
     { id: 'afiliados', label: 'Afiliados', icon: <Users2 className="w-4 h-4" /> },
@@ -193,7 +196,6 @@ const Admin = () => {
     { id: 'announcements', label: 'Avisos', icon: <Bell className="w-4 h-4" /> },
     { id: 'settings', label: 'APIs', icon: <Settings className="w-4 h-4" /> },
     { id: 'whatsapp', label: 'WhatsApp', icon: <MessageCircle className="w-4 h-4" /> },
-    { id: 'userlist', label: 'Lista Usuários e Senhas (SquareCloud)', icon: <User className="w-4 h-4" /> },
   ];
 
   const getSelectedProfileData = () => {
@@ -932,6 +934,10 @@ const Admin = () => {
         {/* WhatsApp Settings Tab */}
         {activeTab === 'whatsapp' && (
           <WhatsAppSettingsTab />
+        )}
+        {/* Create User Tab */}
+        {activeTab === 'create_user' && (
+          <CreateUserTab />
         )}
         {/* Users List Tab */}
         {activeTab === 'userlist' && (
