@@ -795,9 +795,26 @@ export default function AdminUsuario() {
             <p className="text-gray-400">Gerencie acessos WhatsApp e Instagram</p>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <Button onClick={checkExpirations} variant="outline" disabled={loading} className="border-orange-500 text-orange-500 hover:bg-orange-500/20 text-xs sm:text-sm">
-              <Bell className="w-4 h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Verificar Expirações</span>
+            <Button onClick={loadAccesses} variant="outline" disabled={loading} className="border-blue-500 text-blue-500 hover:bg-blue-500/20 text-xs sm:text-sm">
+              <RefreshCw className={`w-4 h-4 sm:mr-2 ${loading ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Atualizar Lista</span>
+            </Button>
+            <Button onClick={handleLogout} variant="ghost" className="text-red-400 hover:text-red-300 hover:bg-red-500/10 text-xs sm:text-sm">
+              <LogOut className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Sair</span>
+            </Button>
+          </div>
+        </div>
+
+        <Tabs defaultValue="list" className="space-y-6">
+          <TabsList className="bg-gray-800 border-gray-700 flex-wrap h-auto p-1">
+            <TabsTrigger value="create" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Criar Acesso</TabsTrigger>
+            <TabsTrigger value="list" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black">Lista Acessos</TabsTrigger>
+            <TabsTrigger value="squarecloud" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Usuarios Lista (SquareCloud)</TabsTrigger>
+            <TabsTrigger value="mass-email" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">Email em Massa</TabsTrigger>
+            <TabsTrigger value="test" className="data-[state=active]:bg-gray-700">Testar APIs</TabsTrigger>
+            <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
+          </TabsList>
             </Button>
             <Button onClick={exportToCSV} variant="outline" className="border-green-500 text-green-500 hover:bg-green-500/20 text-xs sm:text-sm">
               <Download className="w-4 h-4 sm:mr-2" />
