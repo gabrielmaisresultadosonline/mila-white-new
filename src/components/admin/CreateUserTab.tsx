@@ -214,13 +214,13 @@ export const CreateUserTab = () => {
               <Select
                 value={form.serviceType}
                 onValueChange={(v: any) => setForm({ ...form, serviceType: v })}
+                disabled
               >
                 <SelectTrigger className="bg-secondary/30">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="instagram">Instagram VIP (InstaShop)</SelectItem>
-                  <SelectItem value="whatsapp">WhatsApp VIP (ZAPMRO)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
