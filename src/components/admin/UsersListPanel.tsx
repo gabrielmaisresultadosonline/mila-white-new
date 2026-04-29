@@ -190,7 +190,9 @@ const UsersListPanel = () => {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { 
+    // Data already fetched via useEffect at the top
+  }, []);
 
   const filteredUsers = users.filter(u => {
     const matchesSearch = 
