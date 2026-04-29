@@ -164,127 +164,61 @@ const ProfileActions = ({ profile, onUpdate }: ProfileActionsProps) => {
 
   return (
     <>
-      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-        {/* Quick Stats */}
-        <div className="flex items-center gap-3 text-xs">
-          {/* User Days / Lifetime Status */}
-          {ownerUser && (
-            <div className={`flex items-center gap-1 px-2 py-1 rounded ${
-              isLifetime 
-                ? 'bg-amber-500/20 text-amber-500' 
-                : 'bg-blue-500/20 text-blue-500'
-            }`}>
-              {isLifetime ? <Crown className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-              {formatUserDays(userDays)}
-            </div>
-          )}
-          
-          {/* Creatives unlock status for lifetime users */}
-          {isLifetime && (
-            <div className={`flex items-center gap-1 px-2 py-1 rounded ${
-              creativesUnlocked 
-                ? 'bg-green-500/20 text-green-500' 
-                : 'bg-red-500/20 text-red-500'
-            }`}>
-              {creativesUnlocked ? <Unlock className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
-              {creativesUnlocked ? 'Criativos OK' : 'Criativos ⛔'}
-            </div>
-          )}
-          
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto" onClick={(e) => e.stopPropagation()}>
+        {/* Quick Stats - Mobile Optimized */}
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs w-full sm:w-auto">
           {/* Strategy Days */}
-          <div className={`flex items-center gap-1 px-2 py-1 rounded ${
+          <div className={`flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded ${
             canGenerate ? 'bg-green-500/20 text-green-500' : 'bg-secondary text-muted-foreground'
           }`}>
             <Calendar className="w-3 h-3" />
-            {canGenerate ? 'Disponível' : `${daysRemaining}d`}
+            <span className="font-medium">{canGenerate ? 'Disponível' : `${daysRemaining}d`}</span>
           </div>
           
           {/* Creatives */}
-          <div className="flex items-center gap-1 px-2 py-1 rounded bg-secondary text-muted-foreground">
+          <div className="flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded bg-secondary text-muted-foreground">
             <Image className="w-3 h-3" />
-            {creativesInfo.available}/{creativesInfo.limit}
+            <span className="font-medium">{creativesInfo.available}/{creativesInfo.limit}</span>
           </div>
-          
-          {/* Blocked indicator */}
-          {profile.isBlocked && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded bg-red-500/20 text-red-500">
-              <Ban className="w-3 h-3" />
-              Bloqueado
-            </div>
-          )}
-
-          {/* Queue indicator */}
-          {inQueue && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded bg-primary/20 text-primary animate-pulse">
-              <Clock className="w-3 h-3" />
-              Na fila
-            </div>
-          )}
         </div>
 
         {/* Action Buttons */}
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={handleResetStrategy}
-          disabled={processing === 'reset' || canGenerate}
-          className="text-xs"
-          title="Resetar estratégia"
-        >
-          {processing === 'reset' ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Sparkles className="w-4 h-4" />
-          )}
-        </Button>
-
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={handleRefreshProfile}
-          disabled={processing === 'refresh'}
-          className="text-xs"
-          title="Atualizar dados"
-        >
-          {processing === 'refresh' ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <RefreshCw className="w-4 h-4" />
-          )}
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreVertical className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {isLifetime && (
+        <div className="flex items-center gap-1 w-full sm:w-auto justify-end sm:justify-start">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleResetStrategy}
+            disabled={processing === 'reset' || canGenerate}
+            className="h-7 sm:h-8 px-2 text-[10px] sm:text-xs flex-1 sm:flex-none border-primary/30 hover:bg-primary/10 text-primary"
+            title="Resetar estratégia"
+          >
+            {processing === 'reset' ? (
+              <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
+            ) : (
               <>
-                <DropdownMenuItem onClick={() => setShowCreativesDialog(true)}>
-                  {creativesUnlocked ? <Lock className="w-4 h-4 mr-2" /> : <Unlock className="w-4 h-4 mr-2" />}
-                  {creativesUnlocked ? 'Bloquear Criativos' : 'Liberar Criativos'}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+                Resetar
               </>
             )}
-            <DropdownMenuItem onClick={() => setShowBlockDialog(true)}>
-              <Ban className="w-4 h-4 mr-2" />
-              {profile.isBlocked ? 'Desbloquear Perfil' : 'Bloquear Perfil'}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem 
-              onClick={() => setShowDeleteDialog(true)}
-              className="text-red-500 focus:text-red-500"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Remover Perfil
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </Button>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleRefreshProfile}
+            disabled={processing === 'refresh'}
+            className="h-7 sm:h-8 px-1.5 sm:px-2"
+            title="Atualizar dados"
+          >
+            {processing === 'refresh' ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-3.5 h-3.5" />
+            )}
+          </Button>
+        </div>
       </div>
 
       {/* Delete Confirmation Dialog */}
