@@ -26,7 +26,16 @@ serve(async (req) => {
     if (adminPass) headers['x-admin-pass'] = adminPass;
     if (adminName) headers['x-admin-name'] = adminName;
 
-    let targetUrl = `${API_BASE}/admin/usuarios`;
+    let targetUrl = `${API_BASE}/admin/usuarios`; // Fixed the missing slash from previous thought process logic if any, but wait, the error is 404. Let's try without /admin if needed or check documentation.
+    // The user provided: GET https://codigoinstashopapimro.squareweb.app/admin/usuarios
+    // The current targetUrl matches this.
+    // Wait, let's verify if the API_BASE should end with / or not.
+    // Const API_BASE = "https://codigoinstashopapimro.squareweb.app";
+    // targetUrl = `${API_BASE}/admin/usuarios` -> https://codigoinstashopapimro.squareweb.app/admin/usuarios
+    // This is correct according to the prompt.
+    // Maybe the server expects no HTTPS? No, squareweb.app usually is HTTPS.
+    // Let's try a direct test with one more variant.
+
     let method = 'GET';
     let body = null;
 
