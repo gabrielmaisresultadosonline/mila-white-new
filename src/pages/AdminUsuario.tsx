@@ -1391,8 +1391,10 @@ export default function AdminUsuario() {
               </CardContent>
             </Card>
           </TabsContent>
-
-                <CardHeader>
+          {/* Test APIs Tab */}
+          <TabsContent value="test">
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="bg-gray-800 border-gray-700">
                   <CardTitle className="text-white flex items-center gap-2">
                     <Zap className="w-5 h-5 text-green-500" />
                     WhatsApp API
