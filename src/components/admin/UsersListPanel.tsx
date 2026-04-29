@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban, Plus } from 'lucide-react';
+import { RefreshCw, User, Mail, Instagram, Search, CheckCircle, Trash2, Key, ShieldCheck, Zap, Ban, Plus, Copy, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -234,6 +234,42 @@ const UsersListPanel = () => {
     }
   };
 
+  const handleCopyAccess = (userId: string, password?: string) => {
+    const accessText = `Obrigado por fazer parte do nosso sistema!✅
+
+🚀🔥 Ferramenta para Instagram Vip acesso!
+
+Preciso que assista os vídeos da área de membros com o link abaixo:
+
+https://codigoinstashop.com.br/instagram
+
+1 - Acesse Área Membros
+
+2 - Acesse ferramenta para instagram
+
+Para acessar a ferramenta e área de membros, utilize os acessos:
+
+usuário: ${userId}
+
+senha: ${password || '******'}
+
+⚠ Assista todos os vídeos, por favor!`;
+
+    navigator.clipboard.writeText(accessText).then(() => {
+      toast({
+        title: 'Acesso copiado!',
+        description: 'Os dados de acesso foram copiados para a área de transferência.',
+      });
+    }).catch(err => {
+      console.error('Erro ao copiar:', err);
+      toast({
+        title: 'Erro ao copiar',
+        description: 'Não foi possível copiar os dados.',
+        variant: 'destructive'
+      });
+    });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -389,6 +425,15 @@ const UsersListPanel = () => {
                             >
                               <Plus className="w-3.5 h-3.5 mr-1.5" />
                               Add Extras
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10 h-8"
+                              onClick={() => handleCopyAccess(userId, user.password || (user as any).senha || user.data?.numero)}
+                            >
+                              <Copy className="w-3.5 h-3.5 mr-1.5" />
+                              Copiar Acesso
                             </Button>
                           </div>
                         </div>
