@@ -114,7 +114,6 @@ export const CreateUserTab = () => {
     
     return template
       .replace(/{MEMBER_LINK}/g, settings.memberAreaLink)
-      .replace(/{GROUP_LINK}/g, settings.whatsappGroupLink)
       .replace(/{USERNAME}/g, access.username)
       .replace(/{PASSWORD}/g, access.password);
   };
