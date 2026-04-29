@@ -148,6 +148,34 @@ const UsersListPanel = () => {
     }
   };
 
+  const handleToggleBlacklist = async (userId: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus;
+    const actionLabel = newStatus ? 'Ativar Blacklist' : 'Remover da Blacklist';
+    
+    if (!confirm(`${actionLabel} para o usuário ${userId}?`)) return;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/blacklist', {
+        method: 'POST',
+        headers: {
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: { userId, blackListStatus: newStatus }
+      });
+
+      if (error) throw error;
+
+      toast({ 
+        title: 'Blacklist atualizada', 
+        description: data.message || `Status de blacklist para ${userId} alterado para ${newStatus ? 'Ativado' : 'Desativado'}` 
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
+
   useEffect(() => {
     // Check if we are already authenticated via localStorage (from AdminUsuario page logic)
     const savedPass = localStorage.getItem('square_admin_pass');
@@ -275,6 +303,15 @@ const UsersListPanel = () => {
                             >
                               <Trash2 className="w-3.5 h-3.5 mr-1.5" />
                               Limpar IGs
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className={`h-8 ${isBlacklisted ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'border-gray-600 text-gray-400 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30'}`}
+                              onClick={() => handleToggleBlacklist(userId, !!isBlacklisted)}
+                            >
+                              <Ban className="w-3.5 h-3.5 mr-1.5" />
+                              {isBlacklisted ? 'Sair Blacklist' : 'Blacklist'}
                             </Button>
                           </div>
                         </div>

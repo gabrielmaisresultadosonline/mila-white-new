@@ -45,6 +45,11 @@ serve(async (req) => {
       method = 'POST';
       const json = await req.json().catch(() => ({}));
       body = JSON.stringify(json);
+    } else if (action === 'blacklist' || url.pathname.includes('/blacklist')) {
+      targetUrl = `${API_BASE}/admin/blacklist`;
+      method = 'POST';
+      const json = await req.json().catch(() => ({}));
+      body = JSON.stringify(json);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
