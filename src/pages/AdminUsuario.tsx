@@ -1218,7 +1218,7 @@ export default function AdminUsuario() {
                   <div>
                     <CardTitle className="text-white flex items-center gap-2">
                       <ShieldCheck className="w-5 h-5 text-blue-400" />
-                      Usuários SquareCloud (Ativos)
+                      Lista Usuários e Senhas (SquareCloud)
                     </CardTitle>
                     <CardDescription className="text-gray-400">
                       Gerenciamento direto no banco de dados da API
