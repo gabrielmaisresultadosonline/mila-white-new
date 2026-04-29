@@ -1225,65 +1225,37 @@ export default function AdminUsuario() {
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
-                    {!squareAdminPass ? (
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="password"
-                          placeholder="Senha Admin Square"
-                          value={squareAdminPass}
-                          onChange={(e) => setSquareAdminPass(e.target.value)}
-                          className="w-48 bg-gray-700 border-gray-600 h-9 text-xs"
-                        />
-                        <Button size="sm" onClick={loadSquareUsers} className="bg-blue-600 hover:bg-blue-700">
-                          Autenticar
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                          Autenticado
-                        </Badge>
-                        <Button size="sm" variant="ghost" onClick={() => { setSquareAdminPass(''); localStorage.removeItem('square_admin_pass'); setSquareUsers([]); }} className="text-red-400 hover:text-red-300">
-                          Sair
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={loadSquareUsers} disabled={loadingSquare}>
-                          <RefreshCw className={`w-4 h-4 ${loadingSquare ? 'animate-spin' : ''}`} />
-                        </Button>
-                      </div>
-                    )}
+                    <Button size="sm" variant="outline" onClick={loadSquareUsers} disabled={loadingSquare}>
+                      <RefreshCw className={`w-4 h-4 mr-2 ${loadingSquare ? 'animate-spin' : ''}`} />
+                      Atualizar Lista
+                    </Button>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                {!squareAdminPass ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <Lock className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                    <p>Autentique com a senha admin para ver a lista em tempo real</p>
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Buscar por usuário ou instagram..."
+                      value={squareSearch}
+                      onChange={(e) => setSquareSearch(e.target.value)}
+                      className="pl-10 bg-gray-900/50 border-gray-700 text-white"
+                    />
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        placeholder="Buscar por usuário ou instagram..."
-                        value={squareSearch}
-                        onChange={(e) => setSquareSearch(e.target.value)}
-                        className="pl-10 bg-gray-900/50 border-gray-700 text-white"
-                      />
-                    </div>
 
-                    <ScrollArea className="h-[600px] pr-4">
-                      {loadingSquare && squareUsers.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-20">
-                          <Loader2 className="w-10 h-10 animate-spin text-blue-500 mb-4" />
-                          <p className="text-gray-400">Carregando usuários da API...</p>
-                        </div>
-                      ) : filteredSquareUsers.length === 0 ? (
-                        <div className="text-center py-20 text-gray-500">
-                          <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                          <p>Nenhum usuário encontrado na SquareCloud</p>
-                        </div>
-                      ) : (
+                  <ScrollArea className="h-[600px] pr-4">
+                    {loadingSquare && squareUsers.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <Loader2 className="w-10 h-10 animate-spin text-blue-500 mb-4" />
+                        <p className="text-gray-400">Carregando usuários da API...</p>
+                      </div>
+                    ) : filteredSquareUsers.length === 0 ? (
+                      <div className="text-center py-20 text-gray-500">
+                        <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                        <p>Nenhum usuário encontrado na SquareCloud</p>
+                      </div>
+                    ) : (
                         <div className="space-y-3">
                           {filteredSquareUsers.map((user) => (
                             <div key={user.userId} className="bg-gray-900/40 border border-gray-700/50 rounded-xl p-4 hover:border-blue-500/30 transition-all">
