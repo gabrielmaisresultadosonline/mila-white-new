@@ -33,9 +33,7 @@ interface CreatedAccess {
 
 interface AdminSettings {
   memberAreaLink: string;
-  whatsappGroupLink: string;
   messageTemplateInstagram: string;
-  messageTemplateWhatsapp: string;
 }
 
 const ACCESS_DAYS = {
@@ -46,7 +44,6 @@ const ACCESS_DAYS = {
 
 const DEFAULT_SETTINGS: AdminSettings = {
   memberAreaLink: 'https://codigoinstashop.com.br/instagram',
-  whatsappGroupLink: 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi',
   messageTemplateInstagram: `Obrigado por fazer parte do nosso sistema!✅
 
 🚀🔥 *Ferramenta para Instagram Vip acesso!*
@@ -69,7 +66,6 @@ Para acessar a ferramenta e área de membros, utilize os acessos:
 
 Atenciosamente,
 *Codigo InstaShop*`,
-  messageTemplateWhatsapp: '',
 };
 
 export const CreateUserTab = () => {
