@@ -44,7 +44,7 @@ async function sendAccessEmail(
       },
     });
 
-    const serviceName = serviceType === 'whatsapp' ? 'ZAPMRO' : 'Código InstaShop';
+    const serviceName = 'Código InstaShop';
     const memberAreaUrl = 'https://codigoinstashop.com.br';
 
     const supportWhatsappUrl = 'https://codigoinstashop.com.br/whatsapp';
