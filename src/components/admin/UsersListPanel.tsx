@@ -1,10 +1,20 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { RefreshCw, Download, Image, User, Mail, Calendar, Instagram, Search, CheckCircle, XCircle } from 'lucide-react';
+import { RefreshCw, Download, Image, User, Mail, Calendar, Instagram, Search, CheckCircle, XCircle, Trash2, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import JSZip from 'jszip';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface IgEntry {
   username: string;
@@ -18,6 +28,12 @@ interface MergedUser {
   first_registered: string;
   instagrams: IgEntry[];
   days_since_first: number;
+  // SquareCloud admin fields
+  igCount?: number;
+  testsRemaining?: number;
+  activeTests?: number;
+  acessFull?: boolean;
+  dataDeExpiracao?: string;
 }
 
 const UsersListPanel = () => {
@@ -28,34 +44,144 @@ const UsersListPanel = () => {
   const [filterType, setFilterType] = useState<'all' | 'with_print' | 'without_print'>('all');
   const [downloadingAll, setDownloadingAll] = useState(false);
 
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [adminAuth, setAdminAuth] = useState({ name: '', pass: '' });
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
       console.log('[UsersListPanel] Fetching users list...');
-      const { data, error } = await supabase.functions.invoke('get-users-list');
       
-      console.log('[UsersListPanel] Response:', { data: data ? 'received' : 'null', error, usersCount: data?.users?.length });
+      // Get data from our local DB first
+      const { data: localData, error: localError } = await supabase.functions.invoke('get-users-list');
       
-      if (error) {
-        console.error('[UsersListPanel] Supabase error:', error);
-        throw error;
+      // Try to get data from SquareCloud if admin auth is provided
+      let squareUsers: any[] = [];
+      if (adminAuth.pass) {
+        try {
+          const { data: sqData } = await supabase.functions.invoke('square-proxy', {
+            body: { action: 'admin-users' },
+            headers: {
+              'x-admin-name': adminAuth.name,
+              'x-admin-pass': adminAuth.pass
+            }
+          });
+          if (sqData?.success) {
+            squareUsers = sqData.usuarios || [];
+          }
+        } catch (e) {
+          console.error('Error fetching Square admin users:', e);
+        }
       }
 
-      if (data?.success && data.users) {
-        const enriched: MergedUser[] = data.users.map((u: any) => ({
-          ...u,
-          days_since_first: Math.floor((Date.now() - new Date(u.first_registered).getTime()) / 86400000),
-        }));
+      if (localError) throw localError;
+
+      if (localData?.success && localData.users) {
+        const enriched: MergedUser[] = localData.users.map((u: any) => {
+          // Merge SquareCloud admin data if available
+          const sqUser = squareUsers.find(su => su.id === u.squarecloud_username);
+          return {
+            ...u,
+            days_since_first: Math.floor((Date.now() - new Date(u.first_registered).getTime()) / 86400000),
+            igCount: sqUser?.igCount,
+            testsRemaining: sqUser?.testsRemaining,
+            activeTests: sqUser?.activeTests,
+            acessFull: sqUser?.acessFull,
+            dataDeExpiracao: sqUser?.dataDeExpiracao
+          };
+        });
         setUsers(enriched);
-        console.log('[UsersListPanel] Loaded', enriched.length, 'users');
-      } else {
-        console.warn('[UsersListPanel] No users in response:', data);
       }
     } catch (error: any) {
       console.error('[UsersListPanel] Error:', error);
       toast({ title: 'Erro', description: error?.message || 'Não foi possível carregar a lista', variant: 'destructive' });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRemoveUser = async (userId: string) => {
+    if (!adminAuth.pass) {
+      setShowAuthDialog(true);
+      return;
+    }
+
+    setIsDeleting(userId);
+    try {
+      const { data, error } = await supabase.functions.invoke('square-proxy', {
+        body: { action: 'remove-user', userId },
+        headers: {
+          'x-admin-name': adminAuth.name,
+          'x-admin-pass': adminAuth.pass
+        }
+      });
+
+      if (error) throw error;
+      if (data?.success) {
+        toast({ title: 'Usuário removido', description: data.message || 'Usuário apagado com sucesso do SquareCloud' });
+        fetchData();
+      } else {
+        toast({ title: 'Erro ao remover', description: data?.message || 'Falha na API do SquareCloud', variant: 'destructive' });
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
+  const handleRemoveInstagram = async (userId: string, instagram: string) => {
+    if (!adminAuth.pass) {
+      setShowAuthDialog(true);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('square-proxy', {
+        body: { action: 'remove-instagram', userId, instagram },
+        headers: {
+          'x-admin-name': adminAuth.name,
+          'x-admin-pass': adminAuth.pass
+        }
+      });
+
+      if (error) throw error;
+      if (data?.success) {
+        toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
+        fetchData();
+      } else {
+        toast({ title: 'Erro ao remover', description: data?.message, variant: 'destructive' });
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const handleClearInstagrams = async (userId: string) => {
+    if (!adminAuth.pass) {
+      setShowAuthDialog(true);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('square-proxy', {
+        body: { action: 'clear-instagrams', userId },
+        headers: {
+          'x-admin-name': adminAuth.name,
+          'x-admin-pass': adminAuth.pass
+        }
+      });
+
+      if (error) throw error;
+      if (data?.success) {
+        toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
+        fetchData();
+      } else {
+        toast({ title: 'Erro ao limpar', description: data?.message, variant: 'destructive' });
+      }
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
   };
 
@@ -322,6 +448,11 @@ const UsersListPanel = () => {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          {!adminAuth.pass && (
+            <Button variant="outline" size="sm" onClick={() => setShowAuthDialog(true)} className="border-amber-500/50 text-amber-500">
+              <ShieldAlert className="w-4 h-4 mr-1" /> Autenticar SquareCloud
+            </Button>
+          )}
           <Button variant="outline" size="sm" onClick={() => exportCSV('full')}>
             <Download className="w-4 h-4 mr-1" /> CSV Completo
           </Button>
@@ -350,6 +481,41 @@ const UsersListPanel = () => {
         Mostrando {filteredUsers.length} de {users.length} usuários
       </p>
 
+      {/* Auth Dialog */}
+      <AlertDialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Autenticação SquareCloud</AlertDialogTitle>
+            <AlertDialogDescription>
+              Insira as credenciais de administrador da API do SquareCloud para gerenciar usuários e contas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Input
+                placeholder="Admin Name"
+                value={adminAuth.name}
+                onChange={(e) => setAdminAuth(prev => ({ ...prev, name: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Admin Password"
+                value={adminAuth.pass}
+                onChange={(e) => setAdminAuth(prev => ({ ...prev, pass: e.target.value }))}
+              />
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={() => { setShowAuthDialog(false); fetchData(); }}>
+              Conectar e Listar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* User List */}
       <div className="space-y-3">
         {filteredUsers.map((user) => (
@@ -363,15 +529,49 @@ const UsersListPanel = () => {
                   <Mail className="w-3 h-3" />
                   {user.email || 'Email não informado'}
                 </span>
+                {user.testsRemaining !== undefined && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400">
+                    Testes: {user.testsRemaining} | Ativos: {user.activeTests}
+                  </span>
+                )}
+                {user.acessFull && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3" /> Full Access
+                  </span>
+                )}
               </div>
-              <div className="flex items-center gap-3 text-sm flex-wrap">
-                <span className="flex items-center gap-1 text-muted-foreground">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(user.first_registered).toLocaleDateString('pt-BR')}
-                </span>
-                <span className="px-2 py-1 rounded-full bg-primary/20 text-primary font-medium">
-                  {user.days_since_first} dias
-                </span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-3 text-sm mr-2">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <Calendar className="w-4 h-4" />
+                    {new Date(user.first_registered).toLocaleDateString('pt-BR')}
+                  </span>
+                  <span className="px-2 py-1 rounded-full bg-primary/20 text-primary font-medium">
+                    {user.days_since_first} dias
+                  </span>
+                </div>
+                {adminAuth.pass && (
+                  <div className="flex gap-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleClearInstagrams(user.squarecloud_username)}
+                      className="h-8 text-xs"
+                    >
+                      Limpar IGs
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      onClick={() => handleRemoveUser(user.squarecloud_username)}
+                      disabled={isDeleting === user.squarecloud_username}
+                      className="h-8 text-xs"
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      {isDeleting === user.squarecloud_username ? 'Apagando...' : 'Apagar Usuário'}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -382,9 +582,19 @@ const UsersListPanel = () => {
                   <div className="flex items-center gap-2 mb-2">
                     <Instagram className="w-4 h-4 text-pink-500" />
                     <span className="font-medium text-sm">@{ig.username}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground mr-auto">
                       {new Date(ig.registered_at).toLocaleDateString('pt-BR')}
                     </span>
+                    {adminAuth.pass && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-red-400 hover:text-red-500 hover:bg-red-500/10"
+                        onClick={() => handleRemoveInstagram(user.squarecloud_username, ig.username)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    )}
                   </div>
                   
                   {ig.screenshot_url ? (
