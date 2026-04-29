@@ -1028,8 +1028,8 @@ export default function AdminUsuario() {
                         <div className="space-y-3">
                           {/* Badges row */}
                           <div className="flex items-center gap-2 flex-wrap">
-                            <Badge className={access.service_type === 'instagram' ? 'bg-pink-600' : 'bg-green-600'}>
-                              {access.service_type === 'instagram' ? 'Instagram' : 'WhatsApp'}
+                            <Badge className="bg-pink-600">
+                              Instagram
                             </Badge>
                             <Badge variant="outline" className="text-yellow-500 border-yellow-500 text-xs">
                               {access.access_type === 'lifetime' ? 'Vitalício' : access.access_type === 'annual' ? 'Anual' : 'Mensal'}
@@ -1062,7 +1062,7 @@ export default function AdminUsuario() {
                             <div className="bg-gray-900/50 rounded-lg p-2">
                               <span className="text-gray-500 text-xs block">Serviço</span>
                               <span className="text-white font-medium">
-                                {access.service_type === 'instagram' ? 'Instagram' : 'WhatsApp'}
+                                Instagram
                               </span>
                             </div>
 
