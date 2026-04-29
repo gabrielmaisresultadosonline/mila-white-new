@@ -816,23 +816,7 @@ export default function AdminUsuario() {
             <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">Configurações</TabsTrigger>
           </TabsList>
 
-        {/* Stats Bar */}
-        {(expiringCount > 0 || expiredCount > 0) && (
-          <div className="flex gap-4 mb-6 flex-wrap">
-            {expiringCount > 0 && (
-              <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg px-4 py-2 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                <span className="text-yellow-400 text-sm font-medium">{expiringCount} expirando em 7 dias</span>
-              </div>
-            )}
-            {expiredCount > 0 && (
-              <div className="bg-red-900/30 border border-red-500/50 rounded-lg px-4 py-2 flex items-center gap-2">
-                <XCircle className="w-4 h-4 text-red-500" />
-                <span className="text-red-400 text-sm font-medium">{expiredCount} acessos expirados</span>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Content */}
 
         {/* Stats Bar */}
         {(expiringCount > 0 || expiredCount > 0) && (
