@@ -23,7 +23,7 @@ interface SquareUser {
 const UsersListPanel = () => {
   const { toast } = useToast();
   const [squareUsers, setSquareUsers] = useState<SquareUser[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
