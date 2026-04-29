@@ -175,38 +175,33 @@ const UsersListPanel = () => {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
   };
-178: 
-179:   const handleResetTests = async (userId: string) => {
-180:     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
-181: 
-182:     try {
-183:       const { data, error } = await supabase.functions.invoke('square-admin-proxy/zerar-testes', {
-184:         method: 'POST',
-185:         headers: {
-186:           'x-admin-pass': ADMIN_PASS,
-187:           'x-admin-name': ADMIN_NAME
-188:         },
-189:         body: { userId }
-190:       });
-191: 
-192:       if (error) throw error;
-193: 
-194:       toast({ 
-195:         title: 'Testes zerados', 
-196:         description: `Os testes de ${userId} foram resetados com sucesso.` 
-197:       });
-198:       fetchData();
-199:     } catch (error: any) {
-200:       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
-201:     }
-202:   };
+
+  const handleResetTests = async (userId: string) => {
+    if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy/zerar-testes', {
+        method: 'POST',
+        headers: {
+          'x-admin-pass': ADMIN_PASS,
+          'x-admin-name': ADMIN_NAME
+        },
+        body: { userId }
+      });
+
+      if (error) throw error;
+
+      toast({ 
+        title: 'Testes zerados', 
+        description: `Os testes de ${userId} foram resetados com sucesso.` 
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    }
+  };
 
   useEffect(() => {
-    // Check if we are already authenticated via localStorage (from AdminUsuario page logic)
-    const savedPass = localStorage.getItem('square_admin_pass');
-    if (savedPass) {
-        // We use the default pass for now as requested, but we could use savedPass if needed
-    }
     fetchData();
   }, []);
 
@@ -309,7 +304,7 @@ const UsersListPanel = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <Button 
                               size="sm" 
                               variant="destructive" 
@@ -337,6 +332,15 @@ const UsersListPanel = () => {
                             >
                               <Ban className="w-3.5 h-3.5 mr-1.5" />
                               {isBlacklisted ? 'Sair Blacklist' : 'Blacklist'}
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 h-8"
+                              onClick={() => handleResetTests(userId)}
+                            >
+                              <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+                              Zerar Testes
                             </Button>
                           </div>
                         </div>
