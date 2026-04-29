@@ -175,6 +175,31 @@ const UsersListPanel = () => {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     }
   };
+178: 
+179:   const handleResetTests = async (userId: string) => {
+180:     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
+181: 
+182:     try {
+183:       const { data, error } = await supabase.functions.invoke('square-admin-proxy/zerar-testes', {
+184:         method: 'POST',
+185:         headers: {
+186:           'x-admin-pass': ADMIN_PASS,
+187:           'x-admin-name': ADMIN_NAME
+188:         },
+189:         body: { userId }
+190:       });
+191: 
+192:       if (error) throw error;
+193: 
+194:       toast({ 
+195:         title: 'Testes zerados', 
+196:         description: `Os testes de ${userId} foram resetados com sucesso.` 
+197:       });
+198:       fetchData();
+199:     } catch (error: any) {
+200:       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+201:     }
+202:   };
 
   useEffect(() => {
     // Check if we are already authenticated via localStorage (from AdminUsuario page logic)
