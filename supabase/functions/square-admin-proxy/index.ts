@@ -30,11 +30,11 @@ serve(async (req) => {
     const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
       "list-users": { 
         method: "GET", 
-        path: "/usuarios" 
+        path: "/admin/usuarios" 
       },
       "blacklist": {
         method: "POST",
-        path: "/blacklist",
+        path: "/admin/blacklist",
         buildBody: (p) => ({ 
           userId: p.userId, 
           blackListStatus: p.blackListStatus !== undefined ? p.blackListStatus : true 
@@ -42,7 +42,7 @@ serve(async (req) => {
       },
       "clear-instagrams": {
         method: "POST",
-        path: "/limpar-perfil",
+        path: "/admin/limpar-instagrams",
         buildBody: (p) => ({ 
           userId: p.userId 
         }),
@@ -64,7 +64,7 @@ serve(async (req) => {
       },
       "zerar-testes": {
         method: "POST",
-        path: "/zerar-testes",
+        path: "/admin/zerar-testes",
         buildBody: (p) => ({ 
           userId: p.userId 
         }),
