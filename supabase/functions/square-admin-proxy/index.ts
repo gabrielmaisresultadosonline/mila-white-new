@@ -30,7 +30,7 @@ serve(async (req) => {
     const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
       "list-users": { 
         method: "GET", 
-        path: "/admin/usuarios" 
+        path: "/usuarios" 
       },
       "blacklist": {
         method: "POST",
@@ -80,7 +80,7 @@ serve(async (req) => {
     };
 
     // Default to list-users if no specific action provided but it's a GET request
-    const effectiveAction = action || (req.method === "GET" ? "list-users" : "");
+    const effectiveAction = action || "list-users";
     const route = routes[effectiveAction];
     
     if (!route) {
