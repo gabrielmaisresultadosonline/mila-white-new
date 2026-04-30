@@ -17,19 +17,29 @@ serve(async (req) => {
     const contentType = req.headers.get('content-type') || '';
     let bodyJson: any = {};
     
-    if (req.method === 'POST' && contentType.includes('application/json')) {
+    // Log the incoming request for debugging
+    console.log(`[square-admin-proxy] Incoming ${req.method} request to ${url.pathname}`);
+    console.log(`[square-admin-proxy] Content-Type: ${contentType}`);
+
+    if (req.method === 'POST') {
       try {
-        bodyJson = await req.json();
+        const text = await req.text();
+        console.log(`[square-admin-proxy] Raw body: ${text.substring(0, 100)}`);
+        if (text) {
+          bodyJson = JSON.parse(text);
+        }
       } catch (e) {
-        console.error('Error parsing request body:', e);
+        console.error('[square-admin-proxy] Error parsing request body:', e);
       }
     }
 
     // Determine action from URL path, query param, or body
     const pathAction = url.pathname.split('/').pop();
-    const action = (pathAction !== 'square-admin-proxy' ? pathAction : null) || 
+    const action = (pathAction && pathAction !== 'square-admin-proxy' ? pathAction : null) || 
                    url.searchParams.get('action') || 
                    bodyJson.action;
+    
+    console.log(`[square-admin-proxy] Identified action: ${action}`);
     
     // Pass through admin headers
     const adminPass = req.headers.get('x-admin-pass');

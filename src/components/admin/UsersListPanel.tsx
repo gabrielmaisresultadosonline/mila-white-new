@@ -85,7 +85,7 @@ const UsersListPanel = () => {
 
     setIsDeleting(userId);
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=remove-user', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
@@ -109,7 +109,7 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=remove-instagram', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
@@ -131,7 +131,7 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=clear-instagrams', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
@@ -156,7 +156,7 @@ const UsersListPanel = () => {
     if (!confirm(`${actionLabel} para o usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=blacklist', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
@@ -181,7 +181,7 @@ const UsersListPanel = () => {
     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=zerar-testes', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
@@ -213,7 +213,7 @@ const UsersListPanel = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=add-ig-extra', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
