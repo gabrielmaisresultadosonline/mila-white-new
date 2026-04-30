@@ -181,13 +181,13 @@ const UsersListPanel = () => {
     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/zerar-testes', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId }
+        body: { action: 'zerar-testes', userId }
       });
 
       if (error) throw error;
