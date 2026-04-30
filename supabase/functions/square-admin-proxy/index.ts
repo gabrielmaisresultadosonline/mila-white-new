@@ -30,7 +30,7 @@ serve(async (req) => {
     const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
       "list-users": { 
         method: "GET", 
-        path: "/usuarios" 
+        path: "/admin/usuarios" 
       },
       "blacklist": {
         method: "POST",
