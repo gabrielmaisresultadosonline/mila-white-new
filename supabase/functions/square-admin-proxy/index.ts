@@ -45,30 +45,34 @@ serve(async (req) => {
     let method = 'GET';
     let body = null;
 
+    // Create a copy of bodyJson without the action field to send to SquareCloud
+    const squareBody = { ...bodyJson };
+    delete squareBody.action;
+
     if (action === 'remove-user') {
       targetUrl = `${API_BASE}/admin/remover-usuario`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     } else if (action === 'remove-instagram') {
       targetUrl = `${API_BASE}/remover-instagram`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     } else if (action === 'clear-instagrams') {
       targetUrl = `${API_BASE}/admin/limpar-instagrams`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     } else if (action === 'blacklist') {
       targetUrl = `${API_BASE}/admin/blacklist`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     } else if (action === 'zerar-testes') {
       targetUrl = `${API_BASE}/admin/zerar-testes`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     } else if (action === 'add-ig-extra') {
       targetUrl = `${API_BASE}/adicionar-ig-extra`;
       method = 'POST';
-      body = JSON.stringify(bodyJson);
+      body = JSON.stringify(squareBody);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
