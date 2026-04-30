@@ -85,13 +85,13 @@ const UsersListPanel = () => {
 
     setIsDeleting(userId);
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-user', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId }
+        body: { action: 'remove-user', userId }
       });
 
       if (error) throw error;
@@ -109,13 +109,13 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId, instagram }
+        body: { action: 'remove-instagram', userId, instagram }
       });
 
       if (error) throw error;
@@ -131,13 +131,13 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId }
+        body: { action: 'clear-instagrams', userId }
       });
 
       if (error) throw error;
@@ -156,13 +156,13 @@ const UsersListPanel = () => {
     if (!confirm(`${actionLabel} para o usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/blacklist', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId, blackListStatus: newStatus }
+        body: { action: 'blacklist', userId, blackListStatus: newStatus }
       });
 
       if (error) throw error;
@@ -181,13 +181,13 @@ const UsersListPanel = () => {
     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/zerar-testes', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId }
+        body: { action: 'zerar-testes', userId }
       });
 
       if (error) throw error;
@@ -213,13 +213,13 @@ const UsersListPanel = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/add-ig-extra', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { username: userId, quantidade }
+        body: { action: 'add-ig-extra', username: userId, quantidade }
       });
 
       if (error) throw error;
