@@ -40,8 +40,8 @@ const UsersListPanel = () => {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const API_BASE = "https://codigoinstashopapimro.squareweb.app";
-  const ADMIN_PASS = "maisresultadosonline";
-  const ADMIN_NAME = "ADMIN";
+  const ADMIN_PASS = "Ga145523@";
+  const ADMIN_NAME = "MRO";
 
   const fetchData = async () => {
     setIsLoading(true);

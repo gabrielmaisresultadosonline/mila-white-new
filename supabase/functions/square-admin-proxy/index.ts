@@ -15,19 +15,9 @@ serve(async (req) => {
   try {
     const url = new URL(req.url);
     
-    // Admin Credentials from headers
-    const adminPass = req.headers.get('x-admin-pass');
-    const adminName = req.headers.get('x-admin-name');
-
-    if (!adminPass) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        message: "Acesso não autorizado. ADMIN_PASS não fornecido nos headers." 
-      }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // Configured Credentials
+    const ADMIN_PASS = "Ga145523@";
+    const ADMIN_NAME = "MRO";
 
     // Capture body input for POST requests
     const bodyInput = req.method === "POST" ? await req.json().catch(() => ({})) : {};
@@ -40,7 +30,7 @@ serve(async (req) => {
     const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
       "list-users": { 
         method: "GET", 
-        path: "/usuarios" 
+        path: "/admin/usuarios" 
       },
       "blacklist": {
         method: "POST",
@@ -89,7 +79,7 @@ serve(async (req) => {
       },
     };
 
-    // Default to list-users if no specific action provided but it's a list request
+    // Default to list-users if no specific action provided but it's a GET request
     const effectiveAction = action || (req.method === "GET" ? "list-users" : "");
     const route = routes[effectiveAction];
     
@@ -107,8 +97,8 @@ serve(async (req) => {
     console.log(`[square-admin-proxy] Proxying ${route.method} to ${targetUrl}`);
 
     const headers: Record<string, string> = {
-      "x-admin-pass": adminPass,
-      "x-admin-name": adminName || "ADMIN",
+      "x-admin-pass": ADMIN_PASS,
+      "x-admin-name": ADMIN_NAME,
     };
 
     let body: string | undefined;
