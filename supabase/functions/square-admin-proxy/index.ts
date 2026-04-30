@@ -14,11 +14,7 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const action = url.searchParams.get("action") || "";
     
-    // Log identified action
-    console.log(`[square-admin-proxy] Identified action: ${action}`);
-
     // Admin Credentials from headers
     const adminPass = req.headers.get('x-admin-pass');
     const adminName = req.headers.get('x-admin-name');
@@ -33,7 +29,13 @@ serve(async (req) => {
       });
     }
 
-    const input = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+    // Capture body input for POST requests
+    const bodyInput = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+    
+    // Action can be in URL param or in body
+    const action = url.searchParams.get("action") || bodyInput.action || "";
+    
+    console.log(`[square-admin-proxy] Identified action: ${action}`);
 
     const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
       "list-users": { 
@@ -45,7 +47,7 @@ serve(async (req) => {
         path: "/admin/blacklist",
         buildBody: (p) => ({ 
           userId: p.userId, 
-          blackListStatus: !!p.blackListStatus 
+          blackListStatus: p.blackListStatus !== undefined ? p.blackListStatus : true 
         }),
       },
       "clear-instagrams": {
@@ -87,8 +89,8 @@ serve(async (req) => {
       },
     };
 
-    // Default to list-users if no specific action provided
-    const effectiveAction = action || "list-users";
+    // Default to list-users if no specific action provided but it's a list request
+    const effectiveAction = action || (req.method === "GET" ? "list-users" : "");
     const route = routes[effectiveAction];
     
     if (!route) {
@@ -113,7 +115,7 @@ serve(async (req) => {
 
     if (route.method !== "GET") {
       headers["Content-Type"] = "application/json";
-      body = JSON.stringify(route.buildBody ? route.buildBody(input) : input);
+      body = JSON.stringify(route.buildBody ? route.buildBody(bodyInput) : bodyInput);
       console.log(`[square-admin-proxy] Sending body: ${body}`);
     }
 
