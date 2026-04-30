@@ -85,7 +85,7 @@ const UsersListPanel = () => {
 
     setIsDeleting(userId);
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=remove-user', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
