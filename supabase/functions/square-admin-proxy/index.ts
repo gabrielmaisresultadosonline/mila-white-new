@@ -68,9 +68,9 @@ serve(async (req) => {
       squareBody.usuario = userIdentifier;
     }
 
-    // Mapping actions to their correct root endpoints in SquareCloud (no /admin/)
+    // Mapping actions to their correct endpoints in SquareCloud
     if (action === 'remove-user') {
-      targetUrl = `${API_BASE}/remover-usuario`;
+      targetUrl = `${API_BASE}/admin/remover-usuario`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'remove-instagram') {
@@ -78,15 +78,15 @@ serve(async (req) => {
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'clear-instagrams') {
-      targetUrl = `${API_BASE}/limpar-perfil`;
+      targetUrl = `${API_BASE}/admin/limpar-instagrams`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'blacklist') {
-      targetUrl = `${API_BASE}/blacklist`;
+      targetUrl = `${API_BASE}/admin/blacklist`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'zerar-testes') {
-      targetUrl = `${API_BASE}/zerar-testes`;
+      targetUrl = `${API_BASE}/admin/zerar-testes`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'add-ig-extra') {
