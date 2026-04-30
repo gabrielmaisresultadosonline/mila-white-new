@@ -48,7 +48,7 @@ const UsersListPanel = () => {
     try {
       console.log('[UsersListPanel] Fetching SquareCloud users via Proxy...');
       
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=list-users', {
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
