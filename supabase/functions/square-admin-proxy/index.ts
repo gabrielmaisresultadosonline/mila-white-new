@@ -38,20 +38,39 @@ serve(async (req) => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
-    if (adminPass) headers['x-admin-pass'] = adminPass;
-    if (adminName) headers['x-admin-name'] = adminName;
+    
+    // Add all variations of admin headers to ensure compatibility
+    if (adminPass) {
+      headers['x-admin-pass'] = adminPass;
+      headers['admin_pass'] = adminPass;
+      headers['password'] = adminPass;
+    }
+    if (adminName) {
+      headers['x-admin-name'] = adminName;
+      headers['x-admin-user'] = adminName;
+      headers['admin_user'] = adminName;
+      headers['username'] = adminName;
+    }
 
     let targetUrl = `${API_BASE}/usuarios`;
     let method = 'GET';
     let body = null;
 
     // Create a copy of bodyJson without the action field to send to SquareCloud
-    const squareBody = { ...bodyJson };
+    const squareBody: any = { ...bodyJson };
     delete squareBody.action;
+    
+    // Normalize user identifier field
+    const userIdentifier = squareBody.userId || squareBody.username || squareBody.usuario;
+    if (userIdentifier) {
+      squareBody.userId = userIdentifier;
+      squareBody.username = userIdentifier;
+      squareBody.usuario = userIdentifier;
+    }
 
-    // Mapping actions to their correct endpoints in SquareCloud
+    // Mapping actions to their correct root endpoints in SquareCloud (no /admin/)
     if (action === 'remove-user') {
-      targetUrl = `${API_BASE}/admin/remover-usuario`;
+      targetUrl = `${API_BASE}/remover-usuario`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'remove-instagram') {
@@ -59,15 +78,15 @@ serve(async (req) => {
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'clear-instagrams') {
-      targetUrl = `${API_BASE}/admin/limpar-perfil`;
+      targetUrl = `${API_BASE}/limpar-perfil`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'blacklist') {
-      targetUrl = `${API_BASE}/admin/blacklist`;
+      targetUrl = `${API_BASE}/blacklist`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'zerar-testes') {
-      targetUrl = `${API_BASE}/admin/zerar-testes`;
+      targetUrl = `${API_BASE}/zerar-testes`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'add-ig-extra') {
@@ -77,6 +96,7 @@ serve(async (req) => {
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
+    console.log(`[square-admin-proxy] Headers keys: ${Object.keys(headers).join(', ')}`);
 
     const response = await fetch(targetUrl, {
       method,
