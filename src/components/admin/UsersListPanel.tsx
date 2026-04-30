@@ -131,7 +131,7 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=clear-instagrams', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
