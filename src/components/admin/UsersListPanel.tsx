@@ -156,13 +156,13 @@ const UsersListPanel = () => {
     if (!confirm(`${actionLabel} para o usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/blacklist', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId, blackListStatus: newStatus }
+        body: { action: 'blacklist', userId, blackListStatus: newStatus }
       });
 
       if (error) throw error;
