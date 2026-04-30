@@ -34,7 +34,7 @@ serve(async (req) => {
       },
       "blacklist": {
         method: "POST",
-        path: "/admin/blacklist",
+        path: "/blacklist",
         buildBody: (p) => ({ 
           userId: p.userId, 
           blackListStatus: p.blackListStatus !== undefined ? p.blackListStatus : true 
@@ -42,7 +42,7 @@ serve(async (req) => {
       },
       "clear-instagrams": {
         method: "POST",
-        path: "/admin/limpar-instagrams",
+        path: "/limpar-perfil",
         buildBody: (p) => ({ 
           userId: p.userId 
         }),
@@ -64,7 +64,7 @@ serve(async (req) => {
       },
       "zerar-testes": {
         method: "POST",
-        path: "/admin/zerar-testes",
+        path: "/zerar-testes",
         buildBody: (p) => ({ 
           userId: p.userId 
         }),
