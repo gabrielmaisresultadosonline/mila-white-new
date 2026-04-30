@@ -213,13 +213,13 @@ const UsersListPanel = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/add-ig-extra', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { username: userId, quantidade }
+        body: { action: 'add-ig-extra', username: userId, quantidade }
       });
 
       if (error) throw error;
