@@ -14,7 +14,22 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const action = url.pathname.split('/').pop();
+    const contentType = req.headers.get('content-type') || '';
+    let bodyJson: any = {};
+    
+    if (req.method === 'POST' && contentType.includes('application/json')) {
+      try {
+        bodyJson = await req.json();
+      } catch (e) {
+        console.error('Error parsing request body:', e);
+      }
+    }
+
+    // Determine action from URL path, query param, or body
+    const pathAction = url.pathname.split('/').pop();
+    const action = (pathAction !== 'square-admin-proxy' ? pathAction : null) || 
+                   url.searchParams.get('action') || 
+                   bodyJson.action;
     
     // Pass through admin headers
     const adminPass = req.headers.get('x-admin-pass');
@@ -26,40 +41,34 @@ serve(async (req) => {
     if (adminPass) headers['x-admin-pass'] = adminPass;
     if (adminName) headers['x-admin-name'] = adminName;
 
-    let targetUrl = `${API_BASE}/usuarios`; // Removing /admin to test if the endpoint is at the root
+    let targetUrl = `${API_BASE}/usuarios`;
     let method = 'GET';
     let body = null;
 
-    if (action === 'remove-user' || url.pathname.includes('/remove-user')) {
+    if (action === 'remove-user') {
       targetUrl = `${API_BASE}/admin/remover-usuario`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
-    } else if (action === 'remove-instagram' || url.pathname.includes('/remove-instagram')) {
+      body = JSON.stringify(bodyJson);
+    } else if (action === 'remove-instagram') {
       targetUrl = `${API_BASE}/remover-instagram`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
-    } else if (action === 'clear-instagrams' || url.pathname.includes('/clear-instagrams')) {
+      body = JSON.stringify(bodyJson);
+    } else if (action === 'clear-instagrams') {
       targetUrl = `${API_BASE}/admin/limpar-instagrams`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
-    } else if (action === 'blacklist' || url.pathname.includes('/blacklist')) {
+      body = JSON.stringify(bodyJson);
+    } else if (action === 'blacklist') {
       targetUrl = `${API_BASE}/admin/blacklist`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
-    } else if (action === 'zerar-testes' || url.pathname.includes('/zerar-testes')) {
+      body = JSON.stringify(bodyJson);
+    } else if (action === 'zerar-testes') {
       targetUrl = `${API_BASE}/admin/zerar-testes`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
-    } else if (action === 'add-ig-extra' || url.pathname.includes('/add-ig-extra')) {
+      body = JSON.stringify(bodyJson);
+    } else if (action === 'add-ig-extra') {
       targetUrl = `${API_BASE}/adicionar-ig-extra`;
       method = 'POST';
-      const json = await req.json().catch(() => ({}));
-      body = JSON.stringify(json);
+      body = JSON.stringify(bodyJson);
     }
 
     console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
