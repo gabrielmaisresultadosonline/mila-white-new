@@ -14,145 +14,152 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const contentType = req.headers.get('content-type') || '';
-    let bodyJson: any = {};
+    const action = url.searchParams.get("action") || "";
     
-    // Log the incoming request for debugging
-    console.log(`[square-admin-proxy] Incoming ${req.method} request to ${url.pathname}`);
-    console.log(`[square-admin-proxy] Content-Type: ${contentType}`);
-
-    if (req.method === 'POST') {
-      try {
-        const text = await req.text();
-        console.log(`[square-admin-proxy] Raw body: ${text.substring(0, 100)}`);
-        if (text) {
-          bodyJson = JSON.parse(text);
-        }
-      } catch (e) {
-        console.error('[square-admin-proxy] Error parsing request body:', e);
-      }
-    }
-
-    // Determine action from URL path, query param, or body
-    const pathAction = url.pathname.split('/').pop();
-    const action = (pathAction && pathAction !== 'square-admin-proxy' ? pathAction : null) || 
-                   url.searchParams.get('action') || 
-                   bodyJson.action;
-    
+    // Log identified action
     console.log(`[square-admin-proxy] Identified action: ${action}`);
-    
-    // Pass through admin headers
+
+    // Admin Credentials from headers
     const adminPass = req.headers.get('x-admin-pass');
     const adminName = req.headers.get('x-admin-name');
 
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+    if (!adminPass) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        message: "Acesso não autorizado. ADMIN_PASS não fornecido nos headers." 
+      }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const input = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+
+    const routes: Record<string, { method: string; path: string; buildBody?: (p: any) => any }> = {
+      "list-users": { 
+        method: "GET", 
+        path: "/admin/usuarios" 
+      },
+      "blacklist": {
+        method: "POST",
+        path: "/admin/blacklist",
+        buildBody: (p) => ({ 
+          userId: p.userId, 
+          blackListStatus: !!p.blackListStatus 
+        }),
+      },
+      "clear-instagrams": {
+        method: "POST",
+        path: "/admin/limpar-instagrams",
+        buildBody: (p) => ({ 
+          userId: p.userId 
+        }),
+      },
+      "remove-instagram": {
+        method: "POST",
+        path: "/admin/remover-instagram",
+        buildBody: (p) => ({ 
+          userId: p.userId, 
+          instagram: p.instagram 
+        }),
+      },
+      "remove-user": {
+        method: "POST",
+        path: "/admin/remover-usuario",
+        buildBody: (p) => ({ 
+          userId: p.userId 
+        }),
+      },
+      "zerar-testes": {
+        method: "POST",
+        path: "/admin/zerar-testes",
+        buildBody: (p) => ({ 
+          userId: p.userId 
+        }),
+      },
+      "add-ig-extra": {
+        method: "POST",
+        path: "/adicionar-ig-extra",
+        buildBody: (p) => ({ 
+          username: p.username || p.userId, 
+          quantidade: Number(p.quantidade) 
+        }),
+      },
     };
+
+    // Default to list-users if no specific action provided but it's a GET request
+    const effectiveAction = action || (req.method === "GET" ? "list-users" : "");
+    const route = routes[effectiveAction];
     
-    // Add all variations of admin headers to ensure compatibility
-    if (adminPass) {
-      headers['x-admin-pass'] = adminPass;
-      headers['admin_pass'] = adminPass;
-      headers['password'] = adminPass;
-    }
-    if (adminName) {
-      headers['x-admin-name'] = adminName;
-      headers['x-admin-user'] = adminName;
-      headers['admin_user'] = adminName;
-      headers['username'] = adminName;
+    if (!route) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        message: `Ação inválida ou não fornecida: ${effectiveAction}` 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    let targetUrl = `${API_BASE}/usuarios`;
-    let method = 'GET';
-    let body = null;
+    const targetUrl = `${API_BASE}${route.path}`;
+    console.log(`[square-admin-proxy] Proxying ${route.method} to ${targetUrl}`);
 
-    // Create a copy of bodyJson without the action field to send to SquareCloud
-    const squareBody: any = { ...bodyJson };
-    delete squareBody.action;
-    
-    // Normalize user identifier field
-    const userIdentifier = squareBody.userId || squareBody.username || squareBody.usuario;
-    if (userIdentifier) {
-      squareBody.userId = userIdentifier;
-      squareBody.username = userIdentifier;
-      squareBody.usuario = userIdentifier;
+    const headers: Record<string, string> = {
+      "x-admin-pass": adminPass,
+      "x-admin-name": adminName || "ADMIN",
+    };
+
+    let body: string | undefined;
+
+    if (route.method !== "GET") {
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify(route.buildBody ? route.buildBody(input) : input);
+      console.log(`[square-admin-proxy] Sending body: ${body}`);
     }
 
-    // Mapping actions to their correct root endpoints in SquareCloud (removendo /admin/)
-    if (action === 'remove-user') {
-      targetUrl = `${API_BASE}/remover-usuario`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    } else if (action === 'remove-instagram') {
-      targetUrl = `${API_BASE}/remover-instagram`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    } else if (action === 'clear-instagrams') {
-      targetUrl = `${API_BASE}/limpar-instagrams`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    } else if (action === 'blacklist') {
-      targetUrl = `${API_BASE}/blacklist`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    } else if (action === 'zerar-testes') {
-      targetUrl = `${API_BASE}/zerar-testes`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    } else if (action === 'add-ig-extra') {
-      targetUrl = `${API_BASE}/adicionar-ig-extra`;
-      method = 'POST';
-      body = JSON.stringify(squareBody);
-    }
-
-    console.log(`[square-admin-proxy] Proxying ${method} to ${targetUrl}`);
-    console.log(`[square-admin-proxy] Headers keys: ${Object.keys(headers).join(', ')}`);
-
-    const response = await fetch(targetUrl, {
-      method,
+    const apiResp = await fetch(targetUrl, {
+      method: route.method,
       headers,
-      body: method === 'POST' ? body : null,
+      body,
     });
 
-    const responseText = await response.text();
-    console.log(`[square-admin-proxy] SquareCloud raw response (${response.status}):`, responseText.substring(0, 500));
+    const text = await apiResp.text();
+    console.log(`[square-admin-proxy] SquareCloud raw response (${apiResp.status}):`, text.substring(0, 500));
 
-    // If response is HTML, it's an error from the server (like 404 or 500)
-    if (responseText.trim().startsWith('<!') || responseText.trim().startsWith('<html')) {
-        return new Response(JSON.stringify({ 
-            success: false, 
-            message: `Erro na API SquareCloud (${response.status}). O servidor retornou uma página de erro (404/500). Verifique se o endpoint ${targetUrl} está correto.`,
-            debug: responseText.substring(0, 200)
-        }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 500,
-        });
+    let parsed: any;
+    try { 
+      parsed = JSON.parse(text); 
+    } catch { 
+      parsed = { raw: text }; 
     }
 
-    let data;
-    try {
-        data = JSON.parse(responseText);
-    } catch (e) {
-        return new Response(JSON.stringify({ 
-            success: false, 
-            message: "A API retornou um formato inválido (não é JSON).",
-            debug: responseText.substring(0, 100)
-        }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 500,
-        });
+    if (!apiResp.ok) {
+      return new Response(JSON.stringify({
+        success: false,
+        message: `Erro na API SquareCloud (${apiResp.status}). Verifique se a API na SquareCloud possui a rota ${route.path} e foi redeployada recentemente.`,
+        endpoint: targetUrl,
+        status: apiResp.status,
+        debug: text,
+      }), {
+        status: apiResp.status,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
-    
-    return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: response.status,
+
+    return new Response(JSON.stringify(parsed), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
-  } catch (error) {
-    console.error('[square-admin-proxy] Error:', error);
-    return new Response(
-      JSON.stringify({ success: false, message: error instanceof Error ? error.message : 'Unknown error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+  } catch (e) {
+    console.error('[square-admin-proxy] Error:', e);
+    return new Response(JSON.stringify({ 
+      success: false, 
+      message: "Erro interno no proxy", 
+      error: String(e) 
+    }), { 
+      status: 500, 
+      headers: { ...corsHeaders, "Content-Type": "application/json" } 
+    });
   }
 });
