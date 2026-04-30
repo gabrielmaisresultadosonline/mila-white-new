@@ -87,8 +87,8 @@ serve(async (req) => {
       },
     };
 
-    // Default to list-users if no specific action provided but it's a GET request
-    const effectiveAction = action || (req.method === "GET" ? "list-users" : "");
+    // Default to list-users if no specific action provided
+    const effectiveAction = action || "list-users";
     const route = routes[effectiveAction];
     
     if (!route) {
