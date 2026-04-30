@@ -175,16 +175,20 @@ export default function AdminUsuario() {
   const loadSquareUsers = async () => {
     setLoadingSquare(true);
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const response = await fetch("https://codigoinstashopapimro.squareweb.app/usuarios", {
+        method: 'GET',
         headers: {
-          'x-admin-pass': 'maisresultadosonline'
+          'x-admin-pass': 'Ga145523@',
+          'x-admin-name': 'MRO'
         }
       });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const data = await response.json();
       
-      if (Array.isArray(data)) {
-        setSquareUsers(data);
+      const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
+      if (Array.isArray(userList)) {
+        setSquareUsers(userList);
       }
     } catch (err) {
       console.error("Error loading Square users:", err);
@@ -198,13 +202,18 @@ export default function AdminUsuario() {
     
     try {
       setLoadingSquare(true);
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-user', {
+      const response = await fetch("https://codigoinstashopapimro.squareweb.app/admin/remover-usuario", {
         method: 'POST',
-        headers: { 'x-admin-pass': 'maisresultadosonline' },
-        body: { userId }
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-admin-pass': 'Ga145523@',
+          'x-admin-name': 'MRO'
+        },
+        body: JSON.stringify({ userId })
       });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const data = await response.json();
       toast.success(data.message || "Usuário removido");
       loadSquareUsers();
     } catch (err) {
@@ -219,13 +228,18 @@ export default function AdminUsuario() {
 
     try {
       setLoadingSquare(true);
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
+      const response = await fetch("https://codigoinstashopapimro.squareweb.app/admin/remover-instagram", {
         method: 'POST',
-        headers: { 'x-admin-pass': 'maisresultadosonline' },
-        body: { userId, instagram }
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-admin-pass': 'Ga145523@',
+          'x-admin-name': 'MRO'
+        },
+        body: JSON.stringify({ userId, instagram })
       });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const data = await response.json();
       toast.success(data.message || "Instagram removido");
       loadSquareUsers();
     } catch (err) {
@@ -240,13 +254,18 @@ export default function AdminUsuario() {
 
     try {
       setLoadingSquare(true);
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/clear-instagrams', {
+      const response = await fetch("https://codigoinstashopapimro.squareweb.app/admin/limpar-instagrams", {
         method: 'POST',
-        headers: { 'x-admin-pass': 'maisresultadosonline' },
-        body: { userId }
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-admin-pass': 'Ga145523@',
+          'x-admin-name': 'MRO'
+        },
+        body: JSON.stringify({ userId })
       });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const data = await response.json();
       toast.success(data.message || "Contas removidas");
       loadSquareUsers();
     } catch (err) {

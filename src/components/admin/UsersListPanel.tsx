@@ -46,17 +46,21 @@ const UsersListPanel = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      console.log('[UsersListPanel] Fetching SquareCloud users via Proxy...');
+      console.log('[UsersListPanel] Fetching SquareCloud users directly...');
       
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=list-users', {
+      const response = await fetch(`${API_BASE}/usuarios`, {
+        method: 'GET',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         }
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro na API SquareCloud: ${response.status}`);
+      }
 
+      const data = await response.json();
       console.log('[UsersListPanel] API full response:', data);
       
       const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
@@ -72,7 +76,7 @@ const UsersListPanel = () => {
       console.error('[UsersListPanel] Error:', error);
       toast({ 
         title: 'Erro na API SquareCloud', 
-        description: error?.message || 'Não foi possível carregar a lista de usuários ativos. Verifique se a Edge Function square-admin-proxy está implantada.', 
+        description: error?.message || 'Não foi possível carregar a lista de usuários ativos.', 
         variant: 'destructive' 
       });
     } finally {
@@ -85,17 +89,21 @@ const UsersListPanel = () => {
 
     setIsDeleting(userId);
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=remove-user', {
+      const response = await fetch(`${API_BASE}/admin/remover-usuario`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'remove-user', userId }
+        body: JSON.stringify({ userId })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro ao remover usuário: ${response.status}`);
+      }
 
+      const data = await response.json();
       toast({ title: 'Usuário removido', description: data.message || 'Perfil excluído com sucesso' });
       fetchData();
     } catch (error: any) {
@@ -109,17 +117,21 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=remove-instagram', {
+      const response = await fetch(`${API_BASE}/admin/remover-instagram`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'remove-instagram', userId, instagram }
+        body: JSON.stringify({ userId, instagram })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro ao remover instagram: ${response.status}`);
+      }
 
+      const data = await response.json();
       toast({ title: 'Instagram removido', description: `@${instagram} removido do usuário ${userId}` });
       fetchData();
     } catch (error: any) {
@@ -131,18 +143,22 @@ const UsersListPanel = () => {
     if (!confirm(`Remover TODAS as contas de Instagram do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=clear-instagrams', {
+      const response = await fetch(`${API_BASE}/admin/limpar-instagrams`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'clear-instagrams', userId }
+        body: JSON.stringify({ userId })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro ao limpar instagrams: ${response.status}`);
+      }
 
-      toast({ title: 'Lista limpa', description: `Todos os Instagrams de ${userId} foram removidos` });
+      const data = await response.json();
+      toast({ title: 'Lista limpa', description: data.message || `Todos os Instagrams de ${userId} foram removidos` });
       fetchData();
     } catch (error: any) {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
@@ -156,17 +172,21 @@ const UsersListPanel = () => {
     if (!confirm(`${actionLabel} para o usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=blacklist', {
+      const response = await fetch(`${API_BASE}/admin/blacklist`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'blacklist', userId, blackListStatus: newStatus }
+        body: JSON.stringify({ userId, blackListStatus: newStatus })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro na blacklist: ${response.status}`);
+      }
 
+      const data = await response.json();
       toast({ 
         title: 'Blacklist atualizada', 
         description: data.message || `Status de blacklist para ${userId} alterado para ${newStatus ? 'Ativado' : 'Desativado'}` 
@@ -181,20 +201,24 @@ const UsersListPanel = () => {
     if (!confirm(`Deseja zerar os testes do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=zerar-testes', {
+      const response = await fetch(`${API_BASE}/admin/zerar-testes`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'zerar-testes', userId }
+        body: JSON.stringify({ userId })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro ao zerar testes: ${response.status}`);
+      }
 
+      const data = await response.json();
       toast({ 
         title: 'Testes zerados', 
-        description: `Os testes de ${userId} foram resetados com sucesso.` 
+        description: data.message || `Os testes de ${userId} foram resetados com sucesso.` 
       });
       fetchData();
     } catch (error: any) {
@@ -213,20 +237,24 @@ const UsersListPanel = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy?action=add-ig-extra', {
+      const response = await fetch(`${API_BASE}/adicionar-ig-extra`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { action: 'add-ig-extra', username: userId, quantidade }
+        body: JSON.stringify({ username: userId, quantidade })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Erro ao adicionar slots: ${response.status}`);
+      }
 
+      const data = await response.json();
       toast({ 
         title: 'Slots adicionados', 
-        description: `Foram adicionados +${quantidade} slots extras para o usuário ${userId}.` 
+        description: data.message || `Foram adicionados +${quantidade} slots extras para o usuário ${userId}.` 
       });
       fetchData();
     } catch (error: any) {

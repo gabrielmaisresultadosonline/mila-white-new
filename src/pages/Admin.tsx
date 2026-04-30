@@ -63,13 +63,17 @@ const Admin = () => {
 
   const fetchSquareUsersCount = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
+      const response = await fetch("https://codigoinstashopapimro.squareweb.app/usuarios", {
+        method: 'GET',
         headers: {
-          'x-admin-pass': "maisresultadosonline",
-          'x-admin-name': "ADMIN"
+          'x-admin-pass': "Ga145523@",
+          'x-admin-name': "MRO"
         }
       });
-      if (error) throw error;
+
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      
+      const data = await response.json();
       const userList = data.usuarios || data.users || (Array.isArray(data) ? data : []);
       if (Array.isArray(userList)) {
         setSquareUsersCount(userList.length);
