@@ -49,8 +49,9 @@ serve(async (req) => {
     const squareBody = { ...bodyJson };
     delete squareBody.action;
 
+    // Based on the 404 errors, we're removing /admin/ from the endpoints
     if (action === 'remove-user') {
-      targetUrl = `${API_BASE}/admin/remover-usuario`;
+      targetUrl = `${API_BASE}/remover-usuario`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'remove-instagram') {
@@ -58,15 +59,15 @@ serve(async (req) => {
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'clear-instagrams') {
-      targetUrl = `${API_BASE}/admin/limpar-instagrams`;
+      targetUrl = `${API_BASE}/limpar-instagrams`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'blacklist') {
-      targetUrl = `${API_BASE}/admin/blacklist`;
+      targetUrl = `${API_BASE}/blacklist`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'zerar-testes') {
-      targetUrl = `${API_BASE}/admin/zerar-testes`;
+      targetUrl = `${API_BASE}/zerar-testes`;
       method = 'POST';
       body = JSON.stringify(squareBody);
     } else if (action === 'add-ig-extra') {
