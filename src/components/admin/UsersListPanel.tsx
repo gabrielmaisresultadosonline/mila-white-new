@@ -109,13 +109,13 @@ const UsersListPanel = () => {
     if (!confirm(`Remover conta @${instagram} do usuário ${userId}?`)) return;
 
     try {
-      const { data, error } = await supabase.functions.invoke('square-admin-proxy/remove-instagram', {
+      const { data, error } = await supabase.functions.invoke('square-admin-proxy', {
         method: 'POST',
         headers: {
           'x-admin-pass': ADMIN_PASS,
           'x-admin-name': ADMIN_NAME
         },
-        body: { userId, instagram }
+        body: { action: 'remove-instagram', userId, instagram }
       });
 
       if (error) throw error;
