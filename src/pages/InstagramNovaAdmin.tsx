@@ -3871,43 +3871,32 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         {/* Orders List - Collapsible Sections */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
+            <Loader2 className="w-12 h-12 animate-spin text-amber-500" />
+            <span className="ml-4 text-white font-bold">CARREGANDO BANCO DE DADOS...</span>
           </div>
-        ) : filteredOrders.length === 0 ? (
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardContent className="p-8 text-center">
-              <p className="text-zinc-400">Nenhum pedido encontrado</p>
-              {orders.length > 0 && (
-                <p className="text-xs text-zinc-500 mt-2">
-                  Total no banco: {orders.length} (estão sendo filtrados)
-                </p>
-              )}
-            </CardContent>
-          </Card>
         ) : (
-          <div className="space-y-4">
-            {/* Lista Principal de Pedidos */}
-            <div className="bg-zinc-800/40 rounded-xl border border-amber-500/20 p-5 shadow-2xl">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-white text-lg font-bold flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-amber-500" />
-                    PEDIDOS ENCONTRADOS ({filteredOrders.length})
-                  </h3>
-                  <p className="text-zinc-500 text-xs mt-1">Sincronizado com o banco de dados agora</p>
-                </div>
-                <div className="text-right">
-                  <span className="block text-[10px] text-zinc-500 uppercase tracking-widest font-black">Ordenação</span>
-                  <span className="text-amber-500 text-xs font-bold uppercase">Mais Recentes Primeiro</span>
-                </div>
+          <div className="space-y-6 mt-8">
+            <div className="bg-amber-500/5 border-2 border-amber-500/20 p-4 rounded-2xl mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
+                  <BarChart3 className="w-6 h-6" />
+                  LISTAGEM GERAL (RECARREGADA)
+                </h2>
+                <Badge className="bg-amber-500 text-black font-black">
+                  TOTAL NO BANCO: {orders.length}
+                </Badge>
               </div>
-              
+
               <div className="grid grid-cols-1 gap-4">
-                {filteredOrders.map((order) => (
-                  <div key={order.id} className="transform transition-all hover:scale-[1.01]">
-                    {renderOrderCard(order, true)}
-                  </div>
-                ))}
+                {orders.length === 0 ? (
+                  <div className="text-center py-10 text-zinc-600 font-bold">NENHUM REGISTRO NO BANCO</div>
+                ) : (
+                  orders.slice(0, 20).map((order) => (
+                    <div key={order.id} className="bg-black/40 p-4 rounded-xl border border-zinc-800">
+                      {renderOrderCard(order, true)}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
