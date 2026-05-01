@@ -62,7 +62,7 @@ serve(async (req) => {
   });
 
   try {
-    log("Checking MRO payment");
+    log("Checking InstaShop payment");
 
     const body = await req.json();
     const { nsu_order, transaction_nsu, slug, link, force_webhook } = body;
