@@ -134,8 +134,8 @@ export default function InstagramNovaAdmin() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     completed: true,
     paid: true,
-    pending: false,
-    expired: false
+    pending: true,
+    expired: true
   });
 
   // Configuração de afiliado - sistema expandido
@@ -659,6 +659,7 @@ export default function InstagramNovaAdmin() {
       setAdminSessionToken(response.token);
       setIsAuthenticated(true);
       await loadOrders(response.token);
+      checkPendingPayments();
       toast.success("Login realizado com sucesso!");
     } catch (error) {
       console.error("Admin login error:", error);
@@ -804,10 +805,11 @@ export default function InstagramNovaAdmin() {
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
-        // Forçar um recarregamento total da lista a cada 10 segundos
+        // Forçar um recarregamento total da lista a cada 6 segundos
         // para garantir que novos "pendentes" (que acabaram de ser criados) apareçam
         const timeSinceLastLoad = localStorage.getItem("mro_last_load_time");
-        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 10000) {
+        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 6000) {
+          console.log("[AUTO-REFRESH] Recarregando lista de pedidos...");
           loadOrders();
           localStorage.setItem("mro_last_load_time", Date.now().toString());
         }
@@ -830,12 +832,18 @@ export default function InstagramNovaAdmin() {
         // Calcular tempo desde criação
         const createdAt = new Date(order.created_at);
         const minutesSinceCreation = Math.floor((now.getTime() - createdAt.getTime()) / 60000);
-        console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
+        
+        // Log detalhado para depuração
+        if (minutesSinceCreation < 5) {
+          console.log(`[AUTO-CHECK] Pedido RECENTE detectado: ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min`);
+        } else {
+          console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
+        }
 
         // Verificar pagamento via API
         try {
           const { data } = await supabase.functions.invoke("check-mro-payment", {
-            body: { nsu_order: order.nsu_order }
+            body: { nsu_order: order.nsu_order, force_webhook: true }
           });
 
           if (data?.status === "completed" || data?.status === "paid") {
