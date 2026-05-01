@@ -809,11 +809,11 @@ export default function InstagramNovaAdmin() {
       const now = new Date();
       
       // Forçar expiração no banco de dados para garantir que nada fique pendente indevidamente
+      // Também corrige qualquer pedido 'completed' sem data de pagamento para 'expired'
       await supabase
         .from("mro_orders")
         .update({ status: "expired" })
-        .eq("status", "pending")
-        .or(`created_at.lt.${new Date(now.getTime() - 15 * 60000).toISOString()},expired_at.lt.${now.toISOString()}`);
+        .or(`and(status.eq.pending,or(created_at.lt.${new Date(now.getTime() - 15 * 60000).toISOString()},expired_at.lt.${now.toISOString()})),and(status.eq.completed,paid_at.is.null)`);
 
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
