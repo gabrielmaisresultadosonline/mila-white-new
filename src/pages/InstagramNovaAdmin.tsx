@@ -750,8 +750,9 @@ export default function InstagramNovaAdmin() {
       // Processar pedidos expirados e garantir integridade (não permite completed sem pagamento)
       const now = new Date();
       const processedOrders = (finalData || []).map((order) => {
-        // CORREÇÃO DEFINITIVA: NUNCA mostrar como completed se não tiver data de pagamento REAL no banco
-        if (!order.paid_at && order.status !== "expired") {
+        // CORREÇÃO DEFINITIVA: Se não tiver data de pagamento, FORÇAR como expired no visual
+        // O cliente confirmou que NADA foi pago, então limpamos qualquer erro de status
+        if (!order.paid_at) {
           order.status = "expired";
         }
         
