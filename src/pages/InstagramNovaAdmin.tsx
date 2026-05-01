@@ -4024,17 +4024,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               </CardContent>
             </Card>
 
-            {/* SEÇÕES FILTRADAS ABAIXO */}
-            <div className="mt-20 pt-10 border-t-2 border-zinc-800">
-               <p className="text-center text-zinc-600 font-black uppercase mb-10 tracking-[0.5em]">Lógica de Categorias</p>
-               <div className="space-y-4 opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
-                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                  {renderOrderSection("paid", "💰 Pagos", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-               </div>
-            </div>
-          </div>
-
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
           </div>
