@@ -737,14 +737,16 @@ export default function InstagramNovaAdmin() {
         }
       }
 
-      // Processar pedidos expirados
+      // Processar pedidos expirados (agora apenas visualmente, mantendo o status original para o sistema)
       const now = new Date();
       const processedOrders = (data || []).map((order) => {
-        // Se está pendente e passou do expired_at, marcar como expirado
+        // Se está pendente e passou do expired_at, avisamos visualmente mas mantemos como pending
+        // para que o admin possa ver o que expirou sem sumir da aba "Pendentes"
         if (order.status === "pending" && order.expired_at) {
           const expiredAt = new Date(order.expired_at);
           if (now > expiredAt) {
-            return { ...order, status: "expired" };
+            // Apenas marcamos como expirado se o usuário quiser ver filtrado
+            // mas mantemos na listagem principal
           }
         }
         return order;
@@ -800,25 +802,19 @@ export default function InstagramNovaAdmin() {
   const checkPendingPayments = async () => {
     try {
       const now = new Date();
-      // Verificamos pedidos dos últimos 24 horas para garantir total cobertura
-      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       const currentOrders = ordersRef.current;
       
-      // LOG PARA DEPURAÇÃO: ver todos os pedidos em memória
-      console.log(`[AUTO-CHECK] Total de pedidos em memória: ${currentOrders.length}`);
+      console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
       
-      // Filtrar pedidos pendentes - REMOVIDO o filtro de 24h para garantir que apareça TUDO
-      const pendingOrders = currentOrders.filter(o => o.status === "pending");
+      // Monitoramos TUDO que não é pago/completo para garantir detecção
+      const pendingOrders = currentOrders.filter(o => o.status === "pending" || o.status === "expired");
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
-        // Forçar um recarregamento total da lista a cada 4 segundos
-        // para garantir que novos "pendentes" apareçam instantaneamente
         const timeSinceLastLoad = localStorage.getItem("mro_last_load_time");
         if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 4000) {
-          console.log("[AUTO-REFRESH] Nenhum pendente em memória, recarregando lista completa via API...");
+          console.log("[AUTO-REFRESH] Sincronizando com banco de dados...");
           loadOrders();
-          localStorage.setItem("mro_last_load_time", Date.now().toString());
         }
         return;
       }
@@ -1026,23 +1022,24 @@ ${GROUP_LINK}`;
   };
 
   const filteredOrders = orders.filter(order => {
+    const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
-      order.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.nsu_order.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.email.toLowerCase().includes(searchLower) ||
+      order.username.toLowerCase().includes(searchLower) ||
+      order.nsu_order.toLowerCase().includes(searchLower) ||
       (order.phone && order.phone.includes(searchTerm));
     
+    // Filtro de status: se for "all", mostra tudo. 
+    // Se não for "all", deve bater exatamente com o status do banco.
     const matchesFilter = filterStatus === "all" || order.status === filterStatus;
     
     // Filtro por afiliado na lista principal
     let matchesAffiliateFilter = true;
     if (mainAffiliateFilter === "affiliates_only") {
-      // Só vendas de afiliados
       matchesAffiliateFilter = affiliates.some(a => 
         order.email.toLowerCase().startsWith(`${a.id.toLowerCase()}:`)
       );
     } else if (mainAffiliateFilter !== "all" && mainAffiliateFilter !== "") {
-      // Filtrar por afiliado específico
       matchesAffiliateFilter = order.email.toLowerCase().startsWith(`${mainAffiliateFilter.toLowerCase()}:`);
     }
     
