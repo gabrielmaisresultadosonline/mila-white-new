@@ -4008,6 +4008,9 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                             }`}>
                               {(order.status || 'PENDENTE').toUpperCase()}
                             </Badge>
+                            <Badge className="px-4 py-1 font-black text-sm bg-zinc-800 text-amber-500 border border-amber-500/30">
+                              R$ {Number(order.amount || 0).toFixed(2)}
+                            </Badge>
                           </div>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
