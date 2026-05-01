@@ -4094,8 +4094,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                                   <RotateCcw className="w-3 h-3" />
                                 </button>
                               )}
+                            </div>
                           </div>
-                        </div>
 
                         <div className="flex flex-col items-center md:items-end gap-4 shrink-0">
                           <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
