@@ -150,7 +150,7 @@ async function sendAccessEmail(
     const client = new SMTPClient({
       connection: {
         hostname: "smtp.hostinger.com",
-        port: 465,
+        port: 587,
         tls: true,
         auth: {
           username: "suporte@codigoinstashop.com.br",
