@@ -566,16 +566,16 @@ export default function InstagramNovaAdmin() {
     checkAuth();
   }, []);
 
-  // Verificação automática a cada 8 segundos (para pedidos recentes até 15 min)
+  // Verificação automática a cada 15 segundos (para pedidos recentes até 15 min)
   useEffect(() => {
     if (isAuthenticated && autoCheckEnabled) {
       // Verificar imediatamente ao carregar
       checkPendingPayments();
       
-      // Configurar intervalo de 8 segundos para verificação agressiva
+      // Configurar intervalo de 15 segundos para verificação
       autoCheckIntervalRef.current = setInterval(() => {
         checkPendingPayments();
-      }, 8000); // 8 segundos
+      }, 15000); // 15 segundos
       
       return () => {
         if (autoCheckIntervalRef.current) {
