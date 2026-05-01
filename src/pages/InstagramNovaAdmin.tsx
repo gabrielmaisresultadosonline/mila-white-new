@@ -906,7 +906,11 @@ export default function InstagramNovaAdmin() {
       }
 
       setLastAutoCheck(new Date());
-      loadOrders();
+      // Só recarregar se houver confirmação ou a cada 60 segundos por segurança
+      const timeSinceLastLoad = Date.now() - (parseInt(localStorage.getItem("mro_last_load_time") || "0"));
+      if (confirmedPayments.length > 0 || timeSinceLastLoad > 60000) {
+        loadOrders();
+      }
     } catch (error) {
       console.error("[AUTO-CHECK] Erro:", error);
     }
