@@ -363,7 +363,7 @@ Continue assim! Você está no caminho certo! 🔥
 </tr>
 <tr>
 <td style="background:#000;padding:20px;text-align:center;border-top:3px solid #FFD700;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td>
 </tr>
