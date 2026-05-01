@@ -76,7 +76,7 @@ const DEFAULT_TEMPLATES: EmailTemplate[] = [
   {
     id: "update",
     name: "Aviso de Atualização",
-    subject: "🚀 Nova Atualização Disponível - MRO Instagram",
+    subject: "🚀 Nova Atualização Disponível - Código InstaShop",
     body: `Olá!
 
 Temos novidades importantes para você!
@@ -92,7 +92,7 @@ Acesse sua conta e aproveite todas as melhorias!
 Qualquer dúvida, estamos à disposição.
 
 Abraços,
-Equipe MRO`
+Equipe Código InstaShop`
   },
   {
     id: "support",
@@ -111,7 +111,7 @@ Clique no botão abaixo para falar conosco no WhatsApp:
 Estamos à disposição para ajudá-lo.
 
 Abraços,
-Equipe MRO`
+Equipe Código InstaShop`
   },
   {
     id: "custom",
@@ -402,7 +402,7 @@ export default function InstagramNovaAdminEmail() {
         `N:${c.username};CLIENTE;;;`,
         `TEL;TYPE=CELL:${phoneFormatted}`,
         `EMAIL:${c.email}`,
-        `ORG:MRO - ${c.planType}`,
+        `ORG:Código InstaShop - ${c.planType}`,
         'END:VCARD'
       ].join('\r\n');
     }).join('\r\n');
@@ -411,7 +411,7 @@ export default function InstagramNovaAdminEmail() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `contatos-mro-${format(new Date(), 'yyyy-MM-dd')}.vcf`;
+    a.download = `contatos-codigo-instashop-${format(new Date(), 'yyyy-MM-dd')}.vcf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

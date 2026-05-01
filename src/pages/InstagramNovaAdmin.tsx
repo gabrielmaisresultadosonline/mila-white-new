@@ -2078,7 +2078,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         <p style="font-size:15px;line-height:1.6;">Seu acesso ao <strong>Codigo InstaShop</strong> foi cancelado, e o seu reembolso será ativado.</p>
         <p style="font-size:15px;line-height:1.6;">Qualquer dúvida, entre em contato com nosso WhatsApp clicando no botão abaixo:</p>
         <div style="text-align:center;margin:28px 0;">
-          <a href="https://maisresultadosonline.com.br/whatsapp" style="background:#25D366;color:#fff;padding:14px 32px;text-decoration:none;border-radius:8px;font-weight:bold;display:inline-block;">Falar no WhatsApp</a>
+          <a href="https://codigoinstashop.com.br/whatsapp" style="background:#25D366;color:#fff;padding:14px 32px;text-decoration:none;border-radius:8px;font-weight:bold;display:inline-block;">Falar no WhatsApp</a>
         </div>
         <p style="font-size:13px;color:#666;margin-top:32px;">Atenciosamente,<br/>Equipe Codigo InstaShop</p>
       </div>`;
@@ -2259,7 +2259,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 <p style="margin:5px 0 0;color:#333;font-size:14px;">📅 Data da tentativa: <strong>{{date}}</strong></p>
 </div>
 <div style="text-align:center;margin:25px 0;">
-<a href="https://maisresultadosonline.com.br/whatsapp" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp e garantir desconto</a>
+<a href="https://codigoinstashop.com.br/whatsapp" style="display:inline-block;background:#25D366;color:#fff;padding:14px 30px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp e garantir desconto</a>
 </div>
 <p style="color:#666;font-size:13px;line-height:1.5;">Envie seu email (<strong>{{email}}</strong>) junto com a mensagem no WhatsApp para que possamos identificar seu cadastro e liberar o desconto especial.</p>
 </div>

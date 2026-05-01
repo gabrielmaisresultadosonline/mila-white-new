@@ -191,11 +191,11 @@ serve(async (req) => {
     }
 
     // Replace WhatsApp button placeholder
-    const whatsappButtonHtml = '<table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;"><tr><td style="text-align:center;padding:14px;background:#25D366;border-radius:8px;"><a href="https://maisresultadosonline.com.br/whatsapp" style="color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp</a></td></tr></table>';
+    const whatsappButtonHtml = '<table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;"><tr><td style="text-align:center;padding:14px;background:#25D366;border-radius:8px;"><a href="https://codigoinstashop.com.br/whatsapp" style="color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp</a></td></tr></table>';
 
     const processedBody = body.replace(/\[BOTAO_WHATSAPP\]/g, whatsappButtonHtml);
     const plainTextBody = stripHtml(
-      body.replace(/\[BOTAO_WHATSAPP\]/g, "📱 Falar no WhatsApp: https://maisresultadosonline.com.br/whatsapp")
+      body.replace(/\[BOTAO_WHATSAPP\]/g, "📱 Falar no WhatsApp: https://codigoinstashop.com.br/whatsapp")
     );
 
     let htmlBody: string;
@@ -217,7 +217,7 @@ serve(async (req) => {
         '<body style="margin:0;padding:0;font-family:Arial,sans-serif;background-color:#f4f4f4;">' +
         '<table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;">' +
         '<tr><td style="padding:25px;text-align:center;border-bottom:3px solid #FFD700;">' +
-        '<div style="background:#000;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">MRO</div>' +
+        '<div style="background:#000;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">Código InstaShop</div>' +
         '</td></tr>' +
         '<tr><td style="padding:30px;">' +
         greetingHtml +
@@ -226,7 +226,7 @@ serve(async (req) => {
         '<tr><td style="padding:0 30px 20px 30px;"><hr style="border:none;border-top:1px solid #eee;margin:0;"></td></tr>' +
         '<tr><td style="padding:0 30px 10px 30px;text-align:center;">' +
         '<p style="color:#999;font-size:11px;margin:0;">Estamos à disposição para ajudá-lo.</p>' +
-        '<p style="color:#666;font-size:13px;margin:10px 0 0 0;">Abraços,<br><strong>Equipe MRO</strong></p>' +
+        '<p style="color:#666;font-size:13px;margin:10px 0 0 0;">Abraços,<br><strong>Equipe Código InstaShop</strong></p>' +
         '</td></tr>' +
         '<tr><td style="background:#1a1a1a;padding:15px;text-align:center;">' +
         '<p style="color:#888;margin:0;font-size:11px;">© ' + new Date().getFullYear() + ' Código InstaShop</p>' +

@@ -147,7 +147,7 @@ serve(async (req) => {
 
     if (type === 'welcome') {
       // Email de boas-vindas para novo afiliado
-      subject = `🎉 Bem-vindo à Família MRO, ${finalAffiliateName}!`;
+      subject = `🎉 Bem-vindo à Família Código InstaShop, ${finalAffiliateName}!`;
       
       // Formatar datas (só se não for vitalício)
       let promoDateText = '';
@@ -190,7 +190,7 @@ Suas comissões serão repassadas <strong>imediatamente</strong> quando cada ven
 <!-- Header -->
 <tr>
 <td style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:40px 30px;text-align:center;border-bottom:3px solid #FFD700;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:15px 35px;border-radius:12px;font-size:36px;font-weight:bold;letter-spacing:3px;margin-bottom:15px;border:2px solid #FFD700;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:15px 35px;border-radius:12px;font-size:36px;font-weight:bold;letter-spacing:3px;margin-bottom:15px;border:2px solid #FFD700;">Código InstaShop</div>
 <h1 style="color:#fff;margin:20px 0 0 0;font-size:32px;">🎉 Bem-vindo(a)!</h1>
 ${isLifetime ? '<p style="color:#FFD700;margin:15px 0 0 0;font-size:16px;font-weight:bold;">⭐ AFILIADO VITALÍCIO ⭐</p>' : ''}
 </td>
@@ -256,7 +256,7 @@ ${affiliateLink ? `
 <!-- Final Message -->
 <div style="text-align:center;padding:20px 0;">
 <p style="margin:0;color:#fff;font-size:18px;line-height:1.8;">
-<strong>MRO agradece mais uma vez a parceria!</strong><br>
+<strong>Código InstaShop agradece mais uma vez a parceria!</strong><br>
 Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra cima! 🔥</strong>
 </p>
 </div>
@@ -264,7 +264,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 <div style="text-align:center;padding:30px 0 10px 0;border-top:2px solid #4b5563;margin-top:20px;">
 <p style="margin:0;color:#9ca3af;font-size:16px;">Atenciosamente,</p>
 <p style="margin:10px 0 0 0;color:#FFD700;font-size:24px;font-weight:bold;">Gabriel</p>
-<p style="margin:5px 0 0 0;color:#6b7280;font-size:14px;">Fundador MRO</p>
+<p style="margin:5px 0 0 0;color:#6b7280;font-size:14px;">Fundador Código InstaShop</p>
 </div>
 
 </td>
@@ -273,7 +273,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 <!-- Footer -->
 <tr>
 <td style="background:#000;padding:25px;text-align:center;border-top:3px solid #FFD700;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;font-size:16px;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;font-size:16px;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#4b5563;margin:10px 0 0 0;font-size:11px;">Juntos vamos longe! 🚀</p>
 </td>
@@ -296,7 +296,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 Esta venda foi <strong>APROVADA</strong>!<br>
 Entre em contato pelo nosso <strong>WhatsApp</strong> e envie seu <strong>PIX</strong> para receber sua comissão imediatamente!
 </p>
-<a href="https://maisresultadosonline.com.br/whatsapp" style="display:inline-block;background:#000;color:#FFD700;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px;margin-top:10px;">📱 Chamar no WhatsApp</a>
+<a href="https://codigoinstashop.com.br/whatsapp" style="display:inline-block;background:#000;color:#FFD700;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px;margin-top:10px;">📱 Chamar no WhatsApp</a>
 </div>`
         : `<div style="background:#2d2d2d;border-left:4px solid #FFD700;padding:15px;margin:20px 0;border-radius:0 8px 8px 0;">
 <p style="margin:0;color:#fff;font-size:14px;">
@@ -315,7 +315,7 @@ Entre em contato pelo nosso <strong>WhatsApp</strong> e envie seu <strong>PIX</s
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#1a1a1a;">
 <tr>
 <td style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:30px;text-align:center;border-bottom:3px solid #10b981;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:12px 30px;border-radius:10px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;border:2px solid #FFD700;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:12px 30px;border-radius:10px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;border:2px solid #FFD700;">Código InstaShop</div>
 <h1 style="color:#10b981;margin:15px 0 0 0;font-size:28px;">💰 Comissão Confirmada!</h1>
 ${finalIsLifetime ? '<p style="color:#FFD700;margin:10px 0 0 0;font-size:14px;font-weight:bold;">⭐ AFILIADO VITALÍCIO - RECEBA NA HORA! ⭐</p>' : ''}
 </td>
@@ -363,7 +363,7 @@ Continue assim! Você está no caminho certo! 🔥
 </tr>
 <tr>
 <td style="background:#000;padding:20px;text-align:center;border-top:3px solid #FFD700;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td>
 </tr>
@@ -375,7 +375,7 @@ Continue assim! Você está no caminho certo! 🔥
       // Email simplificado com link
       const timestamp = summaryTimestamp || new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
       
-      subject = `📊 Seu Resumo de Vendas MRO - ${totalSales} vendas | R$${totalCommission}`;
+      subject = `📊 Seu Resumo de Vendas Código InstaShop - ${totalSales} vendas | R$${totalCommission}`;
       
       htmlContent = `Ola ${finalAffiliateName}!
 
@@ -388,11 +388,11 @@ Seu resumo de vendas esta pronto:
 Acesse seu resumo completo com todos os detalhes:
 ${resumoLink}
 
-Senha de acesso: ${affiliateId || 'mro2024'}
+Senha de acesso: ${affiliateId || 'codigo2024'}
 
 Atualizado em ${timestamp}
 
-MRO - Programa de Afiliados`;
+Código InstaShop - Programa de Afiliados`;
 
     } else if (type === 'summary' || type === 'partial_summary') {
       // Email de resumo (final ou parcial)
@@ -520,7 +520,7 @@ ${multipleRows}
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:750px;margin:0 auto;background:#ffffff;">
 <tr>
 <td style="background:linear-gradient(135deg,${isPartial ? '#3b82f6 0%,#1d4ed8' : '#8b5cf6 0%,#6366f1'} 100%);padding:30px;text-align:center;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">Código InstaShop</div>
 <h1 style="color:#fff;margin:15px 0 0 0;font-size:28px;">${headerTitle}</h1>
 ${isPartial ? '<p style="color:#fbbf24;margin:10px 0 0 0;font-size:14px;font-weight:bold;">📍 Promoção ainda em andamento!</p>' : ''}
 </td>
@@ -608,7 +608,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#666;margin:10px 0 0 0;font-size:11px;">Resumo gerado em ${timestamp}</p>
 </td>
@@ -624,7 +624,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
     }
 
     await client.send({
-      from: "MRO - Afiliados <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop - Afiliados <suporte@codigoinstashop.com.br>",
       to: finalAffiliateEmail,
       subject: subject,
       html: htmlContent,
