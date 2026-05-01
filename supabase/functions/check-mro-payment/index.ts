@@ -133,8 +133,8 @@ serve(async (req) => {
       );
     }
 
-    // Se já está pago mas não completed, tentar processar via webhook
-    if (order.status === "paid" || force_webhook) {
+    // Se já está pago mas não completed, ou se forçado pelo admin
+    if (order.status === "paid" || (force_webhook === true && order.status !== "completed")) {
       log("Order paid or force_webhook, triggering webhook manually");
       
       try {

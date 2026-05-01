@@ -750,8 +750,9 @@ export default function InstagramNovaAdmin() {
       // Processar pedidos expirados e garantir integridade (não permite completed sem pagamento)
       const now = new Date();
       const processedOrders = (finalData || []).map((order) => {
-        // CORREÇÃO DEFINITIVA: NUNCA mostrar como completed se não tiver data de pagamento REAL no banco
-        if (!order.paid_at && order.status !== "expired") {
+        // CORREÇÃO DEFINITIVA: Se não tiver data de pagamento, FORÇAR como expired no visual
+        // O cliente confirmou que NADA foi pago, então limpamos qualquer erro de status
+        if (!order.paid_at) {
           order.status = "expired";
         }
         
@@ -813,12 +814,13 @@ export default function InstagramNovaAdmin() {
     try {
       const now = new Date();
       
-      // Forçar expiração no banco de dados para garantir que nada fique pendente indevidamente
-      // Também corrige qualquer pedido 'completed' sem data de pagamento para 'expired'
+      // Forçar expiração no banco de dados para garantir integridade total
+      // Se não tem data de pagamento, o status PRECISA ser expired
       await supabase
         .from("mro_orders")
         .update({ status: "expired" })
-        .or(`and(status.neq.expired,paid_at.is.null),expired_at.lt.${now.toISOString()}`);
+        .is("paid_at", null)
+        .neq("status", "expired");
 
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
@@ -863,12 +865,12 @@ export default function InstagramNovaAdmin() {
 
         console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
 
-        // Verificar pagamento via API
+        // Verificar pagamento via API (SÓ VERIFICAR, NÃO FORÇAR WEBHOOK AUTOMATICAMENTE)
         try {
           const { data } = await supabase.functions.invoke("check-mro-payment", {
             body: { 
               nsu_order: order.nsu_order, 
-              force_webhook: true,
+              force_webhook: false,
               link: order.infinitepay_link 
             }
           });
