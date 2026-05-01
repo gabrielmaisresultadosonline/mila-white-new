@@ -437,7 +437,7 @@ export default function AffiliateResumo() {
 
         {/* Footer */}
         <div className="text-center py-6 border-t border-zinc-700 mt-6">
-          <p className="text-amber-400 font-semibold mb-1">MRO - Programa de Afiliados 💛</p>
+          <p className="text-amber-400 font-semibold mb-1">Código InstaShop - Programa de Afiliados 💛</p>
           <p className="text-zinc-500 text-xs">
             Última atualização: {lastUpdate ? format(lastUpdate, "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR }) : '-'}
           </p>
