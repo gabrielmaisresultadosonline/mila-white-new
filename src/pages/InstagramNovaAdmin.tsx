@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -708,8 +708,13 @@ export default function InstagramNovaAdmin() {
         return;
       }
 
-      const data: MROOrder[] = response.orders || [];
+      const data: MROOrder[] = Array.isArray(response.orders) ? response.orders : [];
       console.log(`[ADMIN] DATABASE: ${data.length} pedidos encontrados no Supabase`);
+      
+      // LOG DOS PRIMEIROS 3 PARA VERIFICAR DADOS
+      if (data.length > 0) {
+        console.log("[ADMIN] Primeiros 3 registros brutos:", data.slice(0, 3));
+      }
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
       const ordersToVerify = (data || []).filter(
@@ -1025,38 +1030,48 @@ ${GROUP_LINK}`;
     }
   };
 
-  const filteredOrders = orders.filter(order => {
-    // 1. Filtro de Busca (Search)
+  const filteredOrders = useMemo(() => {
+    if (!Array.isArray(orders)) return [];
+    
     const searchLower = searchTerm.toLowerCase().trim();
-    const matchesSearch = searchLower === "" || 
-      (order.email && order.email.toLowerCase().includes(searchLower)) ||
-      (order.username && order.username.toLowerCase().includes(searchLower)) ||
-      (order.nsu_order && order.nsu_order.toLowerCase().includes(searchLower)) ||
-      (order.phone && order.phone.includes(searchLower));
-    
-    // 2. Filtro de Status
-    const matchesFilter = filterStatus === "all" || order.status === filterStatus;
-    
-    // 3. Filtro por Afiliado
-    let matchesAffiliateFilter = true;
-    if (mainAffiliateFilter === "affiliates_only") {
-      matchesAffiliateFilter = affiliates.some(a => 
-        order.email?.toLowerCase().includes(`${a.id.toLowerCase()}:`)
-      );
-    } else if (mainAffiliateFilter !== "all" && mainAffiliateFilter !== "") {
-      matchesAffiliateFilter = order.email?.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
-    }
-    
-    return matchesSearch && matchesFilter && matchesAffiliateFilter;
-  });
+    const filterStatusValue = filterStatus;
+    const affiliateFilterValue = mainAffiliateFilter;
+
+    return orders.filter(order => {
+      // 1. Filtro de Busca (Search)
+      const matchesSearch = searchLower === "" || 
+        (order.email && order.email.toLowerCase().includes(searchLower)) ||
+        (order.username && order.username.toLowerCase().includes(searchLower)) ||
+        (order.nsu_order && order.nsu_order.toLowerCase().includes(searchLower)) ||
+        (order.phone && order.phone.includes(searchLower));
+      
+      if (!matchesSearch) return false;
+
+      // 2. Filtro de Status
+      const matchesFilter = filterStatusValue === "all" || order.status === filterStatusValue;
+      if (!matchesFilter) return false;
+      
+      // 3. Filtro por Afiliado
+      if (affiliateFilterValue === "affiliates_only") {
+        return order.email?.toLowerCase().includes(":");
+      } else if (affiliateFilterValue !== "all" && affiliateFilterValue !== "") {
+        return order.email?.toLowerCase().includes(`${affiliateFilterValue.toLowerCase()}:`);
+      }
+      
+      return true;
+    });
+  }, [orders, searchTerm, filterStatus, mainAffiliateFilter]);
 
   // Agrupar pedidos por status
-  const groupedOrders = {
-    completed: filteredOrders.filter(o => o.status === "completed"),
-    paid: filteredOrders.filter(o => o.status === "paid"),
-    pending: filteredOrders.filter(o => o.status === "pending"),
-    expired: filteredOrders.filter(o => o.status === "expired"),
-  };
+  const groupedOrders = useMemo(() => {
+    const safeFiltered = Array.isArray(filteredOrders) ? filteredOrders : [];
+    return {
+      completed: safeFiltered.filter(o => o.status === "completed"),
+      paid: safeFiltered.filter(o => o.status === "paid"),
+      pending: safeFiltered.filter(o => o.status === "pending"),
+      expired: safeFiltered.filter(o => o.status === "expired"),
+    };
+  }, [filteredOrders]);
 
   // Calcular dias restantes baseado no plan_type
   const getDaysRemaining = (order: MROOrder) => {
