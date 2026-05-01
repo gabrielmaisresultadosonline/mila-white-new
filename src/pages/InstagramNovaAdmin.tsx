@@ -4047,35 +4047,53 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                             </Badge>
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Mail className="w-5 h-5 text-amber-500" />
-                              <span className="text-zinc-200 font-bold truncate">{order.email}</span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div className="flex items-center gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <Mail className="w-4 h-4 text-amber-500 shrink-0" />
+                              <span className="text-zinc-200 font-bold text-xs truncate">{order.email}</span>
                             </div>
-                            {order.phone && (
-                              <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                                <Phone className="w-5 h-5 text-amber-500" />
-                                <span className="text-zinc-200 font-bold">{order.phone}</span>
+                            
+                            <div className="flex items-center gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <FileText className="w-4 h-4 text-amber-500 shrink-0" />
+                              <span className="text-zinc-400 font-mono text-[10px] truncate">NSU: {order.nsu_order}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <Bot className={`w-4 h-4 shrink-0 ${order.api_created ? "text-green-400" : "text-zinc-600"}`} />
+                                <span className={`text-[10px] font-bold truncate ${order.api_created ? "text-green-400" : "text-zinc-600"}`}>
+                                  {order.api_created ? "API OK" : "API PEND"}
+                                </span>
                               </div>
-                            )}
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <FileText className="w-5 h-5 text-amber-500" />
-                              <span className="text-zinc-400 font-mono text-xs truncate">NSU: {order.nsu_order}</span>
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Bot className={`w-5 h-5 ${order.api_created ? "text-green-400" : "text-zinc-600"}`} />
-                              <span className={`text-xs font-bold ${order.api_created ? "text-green-400" : "text-zinc-600"}`}>
-                                {order.api_created ? "API: CRIADO" : "API: PENDENTE"}
-                              </span>
+                              {(order.status === "completed" || order.status === "paid") && (
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); resendAccess(order, "api"); }}
+                                  className="text-zinc-500 hover:text-blue-400 transition-colors"
+                                  title="Reenviar para API"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Mail className={`w-5 h-5 ${order.email_sent ? "text-green-400" : "text-zinc-600"}`} />
-                              <span className={`text-xs font-bold ${order.email_sent ? "text-green-400" : "text-zinc-600"}`}>
-                                {order.email_sent ? "EMAIL: ENVIADO" : "EMAIL: PENDENTE"}
-                              </span>
+
+                            <div className="flex items-center justify-between gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <Mail className={`w-4 h-4 shrink-0 ${order.email_sent ? "text-green-400" : "text-zinc-600"}`} />
+                                <span className={`text-[10px] font-bold truncate ${order.email_sent ? "text-green-400" : "text-zinc-600"}`}>
+                                  {order.email_sent ? "EMAIL OK" : "EMAIL PEND"}
+                                </span>
+                              </div>
+                              {(order.status === "completed" || order.status === "paid") && (
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); resendAccess(order, "email"); }}
+                                  className="text-zinc-500 hover:text-blue-400 transition-colors"
+                                  title="Reenviar Email"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
                           </div>
-                          </div>
-                        </div>
 
                         <div className="flex flex-col items-center md:items-end gap-4">
                           <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
