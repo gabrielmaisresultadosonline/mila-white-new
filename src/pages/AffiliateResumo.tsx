@@ -244,7 +244,7 @@ export default function AffiliateResumo() {
         {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-block bg-black border-2 border-amber-500 rounded-xl px-6 py-3 mb-4">
-            <span className="text-amber-400 text-2xl font-bold tracking-wider">MRO</span>
+            <span className="text-amber-400 text-2xl font-bold tracking-wider">Código InstaShop</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">
             📊 Resumo de Vendas
