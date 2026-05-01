@@ -554,17 +554,12 @@ const Index = () => {
     );
   }
 
-  // Show dashboard
-  // Get active profile to check if screenshot exists
-  const activeProfile = session.profiles.find(p => p.id === session.activeProfileId);
-  const hasScreenshot = !!activeProfile?.screenshotUrl;
-
   if (showDashboard && session.profiles.length > 0) {
     return (
       <>
         <LoadingOverlay isVisible={isLoading} message={loadingMessage} subMessage={loadingSubMessage} progress={syncProgress} />
-        {/* Avisos só aparecem APÓS o upload do print do perfil */}
-        {showAnnouncements && hasScreenshot && (
+        {/* Avisos aparecem ao entrar na área principal do Instagram */}
+        {showAnnouncements && (
           <AnnouncementPopup targetArea="instagram" onComplete={() => setShowAnnouncements(false)} />
         )}
         <Dashboard
