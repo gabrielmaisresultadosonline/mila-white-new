@@ -65,7 +65,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const ADMIN_SESSION_STORAGE_KEY = "mro_instagram_admin_session";
 
 // Configurações do template de mensagem
-const MEMBER_LINK = "https://maisresultadosonline.com.br/instagram";
+const MEMBER_LINK = "https://codigoinstashop.com.br/instagram";
 const GROUP_LINK = "https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi";
 
 interface MROOrder {
