@@ -13,7 +13,7 @@ const INSTAGRAM_API_URL = "https://codigoinstashopapimro.squareweb.app";
 const log = (step: string, details?: unknown) => {
   const timestamp = new Date().toISOString();
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : "";
-  console.log(`[${timestamp}] [MRO-PAYMENT-WEBHOOK] ${step}${detailsStr}`);
+  console.log(`[${timestamp}] [INSTASHOP-PAYMENT-WEBHOOK] ${step}${detailsStr}`);
 };
 
 // HTML do Email de Acesso
