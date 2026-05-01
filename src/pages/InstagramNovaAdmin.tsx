@@ -865,12 +865,12 @@ export default function InstagramNovaAdmin() {
 
         console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
 
-        // Verificar pagamento via API
+        // Verificar pagamento via API (SÓ VERIFICAR, NÃO FORÇAR WEBHOOK AUTOMATICAMENTE)
         try {
           const { data } = await supabase.functions.invoke("check-mro-payment", {
             body: { 
               nsu_order: order.nsu_order, 
-              force_webhook: true,
+              force_webhook: false,
               link: order.infinitepay_link 
             }
           });
