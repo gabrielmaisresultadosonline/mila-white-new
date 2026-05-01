@@ -1033,6 +1033,7 @@ const InstagramNovaAdmin = () => {
     } finally {
       setLoading(false);
     }
+  };
 
   const generateCopyMessage = (order: MROOrder) => {
     return `Obrigado por fazer parte do nosso sistema!✅
