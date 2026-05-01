@@ -832,8 +832,8 @@ export default function InstagramNovaAdmin() {
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
       
-      // Monitoramos TUDO que não é pago/completo para garantir detecção
-      const pendingOrders = currentOrders.filter(o => o.status === "pending" || o.status === "expired");
+      // Monitoramos APENAS o que está como pendente para evitar notificações falsas de expirados
+      const pendingOrders = currentOrders.filter(o => o.status === "pending");
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
