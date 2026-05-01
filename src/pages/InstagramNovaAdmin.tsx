@@ -438,6 +438,9 @@ export default function InstagramNovaAdmin() {
       const { error } = await supabase.storage
         .from('user-data')
         .upload('admin/paid-commissions.json', blob, { upsert: true });
+
+      // Log para depuração de rede
+      console.log("[COMMISSIONS] Upload result:", { error });
       
       if (error) {
         console.error("[COMMISSIONS] Error saving:", error);
@@ -3912,7 +3915,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                 key={status}
                 variant={filterStatus === status ? "default" : "outline"}
                 size="sm"
-                onClick={() => setFilterStatus(status as typeof filterStatus)}
+                onClick={() => setFilterStatus(status as any)}
                 className={filterStatus === status 
                   ? "bg-amber-500 text-black" 
                   : "border-zinc-600 text-zinc-300"
@@ -3922,15 +3925,25 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               </Button>
             ))}
             
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => loadOrders()}
+              className="border-amber-500/50 text-amber-500 hover:bg-amber-500 hover:text-black transition-all font-bold gap-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              SINCRONIZAR
+            </Button>
+
             {/* Filtro por Afiliado */}
             {affiliates.length > 0 && (
               <select
                 value={mainAffiliateFilter}
                 onChange={(e) => setMainAffiliateFilter(e.target.value)}
-                className="bg-zinc-800/50 border border-purple-500/50 text-purple-300 rounded-lg px-3 py-1.5 text-sm"
+                className="bg-zinc-800/50 border border-purple-500/50 text-purple-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-purple-500"
               >
-                <option value="all">Todos</option>
-                <option value="affiliates_only">Só Afiliados</option>
+                <option value="all">Todos os Afiliados</option>
+                <option value="affiliates_only">Somente Afiliados</option>
                 {affiliates.map(a => (
                   <option key={a.id} value={a.id}>{a.name}</option>
                 ))}
@@ -3953,12 +3966,12 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                   <div>
                     <CardTitle className="text-white text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
                       <Users className="w-8 h-8 text-amber-500" />
-                      Todos os Cadastros ({orders?.length || 0})
+                      LISTA DE CADASTROS ({filteredOrders?.length || 0})
                     </CardTitle>
-                    <p className="text-zinc-400 font-medium text-sm">Visualização completa de registros do banco de dados</p>
+                    <p className="text-zinc-400 font-medium text-sm">Mostrando resultados do banco de dados em tempo real</p>
                   </div>
                   <Badge className="bg-amber-500 text-black px-4 py-2 font-black text-lg shadow-lg">
-                    {orders?.length || 0} REGISTROS ENCONTRADOS
+                    {filteredOrders?.length || 0} ENCONTRADOS
                   </Badge>
                 </div>
               </CardHeader>
@@ -3968,9 +3981,9 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     <Loader2 className="w-10 h-10 animate-spin text-amber-500 mx-auto mb-4" />
                     <p className="text-white font-bold">CARREGANDO...</p>
                   </div>
-                ) : Array.isArray(orders) && orders.length > 0 ? (
+                ) : Array.isArray(filteredOrders) && filteredOrders.length > 0 ? (
                   <div className="divide-y divide-zinc-800">
-                    {orders.map((order) => (
+                    {filteredOrders.map((order) => (
                       <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
                         <div className="space-y-3 flex-1">
                           <div className="flex items-center gap-4 flex-wrap">
