@@ -608,7 +608,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:20px;text-align:center;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#888;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#666;margin:10px 0 0 0;font-size:11px;">Resumo gerado em ${timestamp}</p>
 </td>
