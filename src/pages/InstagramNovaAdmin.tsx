@@ -828,11 +828,15 @@ export default function InstagramNovaAdmin() {
       
       // Verificar todos os pedidos pendentes em paralelo para maior velocidade
       const checkPromises = pendingOrders.map(async (order) => {
-        // Verificar se expirou
-        if (order.expired_at) {
+        // Verificar se expirou (agora atualizando no banco)
+        if (order.status === "pending" && order.expired_at) {
           const expiredAt = new Date(order.expired_at);
           if (new Date() > expiredAt) {
-            console.log(`[AUTO-CHECK] Pedido ${order.nsu_order} expirado`);
+            console.log(`[AUTO-CHECK] Pedido ${order.nsu_order} expirado. Atualizando status...`);
+            await supabase
+              .from("mro_orders")
+              .update({ status: "expired" })
+              .eq("id", order.id);
             return null;
           }
         }
@@ -3995,14 +3999,27 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                           </div>
                         </div>
 
-                        <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
-                          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
-                          <p className="text-white font-black text-2xl mb-1">
-                            {order.created_at ? format(new Date(order.created_at), "dd/MM/yyyy") : "--/--/----"}
-                          </p>
-                          <p className="text-amber-500 font-black text-3xl">
-                            {order.created_at ? format(new Date(order.created_at), "HH:mm:ss") : "--:--:--"}
-                          </p>
+                        <div className="flex flex-col items-center md:items-end gap-4">
+                          <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
+                            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
+                            <p className="text-white font-black text-2xl mb-1">
+                              {order.created_at ? format(new Date(order.created_at), "dd/MM/yyyy") : "--/--/----"}
+                            </p>
+                            <p className="text-amber-500 font-black text-3xl">
+                              {order.created_at ? format(new Date(order.created_at), "HH:mm:ss") : "--:--:--"}
+                            </p>
+                          </div>
+
+                          {(order.status === "pending" || order.status === "expired") && (
+                            <Button
+                              onClick={() => approveManually(order)}
+                              className="w-full bg-green-600 hover:bg-green-700 text-white font-black uppercase tracking-tighter py-6 rounded-2xl shadow-lg border-b-4 border-green-900 active:border-b-0 active:translate-y-1 transition-all flex items-center justify-center gap-2"
+                              disabled={loading}
+                            >
+                              <CheckCircle2 className="w-6 h-6" />
+                              APROVAR MANUALMENTE
+                            </Button>
+                          )}
                         </div>
                       </div>
                     ))}
