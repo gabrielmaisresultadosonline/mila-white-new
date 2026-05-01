@@ -315,7 +315,7 @@ Entre em contato pelo nosso <strong>WhatsApp</strong> e envie seu <strong>PIX</s
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#1a1a1a;">
 <tr>
 <td style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:30px;text-align:center;border-bottom:3px solid #10b981;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:12px 30px;border-radius:10px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;border:2px solid #FFD700;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:12px 30px;border-radius:10px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;border:2px solid #FFD700;">Código InstaShop</div>
 <h1 style="color:#10b981;margin:15px 0 0 0;font-size:28px;">💰 Comissão Confirmada!</h1>
 ${finalIsLifetime ? '<p style="color:#FFD700;margin:10px 0 0 0;font-size:14px;font-weight:bold;">⭐ AFILIADO VITALÍCIO - RECEBA NA HORA! ⭐</p>' : ''}
 </td>
