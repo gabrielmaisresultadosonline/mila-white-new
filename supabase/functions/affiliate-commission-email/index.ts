@@ -375,7 +375,7 @@ Continue assim! Você está no caminho certo! 🔥
       // Email simplificado com link
       const timestamp = summaryTimestamp || new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
       
-      subject = `📊 Seu Resumo de Vendas MRO - ${totalSales} vendas | R$${totalCommission}`;
+      subject = `📊 Seu Resumo de Vendas Código InstaShop - ${totalSales} vendas | R$${totalCommission}`;
       
       htmlContent = `Ola ${finalAffiliateName}!
 
