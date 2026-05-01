@@ -812,6 +812,7 @@ export default function InstagramNovaAdmin() {
         });
       }
 
+      console.log("[ADMIN] Setting orders to state:", finalOrders);
       setOrders(finalOrders);
       console.log("[ADMIN] Estado 'orders' atualizado com sucesso");
       setLastLoadTime(Date.now());
