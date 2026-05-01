@@ -3945,25 +3945,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                 </div>
               </div>
             </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Seções Originais (Backup se precisar) */}
-            <div className="mt-12 pt-8 border-t border-zinc-800">
-              <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Detalhamento por Categorias</p>
-              <div className="space-y-4">
-                {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                {renderOrderSection("paid", "💰 Pagos (Processando)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-                {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
-              </div>
-            </div>
           </div>
         )}
-        </>)}
       </div>
 
       {/* Modal de Resumo com Email Adicional e Prévia */}
