@@ -103,6 +103,7 @@ interface Affiliate {
 }
 
 export default function InstagramNovaAdmin() {
+  // FIXED START
   const ADMIN_NOVA_REMEMBER_KEY = 'mro_nova_admin_credentials';
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
