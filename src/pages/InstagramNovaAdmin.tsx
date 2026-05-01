@@ -4211,7 +4211,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         )}
         </>)}
       </div>
-    </div>
 
       {/* Modal de Resumo com Email Adicional e Prévia */}
       <Dialog open={showSummaryModal} onOpenChange={(open) => {
