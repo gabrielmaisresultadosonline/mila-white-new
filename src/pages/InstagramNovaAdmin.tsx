@@ -3920,24 +3920,31 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-6 mt-8">
+            {/* PAINEL DE CONTROLE DE VISUALIZAÇÃO */}
             <div className="bg-amber-500/5 border-2 border-amber-500/20 p-4 rounded-2xl mb-8">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
                   <BarChart3 className="w-6 h-6" />
-                  LISTAGEM GERAL (RECARREGADA)
+                  CONTROLE DE REGISTROS
                 </h2>
                 <Badge className="bg-amber-500 text-black font-black">
-                  TOTAL NO BANCO: {orders.length}
+                  TOTAL NO BANCO: {orders?.length || 0}
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
-                {orders.length === 0 ? (
-                  <div className="text-center py-10 text-zinc-600 font-bold">NENHUM REGISTRO NO BANCO</div>
-                ) : (
-                  orders.slice(0, 20).map((order) => (
-                    <div key={order.id} className="bg-black/40 p-4 rounded-xl border border-zinc-800">
-                      {renderOrderCard(order, true)}
+              {/* LISTA GERAL (ALL) - SEMPRE ABERTA PARA GARANTIR VISIBILIDADE */}
+              {renderOrderSection("all", "📋 Todos os Cadastros Recentes", "bg-zinc-800/80 border-zinc-700", "text-white")}
+              
+              <div className="mt-8 pt-8 border-t border-zinc-800">
+                <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Filtros por Status</p>
+                <div className="space-y-4">
+                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
+                  {renderOrderSection("paid", "💰 Pagos (Aguardando API)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
+                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
+                  {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
+                </div>
+              </div>
+            </div>
                     </div>
                   ))
                 )}
