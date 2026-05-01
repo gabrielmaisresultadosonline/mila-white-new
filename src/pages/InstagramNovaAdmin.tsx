@@ -3938,74 +3938,91 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-10 mt-10">
-            {/* PAINEL BRUTO - FORÇANDO VISIBILIDADE MÁXIMA */}
-            <div className="bg-white p-2 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.2)] border-[10px] border-yellow-400 overflow-hidden">
-              <div className="bg-zinc-100 p-10 border-b-4 border-zinc-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            {/* PAINEL DE CADASTROS - ESTILO ORIGINAL FUNCIONAL */}
+            <Card className="bg-zinc-900 border-zinc-800 overflow-hidden shadow-2xl">
+              <CardHeader className="bg-zinc-800/50 border-b border-zinc-700 py-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-black text-6xl font-[1000] uppercase tracking-tighter leading-none mb-2">
-                      CADASTROS: {orders?.length || 0}
-                    </h2>
-                    <p className="text-zinc-600 text-xl font-bold uppercase tracking-widest">Lista Oficial Extraída do Supabase</p>
+                    <CardTitle className="text-white text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
+                      <Users className="w-8 h-8 text-amber-500" />
+                      Todos os Cadastros ({orders?.length || 0})
+                    </CardTitle>
+                    <p className="text-zinc-400 font-medium text-sm">Visualização completa de registros do banco de dados</p>
                   </div>
-                  <div className="flex gap-4">
-                    <Badge className="bg-red-600 text-white px-8 py-4 font-black text-3xl shadow-xl">
-                      LIVE ✓
-                    </Badge>
-                  </div>
+                  <Badge className="bg-amber-500 text-black px-4 py-2 font-black text-lg shadow-lg">
+                    {orders?.length || 0} REGISTROS ENCONTRADOS
+                  </Badge>
                 </div>
-              </div>
-
-              <div className="bg-white p-8">
+              </CardHeader>
+              <CardContent className="p-0">
                 {Array.isArray(orders) && orders.length > 0 ? (
-                  <div className="flex flex-col gap-8">
+                  <div className="divide-y divide-zinc-800">
                     {orders.map((order) => (
-                      <div key={order.id} className="bg-zinc-50 border-4 border-zinc-100 p-10 rounded-[40px] flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 hover:border-yellow-400 hover:bg-white hover:shadow-2xl transition-all group">
-                        <div className="space-y-4 flex-1">
-                          <div className="flex items-center gap-4">
-                            <span className="bg-zinc-900 text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">Usuário</span>
-                            <p className="text-black font-[1000] text-6xl tracking-tighter leading-none group-hover:text-yellow-500 transition-colors">
+                      <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
+                        <div className="space-y-3 flex-1">
+                          <div className="flex items-center gap-4 flex-wrap">
+                            <span className="text-zinc-500 font-black text-xs uppercase tracking-widest bg-zinc-800 px-3 py-1 rounded-full">Usuário</span>
+                            <h3 className="text-white font-[1000] text-3xl tracking-tighter group-hover:text-amber-500 transition-colors">
                               {order.username}
-                            </p>
+                            </h3>
+                            <Badge className={`px-4 py-1 font-black text-sm ${
+                              order.status === 'completed' ? 'bg-green-500 text-white' : 
+                              order.status === 'paid' ? 'bg-blue-500 text-white' : 
+                              'bg-yellow-500 text-black'
+                            }`}>
+                              {order.status.toUpperCase()}
+                            </Badge>
                           </div>
                           
-                          <div className="flex flex-wrap gap-4 items-center">
-                             <Badge className={`text-2xl px-6 py-2 font-black shadow-lg ${order.status === 'completed' ? 'bg-green-600 text-white' : 'bg-yellow-400 text-black'}`}>
-                                {order.status.toUpperCase()}
-                             </Badge>
-                             <div className="bg-zinc-200/50 px-6 py-2 rounded-full border-2 border-zinc-300">
-                               <span className="text-zinc-800 font-black text-lg">{order.email}</span>
-                             </div>
-                             {order.phone && (
-                               <div className="bg-blue-600 px-6 py-2 rounded-full border-2 border-blue-700 shadow-lg">
-                                 <span className="text-white font-black text-lg">WHATSAPP: {order.phone}</span>
-                               </div>
-                             )}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
+                              <Mail className="w-5 h-5 text-amber-500" />
+                              <span className="text-zinc-200 font-bold truncate">{order.email}</span>
+                            </div>
+                            {order.phone && (
+                              <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
+                                <Phone className="w-5 h-5 text-amber-500" />
+                                <span className="text-zinc-200 font-bold">{order.phone}</span>
+                              </div>
+                            )}
+                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
+                              <FileText className="w-5 h-5 text-amber-500" />
+                              <span className="text-zinc-400 font-mono text-xs truncate">NSU: {order.nsu_order}</span>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="bg-white p-8 rounded-[30px] border-4 border-zinc-100 shadow-inner text-center xl:text-right min-w-[300px]">
-                          <p className="text-zinc-400 text-xs font-black uppercase tracking-[0.3em] mb-2">Data do Cadastro</p>
-                          <p className="text-black font-black text-4xl leading-none mb-1">
+                        <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
+                          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
+                          <p className="text-white font-black text-2xl mb-1">
                             {format(new Date(order.created_at), "dd/MM/yyyy")}
                           </p>
-                          <p className="text-red-600 font-black text-5xl">
+                          <p className="text-amber-500 font-black text-3xl">
                             {format(new Date(order.created_at), "HH:mm:ss")}
                           </p>
-                          <p className="text-zinc-300 font-mono text-xs mt-4 font-bold">NSU: {order.nsu_order}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-80 text-center border-[10px] border-dashed border-zinc-100 rounded-[60px] bg-zinc-50/50">
-                     <Loader2 className="w-40 h-40 animate-spin text-zinc-200 mx-auto mb-10" />
-                     <h3 className="text-zinc-300 font-black text-8xl tracking-tighter mb-4">SEM DADOS</h3>
-                     <p className="text-zinc-400 text-3xl font-bold uppercase">Clique em "SINCRONIZAR BANCO" para tentar novamente</p>
+                  <div className="py-40 text-center bg-zinc-900">
+                    <div className="mx-auto w-24 h-24 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                      <AlertTriangle className="w-12 h-12 text-zinc-600" />
+                    </div>
+                    <h3 className="text-zinc-400 font-black text-4xl uppercase tracking-tighter">Nenhum Registro Exibido</h3>
+                    <p className="text-zinc-500 mt-4 text-xl font-bold max-w-md mx-auto">
+                      O banco confirmou os registros, mas a visualização falhou. Tente clicar em "Sincronizar Banco".
+                    </p>
+                    <Button 
+                      onClick={() => loadOrders()}
+                      className="mt-8 bg-amber-500 hover:bg-amber-600 text-black font-black px-8 py-6 text-xl rounded-2xl"
+                    >
+                      FORÇAR CARREGAMENTO
+                    </Button>
                   </div>
                 )}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
