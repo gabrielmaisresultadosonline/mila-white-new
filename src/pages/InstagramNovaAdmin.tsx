@@ -813,6 +813,7 @@ export default function InstagramNovaAdmin() {
       }
 
       setOrders(finalOrders);
+      console.log("[ADMIN] Estado 'orders' atualizado com sucesso");
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
     } catch (error) {
@@ -3979,7 +3980,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                 {loading ? (
                   <div className="py-20 text-center">
                     <Loader2 className="w-10 h-10 animate-spin text-amber-500 mx-auto mb-4" />
-                    <p className="text-white font-bold">CARREGANDO...</p>
+                    <p className="text-white font-bold">CARREGANDO DADOS...</p>
                   </div>
                 ) : Array.isArray(filteredOrders) && filteredOrders.length > 0 ? (
                   <div className="divide-y divide-zinc-800">
