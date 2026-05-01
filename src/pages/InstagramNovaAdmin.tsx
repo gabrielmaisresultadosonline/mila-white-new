@@ -747,21 +747,26 @@ export default function InstagramNovaAdmin() {
         }
       }
 
-      // Processar pedidos expirados e garantir integridade (não permite completed sem pagamento)
+      // Processar pedidos expirados e garantir integridade
       const now = new Date();
       const processedOrders = (finalData || []).map((order) => {
-        // CORREÇÃO DEFINITIVA: Se não tiver data de pagamento, FORÇAR como expired no visual
-        // O cliente confirmou que NADA foi pago, então limpamos qualquer erro de status
-        if (!order.paid_at) {
+        // CORREÇÃO: Respeitar o status pending se ainda não expirou
+        if (order.status === "pending" || !order.status) {
+          const createdAt = new Date(order.created_at);
+          const expiredAt = order.expired_at ? new Date(order.expired_at) : new Date(createdAt.getTime() + 15 * 60000);
+          
+          if (now > expiredAt) {
+            order.status = "expired";
+          } else {
+            order.status = "pending";
+          }
+        }
+        
+        // Se for completed ou paid, PRECISA ter data de pagamento para ser legítimo
+        if ((order.status === "completed" || order.status === "paid") && !order.paid_at) {
           order.status = "expired";
         }
         
-        if (order.status === "pending" && order.expired_at) {
-          const expiredAt = new Date(order.expired_at);
-          if (now > expiredAt) {
-            order.status = "expired";
-          }
-        }
         return order;
       });
 
