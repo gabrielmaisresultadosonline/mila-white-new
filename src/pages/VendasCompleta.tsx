@@ -151,6 +151,11 @@ const VendasCompleta = () => {
       
       console.log("[CHECKOUT] Resposta da função:", checkData);
       
+      // LOG TEMPORÁRIO PARA VER SE O PEDIDO APARECE NO ADMIN
+      if (checkData.success && checkData.order_id) {
+        console.log(`[CHECKOUT] Sucesso! Pedido gerado: ID ${checkData.order_id}, NSU ${checkData.nsu_order}`);
+      }
+      
       if (checkData.userExists) { 
         toast.error("Este nome de usuário já está em uso. Escolha outro."); 
         setUsernameError("Usuário já existe, escolha outro"); 
