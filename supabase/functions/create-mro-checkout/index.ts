@@ -169,9 +169,13 @@ serve(async (req) => {
 
     // Salvar pedido no banco (expira em 30 minutos)
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+    
+    // IMPORTANTE: Garantir que o created_at seja setado com o horário ATUAL do servidor
+    // para evitar divergências de fuso horário que ocultem o pedido na listagem
     const { data: orderData, error: insertError } = await supabase
       .from("mro_orders")
       .insert({
+        created_at: new Date().toISOString(),
         email: cleanEmail,
         username: cleanUsername,
         phone: cleanPhone || null,
