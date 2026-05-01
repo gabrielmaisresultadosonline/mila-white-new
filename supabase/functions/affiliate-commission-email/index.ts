@@ -147,7 +147,7 @@ serve(async (req) => {
 
     if (type === 'welcome') {
       // Email de boas-vindas para novo afiliado
-      subject = `🎉 Bem-vindo à Família MRO, ${finalAffiliateName}!`;
+      subject = `🎉 Bem-vindo à Família Código InstaShop, ${finalAffiliateName}!`;
       
       // Formatar datas (só se não for vitalício)
       let promoDateText = '';
