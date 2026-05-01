@@ -693,31 +693,31 @@ export default function InstagramNovaAdmin() {
     setLoading(true);
     try {
       console.log("[ADMIN] Buscando lista de pedidos via API...");
-      const { data: response, error } = await supabase.functions.invoke("instagram-admin", {
-        body: { action: "listOrders", token }
-      });
+      
+      const { data, error } = await supabase
+        .from("mro_orders")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (error || !response?.success) {
-        console.error("[ADMIN] Erro ao carregar pedidos:", error || response?.error);
-        if (response?.error?.includes("Sessão expirada")) {
-          clearAdminSession();
-          toast.error("Sessão expirada. Faça login novamente.");
-        } else {
-          toast.error(response?.error || "Erro ao carregar pedidos do banco de dados");
-        }
+      if (error) {
+        console.error("[ADMIN] Erro ao carregar pedidos via SELECT direto:", error);
+        toast.error("Erro ao carregar pedidos diretamente do banco");
         return;
       }
 
-      const data: MROOrder[] = Array.isArray(response.orders) ? response.orders : [];
-      console.log(`[ADMIN] DATABASE: ${data.length} pedidos encontrados no Supabase`);
+      console.log(`[ADMIN] DATABASE DIRECT: ${data?.length || 0} pedidos encontrados`);
       
+      // Fallback para Edge Function apenas se necessário (não deveria ser)
+      const finalData = Array.isArray(data) ? data : [];
+      
+      const dataToProcess = finalData;
       // LOG DOS PRIMEIROS 3 PARA VERIFICAR DADOS
-      if (data.length > 0) {
-        console.log("[ADMIN] Primeiros 3 registros brutos:", data.slice(0, 3));
+      if (dataToProcess.length > 0) {
+        console.log("[ADMIN] Primeiros 3 registros brutos:", dataToProcess.slice(0, 3));
       }
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
-      const ordersToVerify = (data || []).filter(
+      const ordersToVerify = (dataToProcess || []).filter(
         (o) => (o.status === "paid" || o.status === "completed") && !o.api_created
       );
       
@@ -734,7 +734,7 @@ export default function InstagramNovaAdmin() {
             console.log(`[API-VERIFY] ${verifyResult.updated} pedidos atualizados como api_created`);
             // Atualizar localmente os pedidos verificados
             const updatedSet = new Set(verifyResult.updatedIds || []);
-            data?.forEach((order) => {
+            dataToProcess?.forEach((order) => {
               if (updatedSet.has(order.id)) {
                 order.api_created = true;
               }
@@ -747,7 +747,7 @@ export default function InstagramNovaAdmin() {
 
       // Processar pedidos expirados (agora apenas visualmente, mantendo o status original para o sistema)
       const now = new Date();
-      const processedOrders = (data || []).map((order) => {
+      const processedOrders = (dataToProcess || []).map((order) => {
         // Se está pendente e passou do expired_at, avisamos visualmente mas mantemos como pending
         // para que o admin possa ver o que expirou sem sumir da aba "Pendentes"
         if (order.status === "pending" && order.expired_at) {
@@ -795,7 +795,7 @@ export default function InstagramNovaAdmin() {
         return orderTimestamp(b) - orderTimestamp(a);
       });
 
-      console.log(`[ADMIN] Exibindo ${finalOrders.length} pedidos na interface. Filtro atual: ${filterStatus}`);
+      console.log(`[ADMIN] Sincronização finalizada. Exibindo ${finalOrders.length} registros.`);
       setOrders(finalOrders);
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
@@ -2565,10 +2565,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
+    <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
       {/* Depuração visual temporária */}
-      <div className="fixed top-0 left-0 z-50 bg-black/80 text-[10px] text-white p-1 pointer-events-none">
-        Pedidos: {orders?.length || 0} | Filtrados: {filteredOrders?.length || 0} | Status: {filterStatus}
+      <div className="fixed top-0 left-0 z-[9999] bg-red-600 text-[10px] text-white p-2 font-black shadow-xl">
+        BANCO: {orders?.length || 0} | FILTRO: {filterStatus}
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -3933,57 +3933,58 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-6 mt-8">
-            {/* PAINEL DE CONTROLE DE REGISTROS - SEMPRE VISÍVEL */}
-            <div className="bg-red-500/5 border-4 border-red-500/20 p-6 rounded-3xl shadow-2xl">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-white text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
-                  <BarChart3 className="w-8 h-8 text-red-500" />
-                  DADOS BRUTOS DO BANCO
-                </h2>
-                <Badge className="bg-red-500 text-white font-black px-6 py-3 text-2xl">
-                  TOTAL: {orders?.length || 0}
-                </Badge>
+            <div className="bg-red-500/5 border-4 border-red-500/20 p-8 rounded-[32px] shadow-2xl relative overflow-hidden">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 relative z-10">
+                <div>
+                  <h2 className="text-white text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
+                    <BarChart3 className="w-10 h-10 text-red-500" />
+                    REGISTROS TOTAIS ({orders?.length || 0})
+                  </h2>
+                  <p className="text-zinc-400 text-lg font-bold mt-2">Lista completa de cadastros sem nenhum tipo de filtro.</p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 max-h-[800px] overflow-y-auto pr-4 custom-scrollbar">
+              <div className="grid grid-cols-1 gap-6 max-h-[800px] overflow-y-auto pr-4 custom-scrollbar relative z-10">
                 {Array.isArray(orders) && orders.length > 0 ? (
                   orders.map((order) => (
-                    <div key={order.id} className="bg-zinc-900 border-2 border-zinc-800 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-red-500/50 transition-all">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <p className="text-white font-black text-2xl tracking-tighter">{order.username}</p>
-                          {getStatusBadge(order.status)}
+                    <div key={order.id} className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-800 p-6 rounded-[24px] hover:border-red-500/50 transition-all group shadow-lg">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div className="flex-1 space-y-4">
+                          <div className="flex items-center gap-4 flex-wrap">
+                            <span className="bg-zinc-800 text-zinc-500 px-3 py-1 rounded-full text-[10px] font-black uppercase">Usuário</span>
+                            <p className="text-white font-black text-2xl tracking-tighter group-hover:text-red-400 transition-colors">{order.username}</p>
+                            {getStatusBadge(order.status)}
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-zinc-800">
+                              <Mail className="w-5 h-5 text-red-500" />
+                              <p className="text-zinc-200 font-bold break-all">{order.email}</p>
+                            </div>
+                            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-zinc-800">
+                              <Phone className="w-5 h-5 text-red-500" />
+                              <p className="text-zinc-200 font-bold">{order.phone || "N/A"}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-col text-sm text-zinc-400 font-medium">
-                          <p className="flex items-center gap-2">📧 {order.email}</p>
-                          <p className="flex items-center gap-2">📱 {order.phone || "Não informado"}</p>
+                        
+                        <div className="lg:text-right flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-zinc-800 pt-6 lg:pt-0 lg:pl-8 min-w-[200px]">
+                          <p className="text-zinc-300 font-black text-xl leading-tight">
+                            {format(new Date(order.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                          </p>
+                          <p className="text-red-500 font-black text-2xl mt-1">
+                            {format(new Date(order.created_at), "HH:mm:ss", { locale: ptBR })}
+                          </p>
                         </div>
-                      </div>
-                      <div className="md:text-right space-y-1">
-                        <p className="text-zinc-500 text-[10px] font-black uppercase">Data do Cadastro</p>
-                        <p className="text-zinc-300 font-bold">{format(new Date(order.created_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}</p>
-                        <p className="text-zinc-600 text-[10px] font-mono tracking-tighter uppercase">ID: {order.nsu_order}</p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="bg-black/40 border-4 border-dashed border-zinc-800 rounded-3xl py-20 text-center">
-                    <Loader2 className="w-12 h-12 animate-spin text-zinc-800 mx-auto mb-6" />
-                    <p className="text-zinc-600 font-black text-3xl uppercase tracking-tighter">NENHUM REGISTRO LISTADO AINDA</p>
-                    <p className="text-zinc-700 font-bold mt-2 uppercase text-sm">Aguardando resposta do servidor...</p>
+                  <div className="bg-black/60 border-4 border-dashed border-zinc-800 rounded-[40px] py-32 text-center">
+                    <Loader2 className="w-20 h-16 animate-spin text-zinc-800 mx-auto mb-8" />
+                    <p className="text-zinc-700 font-black text-4xl uppercase tracking-tighter">AGUARDANDO BANCO DE DADOS...</p>
                   </div>
                 )}
-              </div>
-            </div>
-
-            {/* SEÇÕES FILTRADAS */}
-            <div className="mt-12 pt-8 border-t border-zinc-800">
-              <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.4em] mb-10">Agrupamento por Status</p>
-              <div className="space-y-6">
-                {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/5 border-yellow-500/20", "text-yellow-500")}
-                {renderOrderSection("paid", "💰 Pagos (Verificando API)", "bg-blue-500/5 border-blue-500/20", "text-blue-500")}
-                {renderOrderSection("completed", "✅ Completos", "bg-green-500/5 border-green-500/20", "text-green-500")}
-                {renderOrderSection("expired", "❌ Expirados", "bg-red-500/5 border-red-500/20", "text-red-500")}
               </div>
             </div>
           </div>
