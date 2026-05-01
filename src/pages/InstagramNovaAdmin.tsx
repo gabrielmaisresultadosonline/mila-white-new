@@ -121,6 +121,7 @@ export default function InstagramNovaAdmin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "paid" | "completed" | "expired">("all");
   const [lastLoadTime, setLastLoadTime] = useState<number>(0);
+  const [dbStatus, setDbStatus] = useState<string>("init");
   
   const autoCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const logsAutoRefreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -692,7 +693,8 @@ export default function InstagramNovaAdmin() {
 
     setLoading(true);
     try {
-      console.log("[ADMIN] Buscando lista de pedidos via API...");
+      console.log("[ADMIN] Buscando lista de pedidos via SELECT direto...");
+      setDbStatus("fetching");
       
       const { data, error } = await supabase
         .from("mro_orders")
@@ -701,13 +703,14 @@ export default function InstagramNovaAdmin() {
 
       if (error) {
         console.error("[ADMIN] Erro ao carregar pedidos via SELECT direto:", error);
+        setDbStatus("error");
         toast.error("Erro ao carregar pedidos diretamente do banco");
         return;
       }
 
       console.log(`[ADMIN] DATABASE DIRECT: ${data?.length || 0} pedidos encontrados`);
+      setDbStatus(data?.length > 0 ? "success" : "empty");
       
-      // Fallback para Edge Function apenas se necessário (não deveria ser)
       const finalData = Array.isArray(data) ? data : [];
       
       const dataToProcess = finalData;
@@ -2566,9 +2569,9 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
   return (
     <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
-      {/* Depuração visual temporária */}
-      <div className="fixed top-0 left-0 z-[9999] bg-red-600 text-[10px] text-white p-2 font-black shadow-xl">
-        BANCO: {orders?.length || 0} | FILTRO: {filterStatus}
+      {/* Depuração visual temporária - MEGA DESTAQUE */}
+      <div className="fixed top-0 left-0 z-[9999] bg-yellow-400 text-[12px] text-black p-3 font-black shadow-2xl border-b-4 border-black">
+        DADOS REAIS: {orders?.length || 0} REGISTROS | STATUS: {dbStatus} | FILTRO: {filterStatus}
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -3932,60 +3935,58 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             <span className="ml-4 text-white font-bold">CARREGANDO BANCO DE DADOS...</span>
           </div>
         ) : (
-          <div className="space-y-6 mt-8">
-            <div className="bg-red-500/5 border-4 border-red-500/20 p-8 rounded-[32px] shadow-2xl relative overflow-hidden">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 relative z-10">
-                <div>
-                  <h2 className="text-white text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
-                    <BarChart3 className="w-10 h-10 text-red-500" />
-                    REGISTROS TOTAIS ({orders?.length || 0})
+          <div className="space-y-10 mt-10">
+            {/* PAINEL BRUTO - SEM QUALQUER LÓGICA DE INTERFACE */}
+            <div className="bg-white p-1 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+              <div className="bg-zinc-100 p-6 border-b-2 border-zinc-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-black text-3xl font-black uppercase tracking-tighter">
+                    LISTA REAL DO BANCO ({orders?.length || 0})
                   </h2>
-                  <p className="text-zinc-400 text-lg font-bold mt-2">Lista completa de cadastros sem nenhum tipo de filtro.</p>
+                  <Badge className="bg-black text-white px-4 py-2 font-black text-lg">
+                    {dbStatus === 'success' ? 'CONECTADO ✓' : 'VERIFICANDO...'}
+                  </Badge>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 max-h-[800px] overflow-y-auto pr-4 custom-scrollbar relative z-10">
+              <div className="bg-white p-4">
                 {Array.isArray(orders) && orders.length > 0 ? (
-                  orders.map((order) => (
-                    <div key={order.id} className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-800 p-6 rounded-[24px] hover:border-red-500/50 transition-all group shadow-lg">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div className="flex-1 space-y-4">
-                          <div className="flex items-center gap-4 flex-wrap">
-                            <span className="bg-zinc-800 text-zinc-500 px-3 py-1 rounded-full text-[10px] font-black uppercase">Usuário</span>
-                            <p className="text-white font-black text-2xl tracking-tighter group-hover:text-red-400 transition-colors">{order.username}</p>
-                            {getStatusBadge(order.status)}
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-zinc-800">
-                              <Mail className="w-5 h-5 text-red-500" />
-                              <p className="text-zinc-200 font-bold break-all">{order.email}</p>
-                            </div>
-                            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-zinc-800">
-                              <Phone className="w-5 h-5 text-red-500" />
-                              <p className="text-zinc-200 font-bold">{order.phone || "N/A"}</p>
-                            </div>
+                  <div className="grid grid-cols-1 gap-4">
+                    {orders.map((order) => (
+                      <div key={order.id} className="bg-zinc-50 border-2 border-zinc-100 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-zinc-300 transition-all">
+                        <div className="space-y-1">
+                          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Usuário</p>
+                          <p className="text-black font-black text-3xl tracking-tighter leading-none mb-2">{order.username}</p>
+                          <div className="flex gap-2">
+                             <Badge className={order.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500 text-black'}>{order.status.toUpperCase()}</Badge>
+                             <span className="text-zinc-500 font-mono text-xs">{order.email}</span>
                           </div>
                         </div>
-                        
-                        <div className="lg:text-right flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-zinc-800 pt-6 lg:pt-0 lg:pl-8 min-w-[200px]">
-                          <p className="text-zinc-300 font-black text-xl leading-tight">
-                            {format(new Date(order.created_at), "dd/MM/yyyy", { locale: ptBR })}
-                          </p>
-                          <p className="text-red-500 font-black text-2xl mt-1">
-                            {format(new Date(order.created_at), "HH:mm:ss", { locale: ptBR })}
-                          </p>
+                        <div className="text-right">
+                          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Data/Hora</p>
+                          <p className="text-zinc-900 font-black text-xl">{format(new Date(order.created_at), "dd/MM/yyyy HH:mm:ss")}</p>
+                          <p className="text-zinc-400 font-mono text-[10px] mt-1">{order.nsu_order}</p>
                         </div>
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 ) : (
-                  <div className="bg-black/60 border-4 border-dashed border-zinc-800 rounded-[40px] py-32 text-center">
-                    <Loader2 className="w-20 h-16 animate-spin text-zinc-800 mx-auto mb-8" />
-                    <p className="text-zinc-700 font-black text-4xl uppercase tracking-tighter">AGUARDANDO BANCO DE DADOS...</p>
+                  <div className="py-40 text-center border-4 border-dashed border-zinc-100 rounded-3xl">
+                     <p className="text-zinc-300 font-black text-5xl">BANCO VAZIO OU EM CARREGAMENTO</p>
+                     <p className="text-zinc-400 mt-4 text-xl">Se o contador no topo estiver em zero, clique em Sincronizar.</p>
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* SEÇÕES FILTRADAS ABAIXO */}
+            <div className="mt-20 pt-10 border-t-4 border-zinc-900">
+               <p className="text-center text-zinc-600 font-black uppercase mb-10 tracking-[0.5em]">Filtros por Categoria</p>
+               <div className="space-y-4">
+                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
+                  {renderOrderSection("paid", "💰 Pagos", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
+                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
+               </div>
             </div>
           </div>
         )}
