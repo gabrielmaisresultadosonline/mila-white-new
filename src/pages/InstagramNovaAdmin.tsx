@@ -3887,17 +3887,27 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         ) : (
           <div className="space-y-4">
             {/* Lista Principal de Pedidos */}
-            <div className="bg-zinc-800/20 rounded-xl border border-zinc-800 p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-amber-500" />
-                  Listagem de Pedidos ({filteredOrders.length})
-                </h3>
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Mais Recentes Primeiro</span>
+            <div className="bg-zinc-800/40 rounded-xl border border-amber-500/20 p-5 shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-white text-lg font-bold flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-amber-500" />
+                    PEDIDOS ENCONTRADOS ({filteredOrders.length})
+                  </h3>
+                  <p className="text-zinc-500 text-xs mt-1">Sincronizado com o banco de dados agora</p>
+                </div>
+                <div className="text-right">
+                  <span className="block text-[10px] text-zinc-500 uppercase tracking-widest font-black">Ordenação</span>
+                  <span className="text-amber-500 text-xs font-bold uppercase">Mais Recentes Primeiro</span>
+                </div>
               </div>
               
-              <div className="space-y-3">
-                {filteredOrders.map((order) => renderOrderCard(order, true))}
+              <div className="grid grid-cols-1 gap-4">
+                {filteredOrders.map((order) => (
+                  <div key={order.id} className="transform transition-all hover:scale-[1.01]">
+                    {renderOrderCard(order, true)}
+                  </div>
+                ))}
               </div>
             </div>
 
