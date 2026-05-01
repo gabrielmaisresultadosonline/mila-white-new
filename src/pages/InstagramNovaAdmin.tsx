@@ -2554,7 +2554,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
       {/* Depuração visual temporária */}
       <div className="fixed top-0 left-0 z-50 bg-black/80 text-[10px] text-white p-1 pointer-events-none">
-        Pedidos: {orders.length} | Filtrados: {filteredOrders.length} | Status: {filterStatus}
+        Pedidos: {orders?.length || 0} | Filtrados: {filteredOrders?.length || 0} | Status: {filterStatus}
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -3912,7 +3912,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         </div>
 
-        {/* Orders List - Collapsible Sections */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-12 h-12 animate-spin text-amber-500" />
