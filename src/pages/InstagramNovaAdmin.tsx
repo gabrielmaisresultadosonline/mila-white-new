@@ -3954,6 +3954,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         </div>
 
+        <div className="bg-zinc-800 p-2 rounded mb-4 text-xs font-mono overflow-auto max-h-32 text-zinc-400">
+          DEBUG: Orders in state: {orders.length} | Loading: {loading ? "YES" : "NO"} | DB: {dbStatus}
+        </div>
+
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-12 h-12 animate-spin text-amber-500" />
