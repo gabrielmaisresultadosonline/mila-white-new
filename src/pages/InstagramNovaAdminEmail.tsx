@@ -402,7 +402,7 @@ export default function InstagramNovaAdminEmail() {
         `N:${c.username};CLIENTE;;;`,
         `TEL;TYPE=CELL:${phoneFormatted}`,
         `EMAIL:${c.email}`,
-        `ORG:MRO - ${c.planType}`,
+        `ORG:Código InstaShop - ${c.planType}`,
         'END:VCARD'
       ].join('\r\n');
     }).join('\r\n');
@@ -411,7 +411,7 @@ export default function InstagramNovaAdminEmail() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `contatos-mro-${format(new Date(), 'yyyy-MM-dd')}.vcf`;
+    a.download = `contatos-codigo-instashop-${format(new Date(), 'yyyy-MM-dd')}.vcf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
