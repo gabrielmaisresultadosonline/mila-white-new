@@ -710,13 +710,14 @@ export default function InstagramNovaAdmin() {
       // Fallback para Edge Function apenas se necessário (não deveria ser)
       const finalData = Array.isArray(data) ? data : [];
       
+      const dataToProcess = finalData;
       // LOG DOS PRIMEIROS 3 PARA VERIFICAR DADOS
-      if (data.length > 0) {
-        console.log("[ADMIN] Primeiros 3 registros brutos:", data.slice(0, 3));
+      if (dataToProcess.length > 0) {
+        console.log("[ADMIN] Primeiros 3 registros brutos:", dataToProcess.slice(0, 3));
       }
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
-      const ordersToVerify = (data || []).filter(
+      const ordersToVerify = (dataToProcess || []).filter(
         (o) => (o.status === "paid" || o.status === "completed") && !o.api_created
       );
       
@@ -733,7 +734,7 @@ export default function InstagramNovaAdmin() {
             console.log(`[API-VERIFY] ${verifyResult.updated} pedidos atualizados como api_created`);
             // Atualizar localmente os pedidos verificados
             const updatedSet = new Set(verifyResult.updatedIds || []);
-            data?.forEach((order) => {
+            dataToProcess?.forEach((order) => {
               if (updatedSet.has(order.id)) {
                 order.api_created = true;
               }
@@ -746,7 +747,7 @@ export default function InstagramNovaAdmin() {
 
       // Processar pedidos expirados (agora apenas visualmente, mantendo o status original para o sistema)
       const now = new Date();
-      const processedOrders = (data || []).map((order) => {
+      const processedOrders = (dataToProcess || []).map((order) => {
         // Se está pendente e passou do expired_at, avisamos visualmente mas mantemos como pending
         // para que o admin possa ver o que expirou sem sumir da aba "Pendentes"
         if (order.status === "pending" && order.expired_at) {
