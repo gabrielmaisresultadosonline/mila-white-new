@@ -624,7 +624,7 @@ Entre em contato com as pessoas que tentaram comprar mas não finalizaram. Muita
     }
 
     await client.send({
-      from: "MRO - Afiliados <suporte@codigoinstashop.com.br>",
+      from: "Código InstaShop - Afiliados <suporte@codigoinstashop.com.br>",
       to: finalAffiliateEmail,
       subject: subject,
       html: htmlContent,
