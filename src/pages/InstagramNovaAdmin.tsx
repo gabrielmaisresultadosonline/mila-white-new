@@ -743,8 +743,9 @@ export default function InstagramNovaAdmin() {
         return order;
       });
 
-      // Remover duplicatas por email OU telefone: manter apenas 1 registro por email/telefone na lista.
-      // Regra: se existir pagamento (paid/completed), ele sempre vence (mesmo que haja pending mais recente).
+      // Removida a lógica de filtragem agressiva de duplicatas por email/telefone que estava ocultando pendentes recentes.
+      // Vamos apenas normalizar e garantir que o status pago vença em caso de IDs diferentes para o mesmo email.
+      const processedOrdersWithUpdates = (data || []).map((order) => {
       const normalizeEmailKey = (email: string) => {
         const lower = (email || "").trim().toLowerCase();
         // Alguns pedidos podem vir como "afiliado:email@..."; usar apenas o email final.
@@ -808,39 +809,12 @@ export default function InstagramNovaAdmin() {
         }
       }
 
-      // Construir set de IDs que são os "melhores" por email OU telefone
-      const bestOrderIds = new Set<string>();
-      bestByEmail.forEach((order) => bestOrderIds.add(order.id));
-      bestByPhone.forEach((order) => bestOrderIds.add(order.id));
-
-      // Agora filtrar: manter apenas pedidos que são os melhores por AMBOS critérios
-      // Se um pedido com mesmo telefone existe com status melhor, remover o atual
-      const finalOrders: MROOrder[] = [];
-      const seenEmails = new Set<string>();
-      const seenPhones = new Set<string>();
-
-      // Ordenar por rank de status (desc) e timestamp (desc) para processar melhores primeiro
-      const sortedOrders = [...processedOrders].sort((a, b) => {
+      // Simplificado: mostrar todos os registros, mas ordenando para que os mais recentes e pagos fiquem no topo
+      const finalOrders = processedOrders.sort((a, b) => {
         const rankDiff = statusRank(b.status) - statusRank(a.status);
         if (rankDiff !== 0) return rankDiff;
         return orderTimestamp(b) - orderTimestamp(a);
       });
-
-      for (const order of sortedOrders) {
-        const emailKey = normalizeEmailKey(order.email);
-        const phoneKey = normalizePhone(order.phone);
-
-        // Se já vimos este email OU este telefone, pular (já temos um melhor)
-        if (seenEmails.has(emailKey)) continue;
-        if (phoneKey && phoneKey.length >= 8 && seenPhones.has(phoneKey)) continue;
-
-        // Este é o melhor para este email/telefone
-        finalOrders.push(order);
-        seenEmails.add(emailKey);
-        if (phoneKey && phoneKey.length >= 8) {
-          seenPhones.add(phoneKey);
-        }
-      }
 
       setOrders(finalOrders);
     } catch (error) {
@@ -851,35 +825,38 @@ export default function InstagramNovaAdmin() {
     }
   };
 
-  // Verificar pagamentos pendentes automaticamente (apenas pedidos dos últimos 30 min)
+  // Verificar pagamentos pendentes automaticamente
   const checkPendingPayments = async () => {
     try {
       const now = new Date();
-      const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
+      // Verificamos pedidos dos últimos 60 minutos para garantir que nada passe
+      const sixtyMinutesAgo = new Date(now.getTime() - 60 * 60 * 1000);
       const currentOrders = ordersRef.current;
       
-      // Filtrar pedidos pendentes criados nos últimos 30 minutos
-      const recentPendingOrders = currentOrders.filter(o => {
+      // Filtrar pedidos pendentes
+      const pendingOrders = currentOrders.filter(o => {
         if (o.status !== "pending") return false;
         const createdAt = new Date(o.created_at);
-        return createdAt >= thirtyMinutesAgo;
+        // Priorizar os mais recentes, mas verificar até 60min
+        return createdAt >= sixtyMinutesAgo;
       });
       
-      if (recentPendingOrders.length === 0) {
+      if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
-        // Recarregar a cada 15 segundos se não há pedidos recentes
+        // Forçar um recarregamento total da lista a cada 10 segundos
+        // para garantir que novos "pendentes" (que acabaram de ser criados) apareçam
         const timeSinceLastLoad = localStorage.getItem("mro_last_load_time");
-        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 15000) {
+        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 10000) {
           loadOrders();
           localStorage.setItem("mro_last_load_time", Date.now().toString());
         }
         return;
       }
 
-      console.log(`[AUTO-CHECK] Verificando ${recentPendingOrders.length} pedidos pendentes (últimos 30min)...`);
+      console.log(`[AUTO-CHECK] Verificando ${pendingOrders.length} pedidos pendentes...`);
       
       // Verificar todos os pedidos pendentes em paralelo para maior velocidade
-      const checkPromises = recentPendingOrders.map(async (order) => {
+      const checkPromises = pendingOrders.map(async (order) => {
         // Verificar se expirou
         if (order.expired_at) {
           const expiredAt = new Date(order.expired_at);
