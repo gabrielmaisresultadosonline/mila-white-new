@@ -45,7 +45,8 @@ import {
   FileText,
   Key,
   Ban,
-  BarChart3
+  BarChart3,
+  Bot
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format, differenceInDays, addDays } from "date-fns";
@@ -4008,6 +4009,9 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                             }`}>
                               {(order.status || 'PENDENTE').toUpperCase()}
                             </Badge>
+                            <Badge className="px-4 py-1 font-black text-sm bg-zinc-800 text-amber-500 border border-amber-500/30">
+                              R$ {Number(order.amount || 0).toFixed(2)}
+                            </Badge>
                           </div>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -4024,7 +4028,19 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                             <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
                               <FileText className="w-5 h-5 text-amber-500" />
                               <span className="text-zinc-400 font-mono text-xs truncate">NSU: {order.nsu_order}</span>
+                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
+                              <Bot className={`w-5 h-5 ${order.api_created ? "text-green-400" : "text-zinc-600"}`} />
+                              <span className={`text-xs font-bold ${order.api_created ? "text-green-400" : "text-zinc-600"}`}>
+                                {order.api_created ? "API: CRIADO" : "API: PENDENTE"}
+                              </span>
                             </div>
+                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
+                              <Mail className={`w-5 h-5 ${order.email_sent ? "text-green-400" : "text-zinc-600"}`} />
+                              <span className={`text-xs font-bold ${order.email_sent ? "text-green-400" : "text-zinc-600"}`}>
+                                {order.email_sent ? "EMAIL: ENVIADO" : "EMAIL: PENDENTE"}
+                              </span>
+                            </div>
+                          </div>
                           </div>
                         </div>
 
