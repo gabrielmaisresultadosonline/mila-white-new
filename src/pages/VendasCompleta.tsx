@@ -938,8 +938,16 @@ const VendasCompleta = () => {
               <X className="w-5 h-5" />
             </button>
             <div className="text-center mb-6">
-              <div className={`mx-auto w-14 h-14 rounded-full flex items-center justify-center mb-3 ${selectedPlan === "annual" ? "bg-purple-500/20" : "bg-gradient-to-br from-fuchsia-500/20 to-rose-500/20"}`}>
-                <Sparkles className={`w-7 h-7 ${selectedPlan === "annual" ? "text-purple-400" : "text-pink-400"}`} />
+              <div className={`mx-auto w-14 h-14 rounded-full flex items-center justify-center mb-3 ${
+                selectedPlan === "test" ? "bg-zinc-500/20" : 
+                selectedPlan === "annual" ? "bg-purple-500/20" : 
+                "bg-gradient-to-br from-fuchsia-500/20 to-rose-500/20"
+              }`}>
+                <Sparkles className={`w-7 h-7 ${
+                  selectedPlan === "test" ? "text-zinc-400" :
+                  selectedPlan === "annual" ? "text-purple-400" : 
+                  "text-pink-400"
+                }`} />
               </div>
               <h3 className="text-xl font-bold text-white">Plano {PLANS[selectedPlan].name}</h3>
               <p className="text-2xl font-bold mt-2">
