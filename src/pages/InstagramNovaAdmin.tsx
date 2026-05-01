@@ -3915,7 +3915,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </Card>
         )}
 
-        {!showAffiliateConfig && !showRemarketingDashboard && !showAccessReminder && (<>
+        {!showAffiliateConfig && !showRemarketingDashboard && !showAccessReminder && (
+          <div>
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
           <Card className="bg-zinc-800 border-zinc-700">
