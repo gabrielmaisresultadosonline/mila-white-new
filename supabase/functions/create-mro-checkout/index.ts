@@ -168,8 +168,8 @@ serve(async (req) => {
       log("Payment link created via API", { paymentLink, orderNsu });
     }
 
-    // Salvar pedido no banco (expira em 30 minutos)
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+    // Salvar pedido no banco (expira em 15 minutos)
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     
     // IMPORTANTE: Garantir que o created_at seja setado com o horário ATUAL do servidor
     // para evitar divergências de fuso horário que ocultem o pedido na listagem
