@@ -4209,7 +4209,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             <div className="h-40"></div>
           </div>
         )}
-      </>)}
+      )}
     </div>
 
       {/* Modal de Resumo com Email Adicional e Prévia */}
