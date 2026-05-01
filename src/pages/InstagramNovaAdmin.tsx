@@ -3938,58 +3938,77 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-10 mt-10">
-            {/* PAINEL BRUTO - SEM QUALQUER LÓGICA DE INTERFACE */}
-            <div className="bg-white p-1 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-              <div className="bg-zinc-100 p-6 border-b-2 border-zinc-200">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-black text-3xl font-black uppercase tracking-tighter">
-                    LISTA REAL DO BANCO ({orders?.length || 0})
-                  </h2>
-                  <Badge className="bg-black text-white px-4 py-2 font-black text-lg">
-                    {dbStatus === 'success' ? 'CONECTADO ✓' : 'VERIFICANDO...'}
-                  </Badge>
+            {/* PAINEL BRUTO - FORÇANDO VISIBILIDADE MÁXIMA */}
+            <div className="bg-white p-2 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.2)] border-[10px] border-yellow-400 overflow-hidden">
+              <div className="bg-zinc-100 p-10 border-b-4 border-zinc-200">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                  <div>
+                    <h2 className="text-black text-6xl font-[1000] uppercase tracking-tighter leading-none mb-2">
+                      CADASTROS: {orders?.length || 0}
+                    </h2>
+                    <p className="text-zinc-600 text-xl font-bold uppercase tracking-widest">Lista Oficial Extraída do Supabase</p>
+                  </div>
+                  <div className="flex gap-4">
+                    <Badge className="bg-red-600 text-white px-8 py-4 font-black text-3xl shadow-xl">
+                      LIVE ✓
+                    </Badge>
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-white p-4">
+              <div className="bg-white p-8">
                 {Array.isArray(orders) && orders.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="flex flex-col gap-8">
                     {orders.map((order) => (
-                      <div key={order.id} className="bg-zinc-50 border-2 border-zinc-100 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-zinc-300 transition-all">
-                        <div className="space-y-1">
-                          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Usuário</p>
-                          <p className="text-black font-black text-3xl tracking-tighter leading-none mb-2">{order.username}</p>
-                          <div className="flex gap-2">
-                             <Badge className={order.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500 text-black'}>{order.status.toUpperCase()}</Badge>
-                             <span className="text-zinc-500 font-mono text-xs">{order.email}</span>
+                      <div key={order.id} className="bg-zinc-50 border-4 border-zinc-100 p-10 rounded-[40px] flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 hover:border-yellow-400 hover:bg-white hover:shadow-2xl transition-all group">
+                        <div className="space-y-4 flex-1">
+                          <div className="flex items-center gap-4">
+                            <span className="bg-zinc-900 text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">Usuário</span>
+                            <p className="text-black font-[1000] text-6xl tracking-tighter leading-none group-hover:text-yellow-500 transition-colors">
+                              {order.username}
+                            </p>
+                          </div>
+                          
+                          <div className="flex flex-wrap gap-4 items-center">
+                             <Badge className={`text-2xl px-6 py-2 font-black shadow-lg ${order.status === 'completed' ? 'bg-green-600 text-white' : 'bg-yellow-400 text-black'}`}>
+                                {order.status.toUpperCase()}
+                             </Badge>
+                             <div className="bg-zinc-200/50 px-6 py-2 rounded-full border-2 border-zinc-300">
+                               <span className="text-zinc-800 font-black text-lg">{order.email}</span>
+                             </div>
+                             {order.phone && (
+                               <div className="bg-blue-600 px-6 py-2 rounded-full border-2 border-blue-700 shadow-lg">
+                                 <span className="text-white font-black text-lg">WHATSAPP: {order.phone}</span>
+                               </div>
+                             )}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Data/Hora</p>
-                          <p className="text-zinc-900 font-black text-xl">{format(new Date(order.created_at), "dd/MM/yyyy HH:mm:ss")}</p>
-                          <p className="text-zinc-400 font-mono text-[10px] mt-1">{order.nsu_order}</p>
+
+                        <div className="bg-white p-8 rounded-[30px] border-4 border-zinc-100 shadow-inner text-center xl:text-right min-w-[300px]">
+                          <p className="text-zinc-400 text-xs font-black uppercase tracking-[0.3em] mb-2">Data do Cadastro</p>
+                          <p className="text-black font-black text-4xl leading-none mb-1">
+                            {format(new Date(order.created_at), "dd/MM/yyyy")}
+                          </p>
+                          <p className="text-red-600 font-black text-5xl">
+                            {format(new Date(order.created_at), "HH:mm:ss")}
+                          </p>
+                          <p className="text-zinc-300 font-mono text-xs mt-4 font-bold">NSU: {order.nsu_order}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-40 text-center border-4 border-dashed border-zinc-100 rounded-3xl">
-                     <p className="text-zinc-300 font-black text-5xl">BANCO VAZIO OU EM CARREGAMENTO</p>
-                     <p className="text-zinc-400 mt-4 text-xl">Se o contador no topo estiver em zero, clique em Sincronizar.</p>
+                  <div className="py-80 text-center border-[10px] border-dashed border-zinc-100 rounded-[60px] bg-zinc-50/50">
+                     <Loader2 className="w-40 h-40 animate-spin text-zinc-200 mx-auto mb-10" />
+                     <h3 className="text-zinc-300 font-black text-8xl tracking-tighter mb-4">SEM DADOS</h3>
+                     <p className="text-zinc-400 text-3xl font-bold uppercase">Clique em "SINCRONIZAR BANCO" para tentar novamente</p>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* SEÇÕES FILTRADAS ABAIXO */}
-            <div className="mt-20 pt-10 border-t-4 border-zinc-900">
-               <p className="text-center text-zinc-600 font-black uppercase mb-10 tracking-[0.5em]">Filtros por Categoria</p>
-               <div className="space-y-4">
-                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                  {renderOrderSection("paid", "💰 Pagos", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-               </div>
-            </div>
+            {/* ESPAÇAMENTO INFERIOR */}
+            <div className="h-40"></div>
           </div>
         )}
       </>)}
