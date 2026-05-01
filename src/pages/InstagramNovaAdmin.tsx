@@ -1170,7 +1170,7 @@ ${GROUP_LINK}`;
       ? safeFilteredOrders 
       : safeFilteredOrders.filter(o => o.status === key);
 
-    if (sectionOrders.length === 0 && key !== "all") return null;
+    if (sectionOrders.length === 0) return null;
 
     const isOpen = openSections[key];
 
@@ -3933,27 +3933,57 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-6 mt-8">
-            <div className="bg-amber-500/5 border-2 border-amber-500/20 p-4 rounded-2xl mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
-                  <BarChart3 className="w-6 h-6" />
-                  CONTROLE DE REGISTROS
+            {/* PAINEL DE CONTROLE DE REGISTROS - SEMPRE VISÍVEL */}
+            <div className="bg-red-500/5 border-4 border-red-500/20 p-6 rounded-3xl shadow-2xl">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-white text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
+                  <BarChart3 className="w-8 h-8 text-red-500" />
+                  DADOS BRUTOS DO BANCO
                 </h2>
-                <Badge className="bg-amber-500 text-black font-black">
-                  TOTAL NO BANCO: {orders?.length || 0}
+                <Badge className="bg-red-500 text-white font-black px-6 py-3 text-2xl">
+                  TOTAL: {orders?.length || 0}
                 </Badge>
               </div>
 
-              {renderOrderSection("all", "📋 Todos os Cadastros Recentes", "bg-zinc-800/80 border-zinc-700", "text-white")}
-              
-              <div className="mt-8 pt-8 border-t border-zinc-800">
-                <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Filtros por Status</p>
-                <div className="space-y-4">
-                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                  {renderOrderSection("paid", "💰 Pagos (Aguardando API)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-                  {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
-                </div>
+              <div className="grid grid-cols-1 gap-6 max-h-[800px] overflow-y-auto pr-4 custom-scrollbar">
+                {Array.isArray(orders) && orders.length > 0 ? (
+                  orders.map((order) => (
+                    <div key={order.id} className="bg-zinc-900 border-2 border-zinc-800 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-red-500/50 transition-all">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3">
+                          <p className="text-white font-black text-2xl tracking-tighter">{order.username}</p>
+                          {getStatusBadge(order.status)}
+                        </div>
+                        <div className="flex flex-col text-sm text-zinc-400 font-medium">
+                          <p className="flex items-center gap-2">📧 {order.email}</p>
+                          <p className="flex items-center gap-2">📱 {order.phone || "Não informado"}</p>
+                        </div>
+                      </div>
+                      <div className="md:text-right space-y-1">
+                        <p className="text-zinc-500 text-[10px] font-black uppercase">Data do Cadastro</p>
+                        <p className="text-zinc-300 font-bold">{format(new Date(order.created_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}</p>
+                        <p className="text-zinc-600 text-[10px] font-mono tracking-tighter uppercase">ID: {order.nsu_order}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="bg-black/40 border-4 border-dashed border-zinc-800 rounded-3xl py-20 text-center">
+                    <Loader2 className="w-12 h-12 animate-spin text-zinc-800 mx-auto mb-6" />
+                    <p className="text-zinc-600 font-black text-3xl uppercase tracking-tighter">NENHUM REGISTRO LISTADO AINDA</p>
+                    <p className="text-zinc-700 font-bold mt-2 uppercase text-sm">Aguardando resposta do servidor...</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* SEÇÕES FILTRADAS */}
+            <div className="mt-12 pt-8 border-t border-zinc-800">
+              <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.4em] mb-10">Agrupamento por Status</p>
+              <div className="space-y-6">
+                {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/5 border-yellow-500/20", "text-yellow-500")}
+                {renderOrderSection("paid", "💰 Pagos (Verificando API)", "bg-blue-500/5 border-blue-500/20", "text-blue-500")}
+                {renderOrderSection("completed", "✅ Completos", "bg-green-500/5 border-green-500/20", "text-green-500")}
+                {renderOrderSection("expired", "❌ Expirados", "bg-red-500/5 border-red-500/20", "text-red-500")}
               </div>
             </div>
           </div>
