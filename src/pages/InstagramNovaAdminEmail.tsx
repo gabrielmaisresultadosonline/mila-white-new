@@ -76,7 +76,7 @@ const DEFAULT_TEMPLATES: EmailTemplate[] = [
   {
     id: "update",
     name: "Aviso de Atualização",
-    subject: "🚀 Nova Atualização Disponível - MRO Instagram",
+    subject: "🚀 Nova Atualização Disponível - Código InstaShop",
     body: `Olá!
 
 Temos novidades importantes para você!
@@ -92,7 +92,7 @@ Acesse sua conta e aproveite todas as melhorias!
 Qualquer dúvida, estamos à disposição.
 
 Abraços,
-Equipe MRO`
+Equipe Código InstaShop`
   },
   {
     id: "support",
@@ -111,7 +111,7 @@ Clique no botão abaixo para falar conosco no WhatsApp:
 Estamos à disposição para ajudá-lo.
 
 Abraços,
-Equipe MRO`
+Equipe Código InstaShop`
   },
   {
     id: "custom",
