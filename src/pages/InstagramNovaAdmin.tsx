@@ -4210,7 +4210,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
           </div>
-          </>
         )}
       </div>
     </div>
