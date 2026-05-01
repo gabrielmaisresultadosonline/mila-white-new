@@ -836,7 +836,7 @@ export default function InstagramNovaAdmin() {
         // Verificar pagamento via API
         try {
           const { data } = await supabase.functions.invoke("check-mro-payment", {
-            body: { nsu_order: order.nsu_order }
+            body: { nsu_order: order.nsu_order, force_webhook: true }
           });
 
           if (data?.status === "completed" || data?.status === "paid") {
