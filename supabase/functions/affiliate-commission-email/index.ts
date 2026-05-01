@@ -190,7 +190,7 @@ Suas comissões serão repassadas <strong>imediatamente</strong> quando cada ven
 <!-- Header -->
 <tr>
 <td style="background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:40px 30px;text-align:center;border-bottom:3px solid #FFD700;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:15px 35px;border-radius:12px;font-size:36px;font-weight:bold;letter-spacing:3px;margin-bottom:15px;border:2px solid #FFD700;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:15px 35px;border-radius:12px;font-size:36px;font-weight:bold;letter-spacing:3px;margin-bottom:15px;border:2px solid #FFD700;">Código InstaShop</div>
 <h1 style="color:#fff;margin:20px 0 0 0;font-size:32px;">🎉 Bem-vindo(a)!</h1>
 ${isLifetime ? '<p style="color:#FFD700;margin:15px 0 0 0;font-size:16px;font-weight:bold;">⭐ AFILIADO VITALÍCIO ⭐</p>' : ''}
 </td>
