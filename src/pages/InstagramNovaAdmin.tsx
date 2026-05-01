@@ -137,7 +137,8 @@ export default function InstagramNovaAdmin() {
     completed: true,
     paid: true,
     pending: true,
-    expired: true
+    expired: true,
+    all: true
   });
 
   // Configuração de afiliado - sistema expandido
@@ -2506,6 +2507,11 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
+      {/* Depuração visual temporária */}
+      <div className="fixed top-0 left-0 z-50 bg-black/80 text-[10px] text-white p-1 pointer-events-none">
+        Pedidos: {orders.length} | Filtrados: {filteredOrders.length} | Status: {filterStatus}
+      </div>
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
@@ -2521,7 +2527,11 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               )}
             </div>
             <Button
-              onClick={() => setShowWebhookLogs(true)}
+              onClick={() => {
+                console.log("[DEBUG-UI] Lista de pedidos atual:", orders);
+                console.log("[DEBUG-UI] Filtro de status:", filterStatus);
+                setShowWebhookLogs(true);
+              }}
               variant="outline"
               size="sm"
               className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 shrink-0"
