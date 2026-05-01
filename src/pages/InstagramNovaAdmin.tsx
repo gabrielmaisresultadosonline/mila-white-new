@@ -2562,11 +2562,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
   return (
     <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
-      {/* Depuração visual temporária - MEGA DESTAQUE */}
-      <div className="fixed top-0 left-0 z-[9999] bg-red-600 text-[14px] text-white p-4 font-black shadow-2xl border-b-4 border-white">
-        DEBUG REAL-TIME: {orders?.length || 0} REGISTROS NO BANCO | ÚLTIMA ATUALIZAÇÃO: {lastLoadTime ? new Date(lastLoadTime).toLocaleTimeString() : 'NUNCA'}
-      </div>
-
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
@@ -3930,10 +3925,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               </select>
             )}
           </div>
-        </div>
-
-        <div className="bg-zinc-800 p-2 rounded mb-4 text-xs font-mono overflow-auto max-h-32 text-zinc-400">
-          DEBUG: Orders in state: {orders.length} | Loading: {loading ? "YES" : "NO"} | DB: {dbStatus}
         </div>
 
         {loading ? (
