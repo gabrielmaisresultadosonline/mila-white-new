@@ -566,16 +566,16 @@ export default function InstagramNovaAdmin() {
     checkAuth();
   }, []);
 
-  // Verificação automática a cada 8 segundos (para pedidos recentes até 15 min)
+  // Verificação automática a cada 15 segundos (para pedidos recentes até 15 min)
   useEffect(() => {
     if (isAuthenticated && autoCheckEnabled) {
       // Verificar imediatamente ao carregar
       checkPendingPayments();
       
-      // Configurar intervalo de 8 segundos para verificação agressiva
+      // Configurar intervalo de 15 segundos para verificação
       autoCheckIntervalRef.current = setInterval(() => {
         checkPendingPayments();
-      }, 8000); // 8 segundos
+      }, 15000); // 15 segundos
       
       return () => {
         if (autoCheckIntervalRef.current) {
@@ -747,21 +747,26 @@ export default function InstagramNovaAdmin() {
         }
       }
 
-      // Processar pedidos expirados e garantir integridade (não permite completed sem pagamento)
+      // Processar pedidos expirados e garantir integridade
       const now = new Date();
       const processedOrders = (finalData || []).map((order) => {
-        // CORREÇÃO DEFINITIVA: Se não tiver data de pagamento, FORÇAR como expired no visual
-        // O cliente confirmou que NADA foi pago, então limpamos qualquer erro de status
-        if (!order.paid_at) {
+        // CORREÇÃO: Respeitar o status pending se ainda não expirou
+        if (order.status === "pending" || !order.status) {
+          const createdAt = new Date(order.created_at);
+          const expiredAt = order.expired_at ? new Date(order.expired_at) : new Date(createdAt.getTime() + 15 * 60000);
+          
+          if (now > expiredAt) {
+            order.status = "expired";
+          } else {
+            order.status = "pending";
+          }
+        }
+        
+        // Se for completed ou paid, PRECISA ter data de pagamento para ser legítimo
+        if ((order.status === "completed" || order.status === "paid") && !order.paid_at) {
           order.status = "expired";
         }
         
-        if (order.status === "pending" && order.expired_at) {
-          const expiredAt = new Date(order.expired_at);
-          if (now > expiredAt) {
-            order.status = "expired";
-          }
-        }
         return order;
       });
 
@@ -814,13 +819,15 @@ export default function InstagramNovaAdmin() {
     try {
       const now = new Date();
       
-      // Forçar expiração no banco de dados para garantir integridade total
-      // Se não tem data de pagamento, o status PRECISA ser expired
+      // Atualizar pedidos que realmente expiraram (mais de 15 minutos sem pagamento)
+      const fifteenMinutesAgo = new Date(now.getTime() - 15 * 60000).toISOString();
+      
       await supabase
         .from("mro_orders")
         .update({ status: "expired" })
-        .is("paid_at", null)
-        .neq("status", "expired");
+        .eq("status", "pending")
+        .lt("created_at", fifteenMinutesAgo)
+        .is("paid_at", null);
 
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
@@ -899,7 +906,11 @@ export default function InstagramNovaAdmin() {
       }
 
       setLastAutoCheck(new Date());
-      loadOrders();
+      // Só recarregar se houver confirmação ou a cada 60 segundos por segurança
+      const timeSinceLastLoad = Date.now() - (parseInt(localStorage.getItem("mro_last_load_time") || "0"));
+      if (confirmedPayments.length > 0 || timeSinceLastLoad > 60000) {
+        loadOrders();
+      }
     } catch (error) {
       console.error("[AUTO-CHECK] Erro:", error);
     }
