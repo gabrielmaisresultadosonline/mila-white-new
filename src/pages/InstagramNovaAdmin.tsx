@@ -804,10 +804,11 @@ export default function InstagramNovaAdmin() {
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
-        // Forçar um recarregamento total da lista a cada 10 segundos
+        // Forçar um recarregamento total da lista a cada 8 segundos
         // para garantir que novos "pendentes" (que acabaram de ser criados) apareçam
         const timeSinceLastLoad = localStorage.getItem("mro_last_load_time");
-        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 10000) {
+        if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 8000) {
+          console.log("[AUTO-REFRESH] Recarregando lista de pedidos...");
           loadOrders();
           localStorage.setItem("mro_last_load_time", Date.now().toString());
         }
