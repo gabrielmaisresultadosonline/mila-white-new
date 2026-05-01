@@ -131,6 +131,7 @@ const VendasCompleta = () => {
         planType: selectedPlan
       });
       
+      console.log("[CHECKOUT] Chamando Edge Function create-mro-checkout...");
       const { data: checkData, error: checkError } = await supabase.functions.invoke("create-mro-checkout", {
         body: { 
           email: email.toLowerCase().trim(), 
