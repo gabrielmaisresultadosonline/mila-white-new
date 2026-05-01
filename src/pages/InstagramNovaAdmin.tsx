@@ -4506,7 +4506,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         </DialogContent>
       </Dialog>
     </div>
-  );
+    </div>
   );
 };
 
