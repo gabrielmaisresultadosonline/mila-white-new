@@ -13,7 +13,7 @@ const logStep = (step: string, details?: any) => {
 };
 
 const DEFAULT_WHATSAPP_GROUP = 'https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi';
-const SUPPORT_WHATSAPP = 'https://maisresultadosonline.com.br/whatsapp';
+const SUPPORT_WHATSAPP = 'https://codigoinstashop.com.br/whatsapp';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
