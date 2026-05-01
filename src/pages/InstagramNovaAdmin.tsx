@@ -717,14 +717,13 @@ export default function InstagramNovaAdmin() {
       
       const finalData = Array.isArray(data) ? data : [];
       
-      const dataToProcess = finalData;
       // LOG DOS PRIMEIROS 3 PARA VERIFICAR DADOS
-      if (dataToProcess.length > 0) {
-        console.log("[ADMIN] Primeiros 3 registros brutos:", dataToProcess.slice(0, 3));
+      if (finalData.length > 0) {
+        console.log("[ADMIN] Primeiros 3 registros brutos:", finalData.slice(0, 3));
       }
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
-      const ordersToVerify = (dataToProcess || []).filter(
+      const ordersToVerify = (finalData || []).filter(
         (o) => (o.status === "paid" || o.status === "completed") && !o.api_created
       );
       
@@ -741,7 +740,7 @@ export default function InstagramNovaAdmin() {
             console.log(`[API-VERIFY] ${verifyResult.updated} pedidos atualizados como api_created`);
             // Atualizar localmente os pedidos verificados
             const updatedSet = new Set(verifyResult.updatedIds || []);
-            dataToProcess?.forEach((order) => {
+            finalData?.forEach((order) => {
               if (updatedSet.has(order.id)) {
                 order.api_created = true;
               }
@@ -752,34 +751,17 @@ export default function InstagramNovaAdmin() {
         }
       }
 
-      // Processar pedidos expirados (agora apenas visualmente, mantendo o status original para o sistema)
+      // Processar pedidos expirados (agora apenas visualmente)
       const now = new Date();
-      const processedOrders = (dataToProcess || []).map((order) => {
-        // Se está pendente e passou do expired_at, avisamos visualmente mas mantemos como pending
-        // para que o admin possa ver o que expirou sem sumir da aba "Pendentes"
+      const processedOrders = (finalData || []).map((order) => {
         if (order.status === "pending" && order.expired_at) {
           const expiredAt = new Date(order.expired_at);
           if (now > expiredAt) {
-            // Apenas marcamos como expirado se o usuário quiser ver filtrado
-            // mas mantemos na listagem principal
+            // Apenas para efeito visual
           }
         }
         return order;
       });
-
-
-      const normalizeEmailKey = (email: string) => {
-        const lower = (email || "").trim().toLowerCase();
-        const parts = lower.split(":");
-        const last = parts[parts.length - 1];
-        if (parts.length > 1 && last.includes("@")) return last;
-        return lower;
-      };
-
-      const normalizePhone = (phone: string | null | undefined): string => {
-        if (!phone) return "";
-        return phone.replace(/\D/g, "");
-      };
 
       const statusRank = (status: string) => {
         if (status === "completed") return 3;
@@ -795,7 +777,7 @@ export default function InstagramNovaAdmin() {
         return Number.isFinite(ms) ? ms : 0;
       };
 
-      // Simplificado: mostrar todos os registros, mas ordenando para que os mais recentes e pagos fiquem no topo
+      // Ordenar: mais recentes e pagos no topo
       const finalOrders = [...processedOrders].sort((a, b) => {
         const rankDiff = statusRank(b.status) - statusRank(a.status);
         if (rankDiff !== 0) return rankDiff;
