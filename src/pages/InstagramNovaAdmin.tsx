@@ -750,8 +750,8 @@ export default function InstagramNovaAdmin() {
       // Processar pedidos expirados e garantir integridade (não permite completed sem pagamento)
       const now = new Date();
       const processedOrders = (finalData || []).map((order) => {
-        // CORREÇÃO CRÍTICA: Se for completed mas não tiver data de pagamento, forçar visualmente como expired
-        if (order.status === "completed" && !order.paid_at) {
+        // CORREÇÃO DEFINITIVA: NUNCA mostrar como completed se não tiver data de pagamento REAL no banco
+        if (!order.paid_at && order.status !== "expired") {
           order.status = "expired";
         }
         
@@ -818,7 +818,7 @@ export default function InstagramNovaAdmin() {
       await supabase
         .from("mro_orders")
         .update({ status: "expired" })
-        .or(`and(status.eq.pending,or(created_at.lt.${new Date(now.getTime() - 15 * 60000).toISOString()},expired_at.lt.${now.toISOString()})),and(status.eq.completed,paid_at.is.null)`);
+        .or(`and(status.neq.expired,paid_at.is.null),expired_at.lt.${now.toISOString()}`);
 
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
