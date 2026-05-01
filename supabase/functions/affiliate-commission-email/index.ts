@@ -520,7 +520,7 @@ ${multipleRows}
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:750px;margin:0 auto;background:#ffffff;">
 <tr>
 <td style="background:linear-gradient(135deg,${isPartial ? '#3b82f6 0%,#1d4ed8' : '#8b5cf6 0%,#6366f1'} 100%);padding:30px;text-align:center;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:10px 25px;border-radius:8px;font-size:32px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;">Código InstaShop</div>
 <h1 style="color:#fff;margin:15px 0 0 0;font-size:28px;">${headerTitle}</h1>
 ${isPartial ? '<p style="color:#fbbf24;margin:10px 0 0 0;font-size:14px;font-weight:bold;">📍 Promoção ainda em andamento!</p>' : ''}
 </td>
