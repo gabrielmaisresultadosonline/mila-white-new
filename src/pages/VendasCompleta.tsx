@@ -74,7 +74,7 @@ const VendasCompleta = () => {
   });
   
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<"annual" | "lifetime">("annual");
+  const [selectedPlan, setSelectedPlan] = useState<"annual" | "lifetime" | "test">("annual");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
