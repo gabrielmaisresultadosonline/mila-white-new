@@ -800,10 +800,18 @@ export default function InstagramNovaAdmin() {
       });
 
       console.log(`[ADMIN] Sincronização finalizada. Exibindo ${finalOrders.length} registros.`);
-      setOrders([...finalOrders]);
+      
+      // LOG DE DEPURACAO PARA O CLIENTE
+      if (finalOrders.length === 0 && data && data.length > 0) {
+        console.error("[ADMIN] CRÍTICO: Registros existem no banco mas finalOrders está vazio!", {
+          dbCount: data.length,
+          processedCount: processedOrders.length
+        });
+      }
+
+      setOrders(finalOrders);
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
-      forceUpdate();
     } catch (error) {
       console.error("[ADMIN] Erro crítico no loadOrders:", error);
       toast.error("Erro técnico ao processar lista de pedidos");
@@ -3955,7 +3963,12 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                 </div>
               </CardHeader>
               <CardContent className="p-0">
-                {Array.isArray(orders) && orders.length > 0 ? (
+                {loading ? (
+                  <div className="py-20 text-center">
+                    <Loader2 className="w-10 h-10 animate-spin text-amber-500 mx-auto mb-4" />
+                    <p className="text-white font-bold">CARREGANDO...</p>
+                  </div>
+                ) : Array.isArray(orders) && orders.length > 0 ? (
                   <div className="divide-y divide-zinc-800">
                     {orders.map((order) => (
                       <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
@@ -3963,14 +3976,15 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                           <div className="flex items-center gap-4 flex-wrap">
                             <span className="text-zinc-500 font-black text-xs uppercase tracking-widest bg-zinc-800 px-3 py-1 rounded-full">Usuário</span>
                             <h3 className="text-white font-[1000] text-3xl tracking-tighter group-hover:text-amber-500 transition-colors">
-                              {order.username}
+                              {order.username || "Sem Nome"}
                             </h3>
                             <Badge className={`px-4 py-1 font-black text-sm ${
                               order.status === 'completed' ? 'bg-green-500 text-white' : 
                               order.status === 'paid' ? 'bg-blue-500 text-white' : 
+                              order.status === 'expired' ? 'bg-red-500 text-white' :
                               'bg-yellow-500 text-black'
                             }`}>
-                              {order.status.toUpperCase()}
+                              {(order.status || 'PENDENTE').toUpperCase()}
                             </Badge>
                           </div>
                           
@@ -3995,10 +4009,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                         <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
                           <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
                           <p className="text-white font-black text-2xl mb-1">
-                            {format(new Date(order.created_at), "dd/MM/yyyy")}
+                            {order.created_at ? format(new Date(order.created_at), "dd/MM/yyyy") : "--/--/----"}
                           </p>
                           <p className="text-amber-500 font-black text-3xl">
-                            {format(new Date(order.created_at), "HH:mm:ss")}
+                            {order.created_at ? format(new Date(order.created_at), "HH:mm:ss") : "--:--:--"}
                           </p>
                         </div>
                       </div>
@@ -4009,15 +4023,15 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     <div className="mx-auto w-24 h-24 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
                       <AlertTriangle className="w-12 h-12 text-zinc-600" />
                     </div>
-                    <h3 className="text-zinc-400 font-black text-4xl uppercase tracking-tighter">Nenhum Registro Exibido</h3>
+                    <h3 className="text-zinc-400 font-black text-4xl uppercase tracking-tighter">Nenhum Registro Encontrado</h3>
                     <p className="text-zinc-500 mt-4 text-xl font-bold max-w-md mx-auto">
-                      O banco confirmou os registros, mas a visualização falhou. Tente clicar em "Sincronizar Banco".
+                      {dbStatus === "empty" ? "O banco de dados está vazio no momento." : "Não foi possível carregar os registros. Tente sincronizar novamente."}
                     </p>
                     <Button 
                       onClick={() => loadOrders()}
                       className="mt-8 bg-amber-500 hover:bg-amber-600 text-black font-black px-8 py-6 text-xl rounded-2xl"
                     >
-                      FORÇAR CARREGAMENTO
+                      SINCRONIZAR AGORA
                     </Button>
                   </div>
                 )}
