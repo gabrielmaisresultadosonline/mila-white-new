@@ -3918,8 +3918,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         )}
 
         {!showAffiliateConfig && !showRemarketingDashboard && !showAccessReminder && (
-          <>
-        {/* Stats */}
+          <div key="main-content">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
           <Card className="bg-zinc-800 border-zinc-700">
             <CardContent className="p-4">
@@ -4210,14 +4209,16 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
-        </>
-      )}
+          </div>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default InstagramNovaAdmin;
+
 
 
 
