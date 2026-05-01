@@ -536,19 +536,18 @@ export default function InstagramNovaAdmin() {
   // Check if already authenticated
   useEffect(() => {
     const checkAuth = async () => {
-      // Import dynamicamente para evitar dependência circular se houver
+      // Import dinamicamente para evitar dependência circular
       const { isAdminLoggedIn } = await import('@/lib/adminConfig');
       
-      if (isAdminLoggedIn()) {
+      const loggedIn = await isAdminLoggedIn();
+      if (loggedIn) {
         console.log("✅ Admin já logado no painel principal, autenticando automaticamente...");
         setIsAuthenticated(true);
-        // Tenta pegar o token se existir, mas se for admin logado o backend deve aceitar ou precisamos de um token
         const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
         if (storedToken) {
           setAdminSessionToken(storedToken);
           loadOrders(storedToken);
         } else {
-          // Se não tem token mas é admin, o ideal é que loadOrders funcione ou lidamos com isso
           loadOrders();
         }
         return;
@@ -688,16 +687,12 @@ export default function InstagramNovaAdmin() {
   };
 
   const loadOrders = async (tokenOverride?: string) => {
+    // Pegar token apenas se necessário para funções da API, mas permitir SELECT direto
     const token = getAdminSessionToken(tokenOverride);
-    if (!token) {
-      console.log("[ADMIN] Carregamento cancelado: Token não encontrado");
-      setOrders([]);
-      return;
-    }
-
+    
     setLoading(true);
     try {
-      console.log("[ADMIN] Buscando lista de pedidos via SELECT direto...");
+      console.log("[ADMIN] Buscando lista de pedidos via SELECT direto em mro_orders...");
       setDbStatus("fetching");
       
       const { data, error } = await supabase
@@ -709,10 +704,11 @@ export default function InstagramNovaAdmin() {
         console.error("[ADMIN] Erro ao carregar pedidos via SELECT direto:", error);
         setDbStatus("error");
         toast.error("Erro ao carregar pedidos diretamente do banco");
+        setLoading(false);
         return;
       }
 
-      console.log(`[ADMIN] DATABASE DIRECT: ${data?.length || 0} pedidos encontrados`);
+      console.log(`[ADMIN] SUCESSO: ${data?.length || 0} pedidos encontrados na tabela mro_orders`);
       setDbStatus(data?.length > 0 ? "success" : "empty");
       
       const finalData = Array.isArray(data) ? data : [];
@@ -727,13 +723,13 @@ export default function InstagramNovaAdmin() {
         (o) => (o.status === "paid" || o.status === "completed") && !o.api_created
       );
       
-      if (ordersToVerify.length > 0) {
+      if (ordersToVerify.length > 0 && token) {
         console.log(`[API-VERIFY] Verificando ${ordersToVerify.length} pedidos na API...`);
         const verifyIds = ordersToVerify.map((o) => o.id);
         
         try {
           const { data: verifyResult } = await supabase.functions.invoke("verify-api-access", {
-            body: { order_ids: verifyIds }
+            body: { order_ids: verifyIds, token }
           });
           
           if (verifyResult?.updated > 0) {
