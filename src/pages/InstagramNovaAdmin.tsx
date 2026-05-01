@@ -3933,7 +3933,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-6 mt-8">
-            {/* PAINEL DE CONTROLE DE VISUALIZAÇÃO */}
             <div className="bg-amber-500/5 border-2 border-amber-500/20 p-4 rounded-2xl mb-8">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
@@ -3945,7 +3944,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                 </Badge>
               </div>
 
-              {/* LISTA GERAL (ALL) - SEMPRE ABERTA PARA GARANTIR VISIBILIDADE */}
               {renderOrderSection("all", "📋 Todos os Cadastros Recentes", "bg-zinc-800/80 border-zinc-700", "text-white")}
               
               <div className="mt-8 pt-8 border-t border-zinc-800">
