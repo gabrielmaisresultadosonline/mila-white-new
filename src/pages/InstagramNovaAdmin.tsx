@@ -1029,25 +1029,22 @@ ${GROUP_LINK}`;
     // 1. Filtro de Busca (Search)
     const searchLower = searchTerm.toLowerCase().trim();
     const matchesSearch = searchLower === "" || 
-      order.email.toLowerCase().includes(searchLower) ||
-      order.username.toLowerCase().includes(searchLower) ||
-      order.nsu_order.toLowerCase().includes(searchLower) ||
+      (order.email && order.email.toLowerCase().includes(searchLower)) ||
+      (order.username && order.username.toLowerCase().includes(searchLower)) ||
+      (order.nsu_order && order.nsu_order.toLowerCase().includes(searchLower)) ||
       (order.phone && order.phone.includes(searchLower));
     
     // 2. Filtro de Status
-    // Se filterStatus for "all", aceita qualquer status.
     const matchesFilter = filterStatus === "all" || order.status === filterStatus;
     
     // 3. Filtro por Afiliado
     let matchesAffiliateFilter = true;
     if (mainAffiliateFilter === "affiliates_only") {
-      // Verifica se o email contém algum prefixo de afiliado cadastrado
       matchesAffiliateFilter = affiliates.some(a => 
-        order.email.toLowerCase().includes(`${a.id.toLowerCase()}:`)
+        order.email?.toLowerCase().includes(`${a.id.toLowerCase()}:`)
       );
     } else if (mainAffiliateFilter !== "all" && mainAffiliateFilter !== "") {
-      // Filtra por um afiliado específico
-      matchesAffiliateFilter = order.email.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
+      matchesAffiliateFilter = order.email?.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
     }
     
     return matchesSearch && matchesFilter && matchesAffiliateFilter;
@@ -1151,7 +1148,14 @@ ${GROUP_LINK}`;
   };
 
   const renderOrderSection = (key: string, label: string, bgColor: string, textColor: string) => {
-    const sectionOrders = key === "all" ? filteredOrders : groupedOrders[key as keyof typeof groupedOrders] || [];
+    // Garantir que orders é um array antes de filtrar
+    const safeOrders = Array.isArray(orders) ? orders : [];
+    const safeFilteredOrders = Array.isArray(filteredOrders) ? filteredOrders : [];
+    
+    const sectionOrders = key === "all" 
+      ? safeFilteredOrders 
+      : safeFilteredOrders.filter(o => o.status === key);
+
     if (sectionOrders.length === 0 && key !== "all") return null;
 
     const isOpen = openSections[key];
