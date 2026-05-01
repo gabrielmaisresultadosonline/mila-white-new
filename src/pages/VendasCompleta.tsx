@@ -665,7 +665,31 @@ const VendasCompleta = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Plano Teste */}
+            <div className="relative bg-gradient-to-br from-zinc-800 to-zinc-900 border-2 border-zinc-700 rounded-2xl p-4 sm:p-6 opacity-80 hover:opacity-100 transition-opacity">
+              <h3 className="text-xl font-bold mb-2 text-center text-zinc-400">Plano Teste</h3>
+              <p className="text-zinc-500 text-center mb-6 text-xs">Para testar por 7 dias</p>
+              <div className="text-center mb-6">
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="text-4xl font-black text-white">R$1,00</span>
+                </div>
+              </div>
+              <div className="space-y-2 mb-6">
+                <div className="flex items-center gap-2 text-xs">
+                  <CheckCircle2 className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+                  <span className="text-zinc-400">Acesso por 7 dias</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <CheckCircle2 className="w-3 h-3 text-zinc-500 flex-shrink-0" />
+                  <span className="text-zinc-400">Funcionalidades básicas</span>
+                </div>
+              </div>
+              <Button size="sm" variant="outline" className="w-full border-zinc-600 text-zinc-400 hover:bg-zinc-800"
+                onClick={() => { setSelectedPlan("test" as any); setShowCheckoutModal(true); }}>
+                TESTAR AGORA
+              </Button>
+            </div>
             {/* Plano Anual */}
             <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-purple-500 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl">
               <h3 className="text-2xl font-bold mb-2 text-center text-purple-400">Plano Anual</h3>
