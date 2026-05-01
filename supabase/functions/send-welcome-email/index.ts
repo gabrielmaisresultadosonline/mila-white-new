@@ -85,7 +85,7 @@ serve(async (req) => {
       },
     });
 
-    const memberAreaUrl = 'https://maisresultadosonline.com.br/areademembros';
+    const memberAreaUrl = 'https://codigoinstashop.com.br';
 
     const htmlContent = `<!DOCTYPE html>
 <html>
