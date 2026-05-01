@@ -1034,6 +1034,7 @@ const InstagramNovaAdmin = () => {
       setLoading(false);
     }
   };
+  };
 
   const generateCopyMessage = (order: MROOrder) => {
     return `Obrigado por fazer parte do nosso sistema!✅
@@ -4217,6 +4218,11 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 };
 
 export default InstagramNovaAdmin;
+
+
+
+
+
 
       {/* Modal de Resumo com Email Adicional e Prévia */}
       <Dialog open={showSummaryModal} onOpenChange={(open) => {
