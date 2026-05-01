@@ -11,7 +11,7 @@ const INFINITEPAY_HANDLE = "mahatma-cravinho";
 const log = (step: string, details?: unknown) => {
   const timestamp = new Date().toISOString();
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : "";
-  console.log(`[${timestamp}] [CHECK-MRO-PAYMENT] ${step}${detailsStr}`);
+  console.log(`[${timestamp}] [CHECK-INSTASHOP-PAYMENT] ${step}${detailsStr}`);
 };
 
 // Salvar log de verificação no banco
