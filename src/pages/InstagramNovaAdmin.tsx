@@ -3933,27 +3933,40 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         ) : (
           <div className="space-y-6 mt-8">
-            <div className="bg-amber-500/5 border-2 border-amber-500/20 p-4 rounded-2xl mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
-                  <BarChart3 className="w-6 h-6" />
-                  CONTROLE DE REGISTROS
+            <div className="bg-red-500/10 border-2 border-red-500/30 p-6 rounded-2xl mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-white text-xl font-black flex items-center gap-2">
+                  <BarChart3 className="w-6 h-6 text-red-500" />
+                  DADOS BRUTOS DO BANCO
                 </h2>
-                <Badge className="bg-amber-500 text-black font-black">
-                  TOTAL NO BANCO: {orders?.length || 0}
+                <Badge className="bg-red-500 text-white font-black px-4 py-2">
+                  TOTAL: {orders?.length || 0}
                 </Badge>
               </div>
 
-              {renderOrderSection("all", "📋 Todos os Cadastros Recentes", "bg-zinc-800/80 border-zinc-700", "text-white")}
-              
-              <div className="mt-8 pt-8 border-t border-zinc-800">
-                <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Filtros por Status</p>
-                <div className="space-y-4">
-                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                  {renderOrderSection("paid", "💰 Pagos (Aguardando API)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-                  {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
-                </div>
+              <div className="grid grid-cols-1 gap-4 max-h-[600px] overflow-y-auto">
+                {Array.isArray(orders) && orders.length > 0 ? (
+                  orders.map((order) => (
+                    <div key={order.id} className="bg-zinc-900 border border-zinc-700 p-4 rounded-xl flex justify-between items-center group hover:border-red-500/50 transition-all">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-white font-black text-lg">{order.username}</p>
+                          {getStatusBadge(order.status)}
+                        </div>
+                        <p className="text-xs text-zinc-400">{order.email}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-zinc-300 font-bold text-xs">{format(new Date(order.created_at), "dd/MM/yyyy HH:mm:ss", { locale: ptBR })}</p>
+                        <p className="text-zinc-600 text-[10px] font-mono">{order.nsu_order}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="bg-black/40 border-2 border-dashed border-zinc-800 rounded-2xl py-20 text-center">
+                    <Loader2 className="w-10 h-10 animate-spin text-zinc-700 mx-auto mb-4" />
+                    <p className="text-zinc-500 font-black text-xl">NENHUM REGISTRO ENCONTRADO NO BANCO</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
