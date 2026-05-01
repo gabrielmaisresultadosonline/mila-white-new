@@ -4213,6 +4213,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         )}
       </div>
     </div>
+    </div>
   );
 };
 
