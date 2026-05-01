@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useReducer } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -122,6 +122,7 @@ export default function InstagramNovaAdmin() {
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "paid" | "completed" | "expired">("all");
   const [lastLoadTime, setLastLoadTime] = useState<number>(0);
   const [dbStatus, setDbStatus] = useState<string>("init");
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
   
   const autoCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const logsAutoRefreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -799,9 +800,10 @@ export default function InstagramNovaAdmin() {
       });
 
       console.log(`[ADMIN] Sincronização finalizada. Exibindo ${finalOrders.length} registros.`);
-      setOrders(finalOrders);
+      setOrders([...finalOrders]);
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
+      forceUpdate();
     } catch (error) {
       console.error("[ADMIN] Erro crítico no loadOrders:", error);
       toast.error("Erro técnico ao processar lista de pedidos");
@@ -2570,8 +2572,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   return (
     <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
       {/* Depuração visual temporária - MEGA DESTAQUE */}
-      <div className="fixed top-0 left-0 z-[9999] bg-yellow-400 text-[12px] text-black p-3 font-black shadow-2xl border-b-4 border-black">
-        DADOS REAIS: {orders?.length || 0} REGISTROS | STATUS: {dbStatus} | FILTRO: {filterStatus}
+      <div className="fixed top-0 left-0 z-[9999] bg-red-600 text-[14px] text-white p-4 font-black shadow-2xl border-b-4 border-white">
+        DEBUG REAL-TIME: {orders?.length || 0} REGISTROS NO BANCO | ÚLTIMA ATUALIZAÇÃO: {lastLoadTime ? new Date(lastLoadTime).toLocaleTimeString() : 'NUNCA'}
       </div>
 
       <div className="max-w-7xl mx-auto">
