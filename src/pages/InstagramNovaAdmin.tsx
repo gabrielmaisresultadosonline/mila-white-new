@@ -696,17 +696,18 @@ export default function InstagramNovaAdmin() {
       });
 
       if (error || !response?.success) {
+        console.error("[ADMIN] Erro ao carregar pedidos:", error || response?.error);
         if (response?.error?.includes("Sessão expirada")) {
-          console.warn("[ADMIN] Sessão expirada no servidor");
           clearAdminSession();
+          toast.error("Sessão expirada. Faça login novamente.");
+        } else {
+          toast.error(response?.error || "Erro ao carregar pedidos do banco de dados");
         }
-        console.error("[ADMIN] Erro ao carregar pedidos via Edge Function:", error || response?.error);
-        toast.error(response?.error || "Erro ao carregar pedidos");
         return;
       }
 
       const data: MROOrder[] = response.orders || [];
-      console.log(`[ADMIN] ${data.length} pedidos recebidos do servidor`);
+      console.log(`[ADMIN] DATABASE: ${data.length} pedidos encontrados no Supabase`);
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
       const ordersToVerify = (data || []).filter(
@@ -787,12 +788,13 @@ export default function InstagramNovaAdmin() {
         return orderTimestamp(b) - orderTimestamp(a);
       });
 
+      console.log(`[ADMIN] Exibindo ${finalOrders.length} pedidos na interface. Filtro atual: ${filterStatus}`);
       setOrders(finalOrders);
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("Erro ao carregar dados");
+      console.error("[ADMIN] Erro crítico no loadOrders:", error);
+      toast.error("Erro técnico ao processar lista de pedidos");
     } finally {
       setLoading(false);
     }
