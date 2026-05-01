@@ -986,6 +986,38 @@ export default function InstagramNovaAdmin() {
     }
   };
 
+  // Reenviar acesso (API ou Email)
+  const resendAccess = async (order: MROOrder, type: "api" | "email") => {
+    if (order.status !== "completed" && order.status !== "paid") {
+      toast.error("Acesso só pode ser reenviado para pedidos pagos/completos");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("mro-payment-webhook", {
+        body: { 
+          order_id: order.id,
+          manual_approve: true,
+          force_resend: true,
+          resend_type: type
+        }
+      });
+
+      if (error) {
+        toast.error(`Erro ao reenviar ${type === "api" ? "acesso API" : "email"}`);
+        return;
+      }
+
+      toast.success(data.message || `${type === "api" ? "API" : "Email"} reenviado com sucesso!`);
+      loadOrders();
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Erro técnico no reenvio");
+    } finally {
+      setLoading(false);
+    }
+
   const generateCopyMessage = (order: MROOrder) => {
     return `Obrigado por fazer parte do nosso sistema!✅
 
