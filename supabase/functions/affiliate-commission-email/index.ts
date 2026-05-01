@@ -256,7 +256,7 @@ ${affiliateLink ? `
 <!-- Final Message -->
 <div style="text-align:center;padding:20px 0;">
 <p style="margin:0;color:#fff;font-size:18px;line-height:1.8;">
-<strong>MRO agradece mais uma vez a parceria!</strong><br>
+<strong>Código InstaShop agradece mais uma vez a parceria!</strong><br>
 Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra cima! 🔥</strong>
 </p>
 </div>
@@ -264,7 +264,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 <div style="text-align:center;padding:30px 0 10px 0;border-top:2px solid #4b5563;margin-top:20px;">
 <p style="margin:0;color:#9ca3af;font-size:16px;">Atenciosamente,</p>
 <p style="margin:10px 0 0 0;color:#FFD700;font-size:24px;font-weight:bold;">Gabriel</p>
-<p style="margin:5px 0 0 0;color:#6b7280;font-size:14px;">Fundador MRO</p>
+<p style="margin:5px 0 0 0;color:#6b7280;font-size:14px;">Fundador Código InstaShop</p>
 </div>
 
 </td>
