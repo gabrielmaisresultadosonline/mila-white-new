@@ -1024,25 +1024,28 @@ ${GROUP_LINK}`;
   };
 
   const filteredOrders = orders.filter(order => {
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = 
+    // 1. Filtro de Busca (Search)
+    const searchLower = searchTerm.toLowerCase().trim();
+    const matchesSearch = searchLower === "" || 
       order.email.toLowerCase().includes(searchLower) ||
       order.username.toLowerCase().includes(searchLower) ||
       order.nsu_order.toLowerCase().includes(searchLower) ||
-      (order.phone && order.phone.includes(searchTerm));
+      (order.phone && order.phone.includes(searchLower));
     
-    // Filtro de status: se for "all", mostra tudo. 
-    // Se não for "all", deve bater exatamente com o status do banco.
+    // 2. Filtro de Status
+    // Se filterStatus for "all", aceita qualquer status.
     const matchesFilter = filterStatus === "all" || order.status === filterStatus;
     
-    // Filtro por afiliado na lista principal
+    // 3. Filtro por Afiliado
     let matchesAffiliateFilter = true;
     if (mainAffiliateFilter === "affiliates_only") {
+      // Verifica se o email contém algum prefixo de afiliado cadastrado
       matchesAffiliateFilter = affiliates.some(a => 
-        order.email.toLowerCase().startsWith(`${a.id.toLowerCase()}:`)
+        order.email.toLowerCase().includes(`${a.id.toLowerCase()}:`)
       );
     } else if (mainAffiliateFilter !== "all" && mainAffiliateFilter !== "") {
-      matchesAffiliateFilter = order.email.toLowerCase().startsWith(`${mainAffiliateFilter.toLowerCase()}:`);
+      // Filtra por um afiliado específico
+      matchesAffiliateFilter = order.email.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
     }
     
     return matchesSearch && matchesFilter && matchesAffiliateFilter;
@@ -2567,11 +2570,11 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               onClick={() => { loadOrders(); checkPendingPayments(); }}
               variant="outline"
               size="sm"
-              className="border-zinc-600 text-zinc-300 shrink-0"
+              className="border-blue-500/50 text-blue-400 hover:bg-blue-500/10 shrink-0"
               disabled={loading}
             >
               <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
-              Atualizar
+              Sincronizar Banco
             </Button>
             <Button
               onClick={handleLogout}
