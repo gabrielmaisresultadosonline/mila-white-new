@@ -1150,7 +1150,47 @@ ${GROUP_LINK}`;
     setEditingAffiliateOriginalId(null);
   };
 
-  // Carregar afiliado para edição
+  const renderOrderSection = (key: string, label: string, bgColor: string, textColor: string) => {
+    const sectionOrders = key === "all" ? filteredOrders : groupedOrders[key as keyof typeof groupedOrders] || [];
+    if (sectionOrders.length === 0 && key !== "all") return null;
+
+    const isOpen = openSections[key];
+
+    return (
+      <Collapsible key={key} open={isOpen} onOpenChange={() => toggleSection(key)}>
+        <CollapsibleTrigger asChild>
+          <div 
+            className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${bgColor} shadow-lg mb-2`}
+          >
+            <div className="flex items-center gap-3">
+              {isOpen ? (
+                <ChevronDown className={`w-6 h-6 ${textColor}`} />
+              ) : (
+                <ChevronRight className={`w-6 h-6 ${textColor}`} />
+              )}
+              <span className={`font-black text-lg uppercase tracking-tighter ${textColor}`}>{label}</span>
+              <Badge className={`${bgColor} ${textColor} border-none font-black text-lg`}>
+                {sectionOrders.length}
+              </Badge>
+            </div>
+            <span className={`${textColor} text-xs font-bold uppercase opacity-60`}>
+              {isOpen ? "Ocultar" : "Expandir"}
+            </span>
+          </div>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="grid grid-cols-1 gap-4 py-4 px-2">
+            {sectionOrders.map((order) => (
+              <div key={order.id} className="bg-black/20 p-1 rounded-xl">
+                {renderOrderCard(order, true)}
+              </div>
+            ))}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    );
+  };
+
   const loadAffiliateForEdit = (affiliate: Affiliate) => {
     setAffiliateId(affiliate.id);
     setAffiliateName(affiliate.name);
