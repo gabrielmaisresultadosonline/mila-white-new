@@ -1029,25 +1029,22 @@ ${GROUP_LINK}`;
     // 1. Filtro de Busca (Search)
     const searchLower = searchTerm.toLowerCase().trim();
     const matchesSearch = searchLower === "" || 
-      order.email.toLowerCase().includes(searchLower) ||
-      order.username.toLowerCase().includes(searchLower) ||
-      order.nsu_order.toLowerCase().includes(searchLower) ||
+      (order.email && order.email.toLowerCase().includes(searchLower)) ||
+      (order.username && order.username.toLowerCase().includes(searchLower)) ||
+      (order.nsu_order && order.nsu_order.toLowerCase().includes(searchLower)) ||
       (order.phone && order.phone.includes(searchLower));
     
     // 2. Filtro de Status
-    // Se filterStatus for "all", aceita qualquer status.
     const matchesFilter = filterStatus === "all" || order.status === filterStatus;
     
     // 3. Filtro por Afiliado
     let matchesAffiliateFilter = true;
     if (mainAffiliateFilter === "affiliates_only") {
-      // Verifica se o email contém algum prefixo de afiliado cadastrado
       matchesAffiliateFilter = affiliates.some(a => 
-        order.email.toLowerCase().includes(`${a.id.toLowerCase()}:`)
+        order.email?.toLowerCase().includes(`${a.id.toLowerCase()}:`)
       );
     } else if (mainAffiliateFilter !== "all" && mainAffiliateFilter !== "") {
-      // Filtra por um afiliado específico
-      matchesAffiliateFilter = order.email.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
+      matchesAffiliateFilter = order.email?.toLowerCase().includes(`${mainAffiliateFilter.toLowerCase()}:`);
     }
     
     return matchesSearch && matchesFilter && matchesAffiliateFilter;
@@ -1151,7 +1148,13 @@ ${GROUP_LINK}`;
   };
 
   const renderOrderSection = (key: string, label: string, bgColor: string, textColor: string) => {
-    const sectionOrders = key === "all" ? filteredOrders : groupedOrders[key as keyof typeof groupedOrders] || [];
+    // Garantir que orders é um array antes de filtrar
+    const safeFilteredOrders = Array.isArray(filteredOrders) ? filteredOrders : [];
+    
+    const sectionOrders = key === "all" 
+      ? safeFilteredOrders 
+      : safeFilteredOrders.filter(o => o.status === key);
+
     if (sectionOrders.length === 0 && key !== "all") return null;
 
     const isOpen = openSections[key];
@@ -2550,7 +2553,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
       {/* Depuração visual temporária */}
       <div className="fixed top-0 left-0 z-50 bg-black/80 text-[10px] text-white p-1 pointer-events-none">
-        Pedidos: {orders.length} | Filtrados: {filteredOrders.length} | Status: {filterStatus}
+        Pedidos: {orders?.length || 0} | Filtrados: {filteredOrders?.length || 0} | Status: {filterStatus}
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -3908,7 +3911,6 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           </div>
         </div>
 
-        {/* Orders List - Collapsible Sections */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-12 h-12 animate-spin text-amber-500" />
@@ -3920,40 +3922,29 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-amber-500 font-black text-xl flex items-center gap-2">
                   <BarChart3 className="w-6 h-6" />
-                  LISTAGEM GERAL (RECARREGADA)
+                  CONTROLE DE REGISTROS
                 </h2>
                 <Badge className="bg-amber-500 text-black font-black">
-                  TOTAL NO BANCO: {orders.length}
+                  TOTAL NO BANCO: {orders?.length || 0}
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
-                {orders.length === 0 ? (
-                  <div className="text-center py-10 text-zinc-600 font-bold">NENHUM REGISTRO NO BANCO</div>
-                ) : (
-                  orders.slice(0, 20).map((order) => (
-                    <div key={order.id} className="bg-black/40 p-4 rounded-xl border border-zinc-800">
-                      {renderOrderCard(order, true)}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Seções Originais (Backup se precisar) */}
-            <div className="mt-12 pt-8 border-t border-zinc-800">
-              <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Detalhamento por Categorias</p>
-              <div className="space-y-4">
-                {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
-                {renderOrderSection("paid", "💰 Pagos (Processando)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
-                {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
-                {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
+              {renderOrderSection("all", "📋 Todos os Cadastros Recentes", "bg-zinc-800/80 border-zinc-700", "text-white")}
+              
+              <div className="mt-8 pt-8 border-t border-zinc-800">
+                <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Filtros por Status</p>
+                <div className="space-y-4">
+                  {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
+                  {renderOrderSection("paid", "💰 Pagos (Aguardando API)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
+                  {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
+                  {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
+                </div>
               </div>
             </div>
           </div>
         )}
-        </>)}
-      </div>
+      </>)}
+    </div>
 
       {/* Modal de Resumo com Email Adicional e Prévia */}
       <Dialog open={showSummaryModal} onOpenChange={(open) => {
