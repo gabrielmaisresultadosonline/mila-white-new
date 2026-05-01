@@ -4028,23 +4028,25 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     {/* Renderizamos TODOS os pedidos da lista 'orders' bruta para garantir que nada seja filtrado por erro */}
                     {orders.map((order) => (
                       <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
-                        <div className="space-y-3 flex-1">
+                        <div className="space-y-3 flex-1 w-full">
                           <div className="flex items-center gap-4 flex-wrap">
-                            <span className="text-zinc-500 font-black text-xs uppercase tracking-widest bg-zinc-800 px-3 py-1 rounded-full">Usuário</span>
-                            <h3 className="text-white font-[1000] text-3xl tracking-tighter group-hover:text-amber-500 transition-colors">
+                            <span className="text-zinc-500 font-black text-[10px] uppercase tracking-widest bg-zinc-800 px-2 py-1 rounded-full">Usuário</span>
+                            <h3 className="text-white font-[1000] text-xl md:text-2xl tracking-tighter group-hover:text-amber-500 transition-colors">
                               {order.username || "Sem Nome"}
                             </h3>
-                            <Badge className={`px-4 py-1 font-black text-sm ${
-                              order.status === 'completed' ? 'bg-green-500 text-white' : 
-                              order.status === 'paid' ? 'bg-blue-500 text-white' : 
-                              order.status === 'expired' ? 'bg-red-500 text-white' :
-                              'bg-yellow-500 text-black'
-                            }`}>
-                              {(order.status || 'PENDENTE').toUpperCase()}
-                            </Badge>
-                            <Badge className="px-4 py-1 font-black text-sm bg-zinc-800 text-amber-500 border border-amber-500/30">
-                              R$ {Number(order.amount || 0).toFixed(2)}
-                            </Badge>
+                            <div className="flex gap-2 flex-wrap">
+                              <Badge className={`px-2 py-0.5 font-black text-[10px] ${
+                                order.status === 'completed' ? 'bg-green-500 text-white' : 
+                                order.status === 'paid' ? 'bg-blue-500 text-white' : 
+                                order.status === 'expired' ? 'bg-red-500 text-white' :
+                                'bg-yellow-500 text-black'
+                              }`}>
+                                {(order.status || 'PENDENTE').toUpperCase()}
+                              </Badge>
+                              <Badge className="px-2 py-0.5 font-black text-[10px] bg-zinc-800 text-amber-500 border border-amber-500/30">
+                                R$ {Number(order.amount || 0).toFixed(2)}
+                              </Badge>
+                            </div>
                           </div>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
