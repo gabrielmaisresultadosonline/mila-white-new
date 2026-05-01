@@ -22,12 +22,28 @@ async function checkUserExists(username: string): Promise<boolean> {
     log("Checking if user exists", { username });
     const response = await fetch(`${INSTAGRAM_API_URL}/api/users/${username}`);
     
-    if (response.ok) {
+    // Se retornar 200, usuário existe
+    if (response.status === 200) {
       const data = await response.json();
-      const exists = !!(data && data.username);
-      log("User check result", { username, exists });
+      // Verificação mais flexível do objeto retornado
+      const exists = !!(data && (data.username || data.id || data.success === true));
+      log("User check result (200)", { username, exists });
       return exists;
     }
+    
+    // Se retornar 404, não existe
+    if (response.status === 404) {
+      log("User check result (404) - Not found", { username });
+      return false;
+    }
+
+    // Se a API retornar erro mas no corpo disser que existe
+    const text = await response.text();
+    if (text.toLowerCase().includes("já existe") || text.toLowerCase().includes("already exists")) {
+      log("User check result (text) - Already exists", { username });
+      return true;
+    }
+
     return false;
   } catch (error) {
     log("Error checking user existence", { username, error: String(error) });
