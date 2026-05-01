@@ -832,7 +832,13 @@ export default function InstagramNovaAdmin() {
         // Calcular tempo desde criação
         const createdAt = new Date(order.created_at);
         const minutesSinceCreation = Math.floor((now.getTime() - createdAt.getTime()) / 60000);
-        console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
+        
+        // Log detalhado para depuração
+        if (minutesSinceCreation < 5) {
+          console.log(`[AUTO-CHECK] Pedido RECENTE detectado: ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min`);
+        } else {
+          console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
+        }
 
         // Verificar pagamento via API
         try {
