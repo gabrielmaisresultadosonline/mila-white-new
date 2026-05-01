@@ -91,10 +91,15 @@ async function createInstagramUser(username: string, password: string, daysAcces
     const result = await addResponse.json();
     log("Add user result", result);
 
-    if (addResponse.ok) {
-      return { success: true, alreadyExists: false, message: "Usuário criado com sucesso" };
+    if (addResponse.ok || (result && (result.success === true || String(result.message).includes("já existe")))) {
+      const alreadyExists = String(result.message).includes("já existe");
+      return { 
+        success: true, 
+        alreadyExists: alreadyExists, 
+        message: alreadyExists ? "Usuário já existe" : "Usuário criado com sucesso" 
+      };
     } else {
-      // Se falhou, verificar se é porque já existe
+      // Se falhou, verificar se é porque já existe via endpoint de check
       const existsNow = await checkUserExists(username);
       if (existsNow) {
         log("User creation failed but user exists - treating as success", { username });
@@ -104,7 +109,7 @@ async function createInstagramUser(username: string, password: string, daysAcces
           message: "Usuário já existia ou foi criado" 
         };
       }
-      return { success: false, alreadyExists: false, message: "Erro ao criar usuário" };
+      return { success: false, alreadyExists: false, message: result.message || "Erro ao criar usuário" };
     }
   } catch (error) {
     log("Error creating Instagram user", { error: String(error) });
