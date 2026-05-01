@@ -814,12 +814,13 @@ export default function InstagramNovaAdmin() {
     try {
       const now = new Date();
       
-      // Forçar expiração no banco de dados para garantir que nada fique pendente indevidamente
-      // Também corrige qualquer pedido 'completed' sem data de pagamento para 'expired'
+      // Forçar expiração no banco de dados para garantir integridade total
+      // Se não tem data de pagamento, o status PRECISA ser expired
       await supabase
         .from("mro_orders")
         .update({ status: "expired" })
-        .or(`and(status.neq.expired,paid_at.is.null),expired_at.lt.${now.toISOString()}`);
+        .is("paid_at", null)
+        .neq("status", "expired");
 
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
