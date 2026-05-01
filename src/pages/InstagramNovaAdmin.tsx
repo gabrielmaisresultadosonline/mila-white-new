@@ -807,8 +807,15 @@ export default function InstagramNovaAdmin() {
   const checkPendingPayments = async () => {
     try {
       const now = new Date();
-      const currentOrders = ordersRef.current;
       
+      // Forçar expiração no banco de dados para garantir que nada fique pendente indevidamente
+      await supabase
+        .from("mro_orders")
+        .update({ status: "expired" })
+        .eq("status", "pending")
+        .or(`created_at.lt.${new Date(now.getTime() - 15 * 60000).toISOString()},expired_at.lt.${now.toISOString()}`);
+
+      const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
       
       // Monitoramos TUDO que não é pago/completo para garantir detecção
