@@ -177,6 +177,7 @@ serve(async (req) => {
       .from("mro_orders")
       .insert({
         created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
         email: cleanEmail,
         username: cleanUsername,
         phone: cleanPhone || null,
