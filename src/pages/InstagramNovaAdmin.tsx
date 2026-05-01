@@ -2565,10 +2565,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-2 sm:p-4">
+    <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
       {/* Depuração visual temporária */}
-      <div className="fixed top-0 left-0 z-50 bg-black/80 text-[10px] text-white p-1 pointer-events-none">
-        Pedidos: {orders?.length || 0} | Filtrados: {filteredOrders?.length || 0} | Status: {filterStatus}
+      <div className="fixed top-0 left-0 z-[9999] bg-red-600 text-[10px] text-white p-2 font-black shadow-xl">
+        BANCO: {orders?.length || 0} | FILTRO: {filterStatus}
       </div>
 
       <div className="max-w-7xl mx-auto">
