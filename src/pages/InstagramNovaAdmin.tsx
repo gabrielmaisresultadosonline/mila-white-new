@@ -544,24 +544,58 @@ const InstagramNovaAdmin = () => {
       const { isAdminLoggedIn } = await import('@/lib/adminConfig');
       
       const loggedIn = await isAdminLoggedIn();
-      if (loggedIn) {
-        console.log("✅ Admin já logado no painel principal, autenticando automaticamente...");
-        setIsAuthenticated(true);
-        const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
-        if (storedToken) {
-          setAdminSessionToken(storedToken);
-          loadOrders(storedToken);
-        } else {
-          loadOrders();
-        }
-        return;
-      }
-
       const storedToken = localStorage.getItem(ADMIN_SESSION_STORAGE_KEY);
+      
       if (storedToken) {
         setAdminSessionToken(storedToken);
         setIsAuthenticated(true);
         loadOrders(storedToken);
+        return;
+      }
+
+      if (loggedIn) {
+        console.log("✅ Admin já logado no painel principal, tentando autenticação automática...");
+        
+        // Tentar login automático com as credenciais salvas ou padrão
+        const savedCreds = localStorage.getItem('mro_nova_admin_credentials');
+        let email = loginEmail;
+        let password = loginPassword;
+        
+        if (!email && savedCreds) {
+          const parsed = JSON.parse(savedCreds);
+          email = parsed.email;
+          password = parsed.password;
+        }
+        
+        // Se não tiver nada salvo, tenta o padrão do sistema
+        if (!email) {
+          email = 'MILASOUZA@EMAIL.COM';
+          password = 'maisresultadosonline';
+        }
+
+        if (email && password) {
+          try {
+            const { data: response, error } = await supabase.functions.invoke("instagram-admin", {
+              body: { action: "login", email, password }
+            });
+
+            if (!error && response?.success && response?.token) {
+              console.log("✅ Login automático realizado com sucesso!");
+              localStorage.setItem(ADMIN_SESSION_STORAGE_KEY, response.token);
+              setAdminSessionToken(response.token);
+              setIsAuthenticated(true);
+              loadOrders(response.token);
+              return;
+            }
+          } catch (err) {
+            console.error("Erro no login automático:", err);
+          }
+        }
+        
+        // Se falhou o auto-login mas está logado no Admin principal, 
+        // pelo menos libera a UI básica (embora sem token as funções falharão)
+        setIsAuthenticated(true);
+        loadOrders();
       } else {
         localStorage.removeItem("mro_admin_auth");
       }
