@@ -4099,14 +4099,60 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                         </div>
 
                         <div className="flex flex-col items-center md:items-end gap-4 shrink-0">
-                          <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
-                            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
-                            <p className="text-white font-black text-2xl mb-1">
-                              {order.created_at ? format(new Date(order.created_at), "dd/MM/yyyy") : "--/--/----"}
-                            </p>
-                            <p className="text-amber-500 font-black text-3xl">
-                              {order.created_at ? format(new Date(order.created_at), "HH:mm:ss") : "--:--:--"}
-                            </p>
+                          <div className="flex flex-col gap-2 min-w-[220px]">
+                            <div className="bg-zinc-800/50 p-4 rounded-xl border border-zinc-700 text-center md:text-right shadow-inner">
+                              <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">📅 Registro</p>
+                              <div className="flex flex-col">
+                                <span className="text-white font-black text-lg">
+                                  {order.created_at ? format(new Date(order.created_at), "dd/MM/yyyy") : "--/--/----"}
+                                </span>
+                                <span className="text-amber-500 font-black text-xl">
+                                  {order.created_at ? format(new Date(order.created_at), "HH:mm:ss") : "--:--:--"}
+                                </span>
+                              </div>
+                            </div>
+
+                            {(order.status === 'paid' || order.status === 'completed') && order.paid_at && (
+                              <div className="bg-green-500/10 p-4 rounded-xl border border-green-500/30 text-center md:text-right shadow-inner">
+                                <p className="text-green-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">💰 Pagamento</p>
+                                <div className="flex flex-col">
+                                  <span className="text-white font-black text-lg">
+                                    {format(new Date(order.paid_at), "dd/MM/yyyy")}
+                                  </span>
+                                  <span className="text-green-400 font-black text-xl">
+                                    {format(new Date(order.paid_at), "HH:mm:ss")}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+
+                            {(order.status === 'expired') && order.expired_at && (
+                              <div className="bg-red-500/10 p-4 rounded-xl border border-red-500/30 text-center md:text-right shadow-inner">
+                                <p className="text-red-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">⏰ Expirou em</p>
+                                <div className="flex flex-col">
+                                  <span className="text-white font-black text-lg">
+                                    {format(new Date(order.expired_at), "dd/MM/yyyy")}
+                                  </span>
+                                  <span className="text-red-400 font-black text-xl">
+                                    {format(new Date(order.expired_at), "HH:mm:ss")}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+
+                            {order.status === 'pending' && order.expired_at && (
+                              <div className="bg-yellow-500/10 p-4 rounded-xl border border-yellow-500/30 text-center md:text-right shadow-inner">
+                                <p className="text-yellow-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">⏳ Expira em</p>
+                                <div className="flex flex-col">
+                                  <span className="text-white font-black text-lg">
+                                    {format(new Date(order.expired_at), "dd/MM/yyyy")}
+                                  </span>
+                                  <span className="text-yellow-400 font-black text-xl">
+                                    {format(new Date(order.expired_at), "HH:mm:ss")}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
 
                           {(order.status === "pending" || order.status === "expired") && (
