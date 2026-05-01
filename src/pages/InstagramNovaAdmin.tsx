@@ -103,23 +103,9 @@ interface Affiliate {
 }
 
 const InstagramNovaAdmin = () => {
-  // Vendas filtradas por afiliado (para aba de vendas)
-  const getFilteredAffiliateSales = () => {
-    if (selectedAffiliateFilter === "all") {
-      // Todas as vendas de afiliados
-      return orders.filter(o => 
-        (o.status === "paid" || o.status === "completed") && 
-        affiliates.some(a => o.email.toLowerCase().startsWith(`${a.id.toLowerCase()}:`))
-      );
-    } else {
-      return orders.filter(o => 
-        (o.status === "paid" || o.status === "completed") && 
-        o.email.toLowerCase().startsWith(`${selectedAffiliateFilter.toLowerCase()}:`)
-      );
-    }
-  };
 
   const ADMIN_NOVA_REMEMBER_KEY = 'mro_nova_admin_credentials';
+
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginEmail, setLoginEmail] = useState(() => {
