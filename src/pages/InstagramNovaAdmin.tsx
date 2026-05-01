@@ -832,8 +832,8 @@ export default function InstagramNovaAdmin() {
       const currentOrders = ordersRef.current;
       console.log(`[AUTO-CHECK] Monitorando ${currentOrders.length} registros...`);
       
-      // Monitoramos TUDO que não é pago/completo para garantir detecção
-      const pendingOrders = currentOrders.filter(o => o.status === "pending" || o.status === "expired");
+      // Monitoramos APENAS o que está como pendente para evitar notificações falsas de expirados
+      const pendingOrders = currentOrders.filter(o => o.status === "pending");
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
@@ -900,7 +900,7 @@ export default function InstagramNovaAdmin() {
       if (confirmedPayments.length > 0) {
         confirmedPayments.forEach(result => {
           if (result) {
-            toast.success(`Pagamento confirmado: ${result.order.username}`);
+            console.log(`[AUTO-CHECK] Pagamento confirmado: ${result.order.username}`);
           }
         });
       }
