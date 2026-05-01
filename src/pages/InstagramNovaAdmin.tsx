@@ -14,7 +14,8 @@ import {
   RefreshCw, 
   CheckCircle, 
   CheckCircle2,
-  Clock, 
+  RotateCcw,
+  Clock,
   XCircle,
   Mail,
   User,
@@ -984,6 +985,38 @@ export default function InstagramNovaAdmin() {
       setLoading(false);
     }
   };
+
+  // Reenviar acesso (API ou Email)
+  const resendAccess = async (order: MROOrder, type: "api" | "email") => {
+    if (order.status !== "completed" && order.status !== "paid") {
+      toast.error("Acesso só pode ser reenviado para pedidos pagos/completos");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("mro-payment-webhook", {
+        body: { 
+          order_id: order.id,
+          manual_approve: true,
+          force_resend: true,
+          resend_type: type
+        }
+      });
+
+      if (error) {
+        toast.error(`Erro ao reenviar ${type === "api" ? "acesso API" : "email"}`);
+        return;
+      }
+
+      toast.success(data.message || `${type === "api" ? "API" : "Email"} reenviado com sucesso!`);
+      loadOrders();
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Erro técnico no reenvio");
+    } finally {
+      setLoading(false);
+    }
 
   const generateCopyMessage = (order: MROOrder) => {
     return `Obrigado por fazer parte do nosso sistema!✅
@@ -3995,56 +4028,77 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     {/* Renderizamos TODOS os pedidos da lista 'orders' bruta para garantir que nada seja filtrado por erro */}
                     {orders.map((order) => (
                       <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
-                        <div className="space-y-3 flex-1">
+                        <div className="space-y-3 flex-1 w-full">
                           <div className="flex items-center gap-4 flex-wrap">
-                            <span className="text-zinc-500 font-black text-xs uppercase tracking-widest bg-zinc-800 px-3 py-1 rounded-full">Usuário</span>
-                            <h3 className="text-white font-[1000] text-3xl tracking-tighter group-hover:text-amber-500 transition-colors">
+                            <span className="text-zinc-500 font-black text-[10px] uppercase tracking-widest bg-zinc-800 px-2 py-1 rounded-full">Usuário</span>
+                            <h3 className="text-white font-[1000] text-xl md:text-2xl tracking-tighter group-hover:text-amber-500 transition-colors">
                               {order.username || "Sem Nome"}
                             </h3>
-                            <Badge className={`px-4 py-1 font-black text-sm ${
-                              order.status === 'completed' ? 'bg-green-500 text-white' : 
-                              order.status === 'paid' ? 'bg-blue-500 text-white' : 
-                              order.status === 'expired' ? 'bg-red-500 text-white' :
-                              'bg-yellow-500 text-black'
-                            }`}>
-                              {(order.status || 'PENDENTE').toUpperCase()}
-                            </Badge>
-                            <Badge className="px-4 py-1 font-black text-sm bg-zinc-800 text-amber-500 border border-amber-500/30">
-                              R$ {Number(order.amount || 0).toFixed(2)}
-                            </Badge>
+                            <div className="flex gap-2 flex-wrap">
+                              <Badge className={`px-2 py-0.5 font-black text-[10px] ${
+                                order.status === 'completed' ? 'bg-green-500 text-white' : 
+                                order.status === 'paid' ? 'bg-blue-500 text-white' : 
+                                order.status === 'expired' ? 'bg-red-500 text-white' :
+                                'bg-yellow-500 text-black'
+                              }`}>
+                                {(order.status || 'PENDENTE').toUpperCase()}
+                              </Badge>
+                              <Badge className="px-2 py-0.5 font-black text-[10px] bg-zinc-800 text-amber-500 border border-amber-500/30">
+                                R$ {Number(order.amount || 0).toFixed(2)}
+                              </Badge>
+                            </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Mail className="w-5 h-5 text-amber-500" />
-                              <span className="text-zinc-200 font-bold truncate">{order.email}</span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div className="flex items-center gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <Mail className="w-4 h-4 text-amber-500 shrink-0" />
+                              <span className="text-zinc-200 font-bold text-xs truncate">{order.email}</span>
                             </div>
-                            {order.phone && (
-                              <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                                <Phone className="w-5 h-5 text-amber-500" />
-                                <span className="text-zinc-200 font-bold">{order.phone}</span>
+                            
+                            <div className="flex items-center gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <FileText className="w-4 h-4 text-amber-500 shrink-0" />
+                              <span className="text-zinc-400 font-mono text-[10px] truncate">NSU: {order.nsu_order}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <Bot className={`w-4 h-4 shrink-0 ${order.api_created ? "text-green-400" : "text-zinc-600"}`} />
+                                <span className={`text-[10px] font-bold truncate ${order.api_created ? "text-green-400" : "text-zinc-600"}`}>
+                                  {order.api_created ? "API OK" : "API PEND"}
+                                </span>
                               </div>
-                            )}
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <FileText className="w-5 h-5 text-amber-500" />
-                              <span className="text-zinc-400 font-mono text-xs truncate">NSU: {order.nsu_order}</span>
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Bot className={`w-5 h-5 ${order.api_created ? "text-green-400" : "text-zinc-600"}`} />
-                              <span className={`text-xs font-bold ${order.api_created ? "text-green-400" : "text-zinc-600"}`}>
-                                {order.api_created ? "API: CRIADO" : "API: PENDENTE"}
-                              </span>
+                              {(order.status === "completed" || order.status === "paid") && (
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); resendAccess(order, "api"); }}
+                                  className="text-zinc-500 hover:text-blue-400 transition-colors"
+                                  title="Reenviar para API"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
-                            <div className="flex items-center gap-3 bg-black/30 p-3 rounded-xl border border-zinc-800">
-                              <Mail className={`w-5 h-5 ${order.email_sent ? "text-green-400" : "text-zinc-600"}`} />
-                              <span className={`text-xs font-bold ${order.email_sent ? "text-green-400" : "text-zinc-600"}`}>
-                                {order.email_sent ? "EMAIL: ENVIADO" : "EMAIL: PENDENTE"}
-                              </span>
+
+                            <div className="flex items-center justify-between gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <Mail className={`w-4 h-4 shrink-0 ${order.email_sent ? "text-green-400" : "text-zinc-600"}`} />
+                                <span className={`text-[10px] font-bold truncate ${order.email_sent ? "text-green-400" : "text-zinc-600"}`}>
+                                  {order.email_sent ? "EMAIL OK" : "EMAIL PEND"}
+                                </span>
+                              </div>
+                              {(order.status === "completed" || order.status === "paid") && (
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); resendAccess(order, "email"); }}
+                                  className="text-zinc-500 hover:text-blue-400 transition-colors"
+                                  title="Reenviar Email"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
-                          </div>
                           </div>
                         </div>
 
-                        <div className="flex flex-col items-center md:items-end gap-4">
+                        <div className="flex flex-col items-center md:items-end gap-4 shrink-0">
                           <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700 min-w-[220px] text-center md:text-right shadow-inner">
                             <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Data do Registro</p>
                             <p className="text-white font-black text-2xl mb-1">
@@ -4392,3 +4446,4 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
     </div>
   );
 }
+
