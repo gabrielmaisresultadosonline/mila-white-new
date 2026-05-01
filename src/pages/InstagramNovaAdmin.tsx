@@ -3901,54 +3901,13 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             </div>
 
             {/* Seções Originais (Backup se precisar) */}
-            <div className="pt-8 border-t border-zinc-800">
-              <p className="text-xs text-zinc-500 text-center mb-4 uppercase tracking-tighter">Visão Detalhada por Grupos</p>
-              <div className="space-y-3">
-                {sections.map(({ key, label, color, icon: Icon, orders: sectionOrders }) => {
-                  if (sectionOrders.length === 0) return null;
-                  
-                  const isOpen = openSections[key];
-                  const colorClasses: Record<string, string> = {
-                    green: "bg-green-500/10 border-green-500/40 hover:bg-green-500/20",
-                    blue: "bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20",
-                    yellow: "bg-yellow-500/10 border-yellow-500/40 hover:bg-yellow-500/20",
-                    red: "bg-red-500/10 border-red-500/40 hover:bg-red-500/20",
-                  };
-                  const textClasses: Record<string, string> = {
-                    green: "text-green-400",
-                    blue: "text-blue-400",
-                    yellow: "text-yellow-400",
-                    red: "text-red-400",
-                  };
-                  
-                  return (
-                    <Collapsible key={key} open={isOpen} onOpenChange={() => toggleSection(key)}>
-                      <CollapsibleTrigger asChild>
-                        <div 
-                          className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${colorClasses[color]}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            {isOpen ? (
-                              <ChevronDown className={`w-5 h-5 ${textClasses[color]}`} />
-                            ) : (
-                              <ChevronRight className={`w-5 h-5 ${textClasses[color]}`} />
-                            )}
-                            <Icon className={`w-5 h-5 ${textClasses[color]}`} />
-                            <span className={`font-semibold ${textClasses[color]}`}>{label}</span>
-                            <Badge className={`${colorClasses[color]} ${textClasses[color]} border-none`}>
-                              {sectionOrders.length}
-                            </Badge>
-                          </div>
-                        </div>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <div className="mt-2 space-y-2 pl-2 border-l-2 border-zinc-700/50 ml-4">
-                          {sectionOrders.map((order) => renderOrderCard(order, true))}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  );
-                })}
+            <div className="mt-12 pt-8 border-t border-zinc-800">
+              <p className="text-center text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-6">Detalhamento por Categorias</p>
+              <div className="space-y-4">
+                {renderOrderSection("pending", "⏳ Pendentes", "bg-yellow-500/10 border-yellow-500/30", "text-yellow-400")}
+                {renderOrderSection("paid", "💰 Pagos (Processando)", "bg-blue-500/10 border-blue-500/30", "text-blue-400")}
+                {renderOrderSection("completed", "✅ Completos", "bg-green-500/10 border-green-500/30", "text-green-400")}
+                {renderOrderSection("expired", "❌ Expirados", "bg-red-500/10 border-red-500/30", "text-red-400")}
               </div>
             </div>
           </div>
