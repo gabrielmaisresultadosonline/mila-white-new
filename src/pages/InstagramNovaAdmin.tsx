@@ -2199,7 +2199,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           .select("recipient_email, subject")
           .like("subject", "%Instagram Turbinado%");
         if (!error && data) {
-          const sentEmails = new Set(data.map(d => d.recipient_email.toLowerCase()));
+          const sentEmails = new Set<string>(data.map(d => d.recipient_email.toLowerCase()));
           setRemarketingSentHistory(sentEmails);
         }
       } catch (e) {
