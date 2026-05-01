@@ -812,6 +812,7 @@ export default function InstagramNovaAdmin() {
         });
       }
 
+      console.log("[ADMIN] Setting orders to state:", finalOrders);
       setOrders(finalOrders);
       console.log("[ADMIN] Estado 'orders' atualizado com sucesso");
       setLastLoadTime(Date.now());
@@ -3951,6 +3952,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
               </select>
             )}
           </div>
+        </div>
+
+        <div className="bg-zinc-800 p-2 rounded mb-4 text-xs font-mono overflow-auto max-h-32 text-zinc-400">
+          DEBUG: Orders in state: {orders.length} | Loading: {loading ? "YES" : "NO"} | DB: {dbStatus}
         </div>
 
         {loading ? (
