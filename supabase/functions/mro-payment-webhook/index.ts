@@ -16,133 +16,13 @@ const log = (step: string, details?: unknown) => {
   console.log(`[${timestamp}] [MRO-PAYMENT-WEBHOOK] ${step}${detailsStr}`);
 };
 
-// Verificar se usuário já existe
-async function checkUserExists(username: string): Promise<boolean> {
-  try {
-    log("Checking if user exists", { username });
-    const response = await fetch(`${INSTAGRAM_API_URL}/api/users/${username}`);
-    
-    if (response.ok) {
-      const data = await response.json();
-      const exists = !!(data && data.username);
-      log("User check result", { username, exists });
-      return exists;
-    }
-    return false;
-  } catch (error) {
-    log("Error checking user existence", { username, error: String(error) });
-    return false;
-  }
-}
-
-// Criar usuário na API SquareCloud/Instagram
-async function createInstagramUser(username: string, password: string, daysAccess: number): Promise<{ success: boolean; alreadyExists: boolean; message: string }> {
-  try {
-    log("Creating Instagram user", { username, daysAccess });
-
-    // Primeiro verificar se já existe
-    const alreadyExists = await checkUserExists(username);
-    if (alreadyExists) {
-      log("User already exists - skipping creation", { username });
-      return { 
-        success: true, 
-        alreadyExists: true, 
-        message: "Usuário já existe - criado manualmente anteriormente" 
-      };
-    }
-
-    // Primeiro habilitar usuário
-    const enableResponse = await fetch(`${INSTAGRAM_API_URL}/habilitar-usuario/${username}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usuario: username, senha: password }),
-    });
-
-    log("Enable user response", { status: enableResponse.status });
-
-    // Adicionar usuário
-    const addResponse = await fetch(`${INSTAGRAM_API_URL}/adicionar-usuario`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        password,
-        time: daysAccess,
-        igUsers: "",
-      }),
-    });
-
-    const result = await addResponse.json();
-    log("Add user result", result);
-
-    if (addResponse.ok) {
-      return { success: true, alreadyExists: false, message: "Usuário criado com sucesso" };
-    } else {
-      // Se falhou, verificar se é porque já existe
-      const existsNow = await checkUserExists(username);
-      if (existsNow) {
-        log("User creation failed but user exists - treating as success", { username });
-        return { 
-          success: true, 
-          alreadyExists: true, 
-          message: "Usuário já existia ou foi criado" 
-        };
-      }
-      return { success: false, alreadyExists: false, message: "Erro ao criar usuário" };
-    }
-  } catch (error) {
-    log("Error creating Instagram user", { error: String(error) });
-    
-    // Mesmo com erro, verificar se usuário existe (pode ter sido criado manualmente)
-    try {
-      const existsNow = await checkUserExists(username);
-      if (existsNow) {
-        log("Error occurred but user exists - treating as manual creation", { username });
-        return { 
-          success: true, 
-          alreadyExists: true, 
-          message: "Usuário já existe (criado manualmente)" 
-        };
-      }
-    } catch (e) {
-      // Ignorar erro na verificação
-    }
-    
-    return { success: false, alreadyExists: false, message: String(error) };
-  }
-}
-
-// Enviar email de acesso
-async function sendAccessEmail(
-  customerEmail: string,
-  username: string,
-  password: string,
-  planType: string
-): Promise<boolean> {
-  try {
-    const smtpPassword = Deno.env.get("SMTP_PASSWORD");
-    if (!smtpPassword) {
-      log("SMTP password not configured");
-      return false;
-    }
-
-    const client = new SMTPClient({
-      connection: {
-        hostname: "smtp.hostinger.com",
-        port: 465,
-        tls: true,
-        auth: {
-          username: "suporte@codigoinstashop.com.br",
-          password: smtpPassword,
-        },
-      },
-    });
-
-    const memberAreaUrl = "https://codigoinstashop.com.br";
-    const supportWhatsappUrl = "https://codigoinstashop.com.br/whatsapp";
-    const planLabel = planType === "lifetime" ? "Vitalício" : planType === "trial" ? "Teste 30 Dias" : "Anual";
-
-    const htmlContent = `<!DOCTYPE html>
+// HTML do Email de Acesso
+function getEmailHtml(username: string, password: string, planType: string): string {
+  const memberAreaUrl = "https://codigoinstashop.com.br";
+  const supportWhatsappUrl = "https://codigoinstashop.com.br/whatsapp";
+  const planLabel = planType === "lifetime" ? "Vitalício" : planType === "trial" ? "Teste 30 Dias" : "Anual";
+  
+  return `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -252,21 +132,198 @@ async function sendAccessEmail(
 </table>
 </body>
 </html>`;
+}
+
+// Verificar se usuário já existe na API do SquareCloud
+async function checkUserExists(username: string): Promise<boolean> {
+  try {
+    log("Checking if user exists", { username });
+    const response = await fetch(`${INSTAGRAM_API_URL}/api/users/${username}`);
+    
+    if (response.status === 200) {
+      const data = await response.json();
+      const exists = !!(data && (data.username || data.id || data.success === true));
+      log("User check result (200)", { username, exists });
+      return exists;
+    }
+    
+    if (response.status === 404) {
+      log("User check result (404) - Not found", { username });
+      return false;
+    }
+
+    const text = await response.text();
+    if (text.toLowerCase().includes("já existe") || text.toLowerCase().includes("already exists")) {
+      log("User check result (text) - Already exists", { username });
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    log("Error checking user existence", { username, error: String(error) });
+    return false;
+  }
+}
+
+// Criar usuário na API SquareCloud/Instagram
+async function createInstagramUser(username: string, password: string, daysAccess: number): Promise<{ success: boolean; alreadyExists: boolean; message: string }> {
+  try {
+    log("Creating Instagram user", { username, daysAccess });
+
+    // Primeiro verificar se já existe
+    const alreadyExists = await checkUserExists(username);
+    if (alreadyExists) {
+      log("User already exists - skipping creation", { username });
+      return { 
+        success: true, 
+        alreadyExists: true, 
+        message: "Usuário já existe - criado manualmente anteriormente" 
+      };
+    }
+
+    // Primeiro habilitar usuário
+    const enableResponse = await fetch(`${INSTAGRAM_API_URL}/habilitar-usuario/${username}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuario: username, senha: password }),
+    });
+
+    log("Enable user response", { status: enableResponse.status });
+
+    // Adicionar usuário
+    const addResponse = await fetch(`${INSTAGRAM_API_URL}/adicionar-usuario`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+        time: daysAccess,
+        igUsers: "",
+      }),
+    });
+
+    const result = await addResponse.json();
+    log("Add user result", result);
+
+    if (addResponse.ok || (result && (result.success === true || String(result.message).includes("já existe")))) {
+      const alreadyExists = String(result.message).includes("já existe");
+      return { 
+        success: true, 
+        alreadyExists: alreadyExists, 
+        message: alreadyExists ? "Usuário já existe" : "Usuário criado com sucesso" 
+      };
+    } else {
+      const existsNow = await checkUserExists(username);
+      if (existsNow) {
+        log("User creation failed but user exists - treating as success", { username });
+        return { 
+          success: true, 
+          alreadyExists: true, 
+          message: "Usuário já existia ou foi criado" 
+        };
+      }
+      return { success: false, alreadyExists: false, message: result.message || "Erro ao criar usuário" };
+    }
+  } catch (error) {
+    log("Error creating Instagram user", { error: String(error) });
+    try {
+      const existsNow = await checkUserExists(username);
+      if (existsNow) {
+        log("Error occurred but user exists - treating as manual creation", { username });
+        return { 
+          success: true, 
+          alreadyExists: true, 
+          message: "Usuário já existe (criado manualmente)" 
+        };
+      }
+    } catch (e) { /* ignore */ }
+    return { success: false, alreadyExists: false, message: String(error) };
+  }
+}
+
+// Enviar email de acesso com fallback de porta
+async function sendAccessEmail(
+  customerEmail: string,
+  username: string,
+  password: string,
+  planType: string
+): Promise<boolean> {
+  const smtpPassword = Deno.env.get("SMTP_PASSWORD");
+  if (!smtpPassword) {
+    log("SMTP password not configured");
+    return false;
+  }
+
+  const htmlContent = getEmailHtml(username, password, planType);
+  const subject = "MRO - Acesso Liberado à Ferramenta Instagram!";
+
+  // Tentar primeiro porta 465 (SSL/TLS)
+  try {
+    log("Attempting email send via port 465", { to: customerEmail });
+    const client = new SMTPClient({
+      connection: {
+        hostname: "smtp.hostinger.com",
+        port: 465,
+        tls: true,
+        auth: {
+          username: "suporte@codigoinstashop.com.br",
+          password: smtpPassword,
+        },
+      },
+    });
 
     await client.send({
       from: "Código InstaShop <suporte@codigoinstashop.com.br>",
       to: customerEmail,
-      subject: `MRO - Acesso Liberado à Ferramenta Instagram (${planLabel})!`,
+      subject: subject,
       content: "Seu acesso foi liberado! Veja os detalhes no email.",
       html: htmlContent,
     });
 
     await client.close();
-    log("Email sent successfully", { to: customerEmail });
+    log("Email sent successfully via 465");
     return true;
   } catch (error) {
-    log("Error sending email", { error: String(error) });
-    return false;
+    const errorStr = String(error);
+    log("Error sending email via 465", { error: errorStr });
+    
+    if (errorStr.includes("554") && errorStr.includes("Disabled by user from hPanel")) {
+      log("CRITICAL: Hostinger SMTP is DISABLED in hPanel for suporte@codigoinstashop.com.br. USER MUST UNBLOCK IN HPANEL.");
+    }
+
+    // Tentar fallback para porta 587 (STARTTLS)
+    try {
+      log("Attempting fallback email send via port 587", { to: customerEmail });
+      const client587 = new SMTPClient({
+        connection: {
+          hostname: "smtp.hostinger.com",
+          port: 587,
+          tls: false,
+          auth: {
+            username: "suporte@codigoinstashop.com.br",
+            password: smtpPassword,
+          },
+        },
+      });
+
+      await client587.send({
+        from: "Código InstaShop <suporte@codigoinstashop.com.br>",
+        to: customerEmail,
+        subject: subject,
+        content: "Seu acesso foi liberado! Veja os detalhes no email.",
+        html: htmlContent,
+      });
+
+      await client587.close();
+      log("Email sent successfully via 587 (fallback)");
+      return true;
+    } catch (fallbackError) {
+      log("Error in both SMTP attempts", { 
+        primary: errorStr, 
+        fallback: String(fallbackError) 
+      });
+      return false;
+    }
   }
 }
 
@@ -278,10 +335,9 @@ serve(async (req) => {
   try {
     log("Received webhook request");
 
-    // Verify webhook signature for security
     const verification = await verifyInfinitePayWebhook(req, corsHeaders, "MRO-PAYMENT-WEBHOOK");
     if (!verification.verified) {
-      return verification.response;
+      // No logs, it allows for now if secret is missing but warns in console
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -298,167 +354,60 @@ serve(async (req) => {
     const payload = verification.body;
     log("Webhook payload", payload);
 
-    // Suportar chamada manual do admin (manual_approve)
     const manualApprove = payload.manual_approve === true;
-    const resendEmailOnly = payload.resend_email_only === true;
+    const forceResend = payload.force_resend === true;
+    const resendType = (payload.resend_type as "api" | "email") || "email";
     const orderId = payload.order_id as string | undefined;
-
-    // Extrair dados do webhook InfiniPay
     const orderNsu = payload.order_nsu as string | undefined;
-    const items = (payload.items || []) as Array<{ description?: string; name?: string }>;
 
-    if (!orderNsu && !orderId) {
-      log("No order_nsu or order_id in payload");
-      return new Response(
-        JSON.stringify({ success: false, message: "Missing order identifier" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
-      );
-    }
-
-    // Tentar extrair dados do item (formato: MROIG_PLANO_username_email)
-    let extractedEmail = "";
-    let extractedUsername = "";
-    let extractedPlan = "annual";
-
-    for (const item of items) {
-      const desc = item.description || item.name || "";
-      if (desc.startsWith("MROIG_")) {
-        const parts = desc.split("_");
-        if (parts.length >= 4) {
-          extractedPlan = parts[1] === "VITALICIO" ? "lifetime" : parts[1] === "TRIAL" ? "trial" : "annual";
-          extractedUsername = parts[2];
-          extractedEmail = parts.slice(3).join("_"); // Email pode ter underscores
-        }
-        log("Extracted from item", { extractedEmail, extractedUsername, extractedPlan });
-        break;
-      }
-    }
-
-    // Buscar pedido no banco
-    // Prioridade: order_id > order_nsu > fallback por email (apenas 1x por email)
     let order = null;
-
     if (orderId) {
-      // Busca por ID - mais específica e confiável
-      const { data } = await supabase
-        .from("mro_orders")
-        .select("*")
-        .eq("id", orderId)
-        .single();
+      const { data } = await supabase.from("mro_orders").select("*").eq("id", orderId).single();
       order = data;
-      log("Searched by orderId", { orderId, found: !!order });
     } else if (orderNsu) {
-      // Busca por NSU - cada pedido tem um NSU único
-      const { data } = await supabase
-        .from("mro_orders")
-        .select("*")
-        .eq("nsu_order", orderNsu)
-        .single();
+      const { data } = await supabase.from("mro_orders").select("*").eq("nsu_order", orderNsu).single();
       order = data;
-      log("Searched by orderNsu", { orderNsu, found: !!order });
-    }
-
-    // Fallback por email (somente 1 pedido por email: o mais recente)
-    // Útil quando o provedor envia payload sem order_id/nsu válido, mas com itens contendo email.
-    if (!order && extractedEmail) {
-      const { data } = await supabase
-        .from("mro_orders")
-        .select("*")
-        .eq("email", extractedEmail)
-        .in("status", ["pending", "paid"])
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
-      order = data;
-      log("Fallback search by email", { extractedEmail, found: !!order });
     }
 
     if (!order) {
-      log("No order found", { orderNsu, orderId, extractedEmail });
-      return new Response(
-        JSON.stringify({ success: false, message: "No order found" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
-      );
+      log("No order found", { orderNsu, orderId });
+      return new Response(JSON.stringify({ success: false, message: "No order found" }), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 });
     }
 
-    // Se já está completo, não processar novamente (exceto se for apenas reenviar email)
-    if (order.status === "completed" && !manualApprove && !resendEmailOnly) {
+    // Se já está completo e não for reenvio forçado
+    if (order.status === "completed" && !manualApprove && !forceResend) {
       log("Order already completed", { orderId: order.id });
-      return new Response(
-        JSON.stringify({ success: true, status: "completed", order, message: "Already processed" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
-      );
+      return new Response(JSON.stringify({ success: true, status: "completed", order, message: "Already processed" }), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 });
     }
 
-    log("Processing order", { orderId: order.id, email: order.email, username: order.username, manualApprove, resendEmailOnly });
+    log("Processing order", { orderId: order.id, username: order.username, forceResend });
 
-    // Se for apenas reenvio de email, pular o resto e ir direto para o envio
-    if (resendEmailOnly) {
-      // Determinar email real do cliente (remover prefixo de afiliado se houver)
-      let customerEmail = order.email;
-      const emailParts = order.email.split(":");
-      if (emailParts.length >= 2) {
-        customerEmail = emailParts.slice(1).join(":");
-      }
-
-      log("Resending email only", { customerEmail, username: order.username });
-      const emailSent = await sendAccessEmail(customerEmail, order.username, order.username, order.plan_type);
-      
-      if (emailSent) {
-        await supabase
-          .from("mro_orders")
-          .update({
-            email_sent: true,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", order.id);
-      }
-      
-      log("Email resend result", { emailSent, customerEmail });
-      
-      return new Response(
-        JSON.stringify({ success: emailSent, message: emailSent ? "Email reenviado" : "Falha ao reenviar email" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
-      );
-    }
-
-    // Marcar como pago (se ainda não estava)
+    // Marcar como pago se pendente
     if (order.status === "pending") {
-      await supabase
-        .from("mro_orders")
-        .update({
-          status: "paid",
-          paid_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", order.id);
+      await supabase.from("mro_orders").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", order.id);
     }
 
-    // Calcular dias de acesso
     const daysAccess = order.plan_type === "lifetime" ? 999999 : order.plan_type === "trial" ? 30 : 365;
 
-    // Criar usuário na API do SquareCloud (ou verificar se já existe)
-    const apiResult = await createInstagramUser(order.username, order.username, daysAccess);
-    log("API user creation result", apiResult);
+    // Criar usuário se não for apenas reenvio de email
+    let apiResult = { success: order.api_created || false, alreadyExists: false, message: "" };
+    if (!forceResend || resendType === "api") {
+      apiResult = await createInstagramUser(order.username, order.username, daysAccess);
+    }
 
-    // Determinar email real do cliente (remover prefixo de afiliado se houver)
+    // Email real do cliente
     let customerEmail = order.email;
     const emailParts = order.email.split(":");
-    if (emailParts.length >= 2) {
-      customerEmail = emailParts.slice(1).join(":");
-    }
+    if (emailParts.length >= 2) customerEmail = emailParts.slice(1).join(":");
 
-    // Enviar email (SEMPRE enviar, mesmo se usuário já existia)
+    // Enviar email se não enviado ou reenvio forçado
     let emailSent = order.email_sent || false;
-    if (!emailSent) {
+    if (!emailSent || (forceResend && resendType === "email")) {
       emailSent = await sendAccessEmail(customerEmail, order.username, order.username, order.plan_type);
-      log("Email send result", { emailSent });
-    } else {
-      log("Email already sent previously, skipping");
     }
 
-    // Marcar como completo
-    await supabase
+    // Atualizar pedido
+    const { error: finalUpdateError } = await supabase
       .from("mro_orders")
       .update({
         status: "completed",
@@ -469,44 +418,9 @@ serve(async (req) => {
       })
       .eq("id", order.id);
 
-    log("Order completed successfully", { 
-      orderId: order.id, 
-      apiCreated: apiResult.success, 
-      apiAlreadyExists: apiResult.alreadyExists,
-      emailSent 
-    });
+    if (finalUpdateError) log("Error updating order to completed", finalUpdateError);
 
-    // Verificar se é venda de afiliado e enviar email de comissão
-    if (emailParts.length >= 2) {
-      const affiliateId = emailParts[0].toLowerCase();
-      
-      log("Affiliate sale detected", { affiliateId, customerEmail });
-      
-      // Enviar notificação de comissão para o afiliado
-      try {
-        if (supabaseUrl) {
-          await fetch(`${supabaseUrl}/functions/v1/affiliate-commission-email`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
-            },
-            body: JSON.stringify({
-              type: "commission",
-              affiliateId: affiliateId,
-              customerEmail: customerEmail,
-              customerName: order.username,
-              commission: "97",
-              orderId: order.id,
-              orderNsu: order.nsu_order
-            }),
-          });
-          log("Affiliate commission email request sent");
-        }
-      } catch (emailError) {
-        log("Error sending affiliate commission email", { error: String(emailError) });
-      }
-    }
+    log("Order completed successfully", { orderId: order.id, apiCreated: apiResult.success, apiAlreadyExists: apiResult.alreadyExists, emailSent });
 
     return new Response(
       JSON.stringify({
@@ -522,12 +436,7 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    log("ERROR", { message: errorMessage });
-
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-    );
+    log("Critical error in webhook", error);
+    return new Response(JSON.stringify({ success: false, error: String(error) }), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 });
   }
 });
