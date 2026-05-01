@@ -687,11 +687,7 @@ const AnnouncementsManager = ({ filterArea }: AnnouncementsManagerProps = {}) =>
                   onChange={(e) => setFormData({ ...formData, targetArea: e.target.value as any })}
                   className="w-full mt-1 bg-secondary border border-border rounded-md px-3 py-2"
                 >
-                  <option value="all">Todas as áreas</option>
-                  <option value="instagram">Apenas Instagram (MRO)</option>
-                  <option value="zapmro">Apenas ZAPMRO</option>
-                  <option value="extension">🧩 Extensão Chrome (Externa)</option>
-                  <option value="extension2">🧩 Extensão Chrome 2 (Externa)</option>
+                  <option value="instagram">Avisos Instagram</option>
                 </select>
               </div>
             </div>
