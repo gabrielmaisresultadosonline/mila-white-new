@@ -900,7 +900,7 @@ export default function InstagramNovaAdmin() {
       if (confirmedPayments.length > 0) {
         confirmedPayments.forEach(result => {
           if (result) {
-            toast.success(`Pagamento confirmado: ${result.order.username}`);
+            console.log(`[AUTO-CHECK] Pagamento confirmado: ${result.order.username}`);
           }
         });
       }
