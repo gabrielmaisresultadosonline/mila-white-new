@@ -1034,7 +1034,6 @@ const InstagramNovaAdmin = () => {
       setLoading(false);
     }
   };
-  };
 
   const generateCopyMessage = (order: MROOrder) => {
     return `Obrigado por fazer parte do nosso sistema!✅
