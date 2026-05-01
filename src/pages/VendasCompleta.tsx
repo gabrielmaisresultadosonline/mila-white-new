@@ -123,14 +123,58 @@ const VendasCompleta = () => {
     setLoading(true);
     try {
       const plan = PLANS[selectedPlan];
-      const { data: checkData, error: checkError } = await supabase.functions.invoke("create-mro-checkout", {
-        body: { email: email.toLowerCase().trim(), username: username.toLowerCase().trim(), phone: phone.replace(/\D/g, "").trim(), planType: selectedPlan, amount: plan.price, checkUserExists: true }
+      
+      // Log detalhado para depuração no navegador
+      console.log("[CHECKOUT] Iniciando criação de checkout...", { 
+        email: email.toLowerCase().trim(), 
+        username: username.toLowerCase().trim(),
+        planType: selectedPlan
       });
-      if (checkError) { console.error("Error creating checkout:", checkError); toast.error("Erro ao criar link de pagamento. Tente novamente."); return; }
-      if (checkData.userExists) { toast.error("Este nome de usuário já está em uso. Escolha outro."); setUsernameError("Usuário já existe, escolha outro"); return; }
-      if (!checkData.success) { toast.error(checkData.error || "Erro ao criar pagamento"); return; }
+      
+      console.log("[CHECKOUT] Chamando Edge Function create-mro-checkout...");
+      const { data: checkData, error: checkError } = await supabase.functions.invoke("create-mro-checkout", {
+        body: { 
+          email: email.toLowerCase().trim(), 
+          username: username.toLowerCase().trim(), 
+          phone: phone.replace(/\D/g, "").trim(), 
+          planType: selectedPlan, 
+          amount: plan.price, 
+          checkUserExists: true 
+        }
+      });
+      
+      if (checkError) { 
+        console.error("[CHECKOUT] Erro na Edge Function invoke:", checkError); 
+        toast.error("Erro ao criar link de pagamento. Tente novamente."); 
+        return; 
+      }
+      
+      console.log("[CHECKOUT] Resposta da função:", checkData);
+      
+      // LOG TEMPORÁRIO PARA VER SE O PEDIDO APARECE NO ADMIN
+      if (checkData.success && checkData.order_id) {
+        console.log(`[CHECKOUT] Sucesso! Pedido gerado: ID ${checkData.order_id}, NSU ${checkData.nsu_order}`);
+      }
+      
+      if (checkData.userExists) { 
+        toast.error("Este nome de usuário já está em uso. Escolha outro."); 
+        setUsernameError("Usuário já existe, escolha outro"); 
+        return; 
+      }
+      
+      if (!checkData.success) { 
+        toast.error(checkData.error || "Erro ao criar pagamento"); 
+        return; 
+      }
+      
+      console.log("[CHECKOUT] Redirecionando para:", checkData.payment_link);
       window.location.href = checkData.payment_link;
-    } catch (error) { console.error("Error:", error); toast.error("Erro ao processar. Tente novamente."); } finally { setLoading(false); }
+    } catch (error) { 
+      console.error("[CHECKOUT] Erro inesperado:", error); 
+      toast.error("Erro ao processar. Tente novamente."); 
+    } finally { 
+      setLoading(false); 
+    }
   };
 
   useEffect(() => { trackPageView('Sales Page - Instagram MRO'); }, []);

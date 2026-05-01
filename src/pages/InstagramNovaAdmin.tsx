@@ -681,26 +681,30 @@ export default function InstagramNovaAdmin() {
   const loadOrders = async (tokenOverride?: string) => {
     const token = getAdminSessionToken(tokenOverride);
     if (!token) {
+      console.log("[ADMIN] Carregamento cancelado: Token não encontrado");
       setOrders([]);
       return;
     }
 
     setLoading(true);
     try {
+      console.log("[ADMIN] Buscando lista de pedidos via API...");
       const { data: response, error } = await supabase.functions.invoke("instagram-admin", {
         body: { action: "listOrders", token }
       });
 
       if (error || !response?.success) {
         if (response?.error?.includes("Sessão expirada")) {
+          console.warn("[ADMIN] Sessão expirada no servidor");
           clearAdminSession();
         }
-        console.error("Error loading orders:", error || response?.error);
+        console.error("[ADMIN] Erro ao carregar pedidos via Edge Function:", error || response?.error);
         toast.error(response?.error || "Erro ao carregar pedidos");
         return;
       }
 
       const data: MROOrder[] = response.orders || [];
+      console.log(`[ADMIN] ${data.length} pedidos recebidos do servidor`);
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
       const ordersToVerify = (data || []).filter(
@@ -833,12 +837,7 @@ export default function InstagramNovaAdmin() {
         const createdAt = new Date(order.created_at);
         const minutesSinceCreation = Math.floor((now.getTime() - createdAt.getTime()) / 60000);
         
-        // Log detalhado para depuração
-        if (minutesSinceCreation < 5) {
-          console.log(`[AUTO-CHECK] Pedido RECENTE detectado: ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min`);
-        } else {
-          console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
-        }
+        console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
 
         // Verificar pagamento via API
         try {
@@ -846,19 +845,18 @@ export default function InstagramNovaAdmin() {
             body: { 
               nsu_order: order.nsu_order, 
               force_webhook: true,
-              // Parâmetros para buscar via API se o webhook falhou
               link: order.infinitepay_link 
             }
           });
-
+          
           if (data?.status === "completed" || data?.status === "paid") {
-            console.log(`[AUTO-CHECK] ✅ Pagamento confirmado para ${order.nsu_order}`);
+            console.log(`[AUTO-CHECK] ✅ Pagamento detectado para ${order.nsu_order} - Status: ${data.status}`);
             return { order, status: data.status };
           } else {
-            console.log(`[AUTO-CHECK] ⏳ Aguardando pagamento: ${order.nsu_order}`);
+            console.log(`[AUTO-CHECK] ⏳ Pagamento não detectado para ${order.nsu_order}. Resposta:`, data);
           }
         } catch (e) {
-          console.error(`[AUTO-CHECK] Erro ao verificar ${order.nsu_order}:`, e);
+          console.error(`[AUTO-CHECK] ❌ Erro ao chamar verificação para ${order.nsu_order}:`, e);
         }
         return null;
       });

@@ -11,7 +11,8 @@ const INFINITEPAY_HANDLE = "mahatma-cravinho";
 const log = (step: string, details?: unknown) => {
   const timestamp = new Date().toISOString();
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : "";
-  console.log(`[${timestamp}] [CREATE-MRO-CHECKOUT] ${step}${detailsStr}`);
+  const logMsg = `[${timestamp}] [CREATE-MRO-CHECKOUT] ${step}${detailsStr}`;
+  console.log(logMsg);
 };
 
 const generateNSU = () => {
@@ -176,6 +177,7 @@ serve(async (req) => {
       .from("mro_orders")
       .insert({
         created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
         email: cleanEmail,
         username: cleanUsername,
         phone: cleanPhone || null,
@@ -194,7 +196,7 @@ serve(async (req) => {
       throw insertError;
     }
 
-    log("Order created successfully", { orderId: orderData.id, paymentLink, orderNsu });
+    log("Response payload", { orderId: orderData.id, nsu: orderNsu });
 
     return new Response(
       JSON.stringify({
