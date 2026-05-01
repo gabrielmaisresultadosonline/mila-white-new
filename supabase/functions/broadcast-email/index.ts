@@ -191,11 +191,11 @@ serve(async (req) => {
     }
 
     // Replace WhatsApp button placeholder
-    const whatsappButtonHtml = '<table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;"><tr><td style="text-align:center;padding:14px;background:#25D366;border-radius:8px;"><a href="https://maisresultadosonline.com.br/whatsapp" style="color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp</a></td></tr></table>';
+    const whatsappButtonHtml = '<table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;"><tr><td style="text-align:center;padding:14px;background:#25D366;border-radius:8px;"><a href="https://codigoinstashop.com.br/whatsapp" style="color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;">📱 Falar no WhatsApp</a></td></tr></table>';
 
     const processedBody = body.replace(/\[BOTAO_WHATSAPP\]/g, whatsappButtonHtml);
     const plainTextBody = stripHtml(
-      body.replace(/\[BOTAO_WHATSAPP\]/g, "📱 Falar no WhatsApp: https://maisresultadosonline.com.br/whatsapp")
+      body.replace(/\[BOTAO_WHATSAPP\]/g, "📱 Falar no WhatsApp: https://codigoinstashop.com.br/whatsapp")
     );
 
     let htmlBody: string;
