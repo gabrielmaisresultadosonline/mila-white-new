@@ -4210,8 +4210,30 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
           </div>
+          </div>
         )}
       </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-zinc-950 p-2 sm:p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
+          <div className="flex flex-wrap items-start gap-3">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Admin Código InstaShop</h1>
+              <p className="text-zinc-400 text-xs sm:text-sm">Gerenciamento de pedidos /instagram-nova</p>
+              {lastAutoCheck && (
+                <p className="text-zinc-500 text-[10px] sm:text-xs mt-1">
+                  Última verificação: {format(lastAutoCheck, "HH:mm:ss", { locale: ptBR })}
+                  {autoCheckEnabled && " (auto: 8s)"}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
 
 
 
