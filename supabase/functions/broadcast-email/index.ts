@@ -226,7 +226,7 @@ serve(async (req) => {
         '<tr><td style="padding:0 30px 20px 30px;"><hr style="border:none;border-top:1px solid #eee;margin:0;"></td></tr>' +
         '<tr><td style="padding:0 30px 10px 30px;text-align:center;">' +
         '<p style="color:#999;font-size:11px;margin:0;">Estamos à disposição para ajudá-lo.</p>' +
-        '<p style="color:#666;font-size:13px;margin:10px 0 0 0;">Abraços,<br><strong>Equipe MRO</strong></p>' +
+        '<p style="color:#666;font-size:13px;margin:10px 0 0 0;">Abraços,<br><strong>Equipe Código InstaShop</strong></p>' +
         '</td></tr>' +
         '<tr><td style="background:#1a1a1a;padding:15px;text-align:center;">' +
         '<p style="color:#888;margin:0;font-size:11px;">© ' + new Date().getFullYear() + ' Código InstaShop</p>' +
