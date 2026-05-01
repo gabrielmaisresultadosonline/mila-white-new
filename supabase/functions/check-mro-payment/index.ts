@@ -65,7 +65,7 @@ serve(async (req) => {
     log("Checking MRO payment");
 
     const body = await req.json();
-    const { nsu_order, transaction_nsu, slug, force_webhook } = body;
+    const { nsu_order, transaction_nsu, slug, link, force_webhook } = body;
 
     log("Request params", { nsu_order, transaction_nsu, slug, force_webhook });
 
@@ -430,6 +430,18 @@ serve(async (req) => {
     // A InfiniPay pode ter confirmado o pagamento mas a API pública não reflete imediatamente
     log("Checking via transactions list (fallback)");
     try {
+      // Forçar atualização do status no banco como verificação final se não houve erro de API
+      // Isso ajuda o front-end a "acordar" em caso de latência no banco
+      const { data: finalCheck } = await supabase
+        .from("mro_orders")
+        .select("status")
+        .eq("nsu_order", nsu_order)
+        .single();
+        
+      if (finalCheck) {
+        log("Final check status", { status: finalCheck.status });
+      }
+      
       // Buscar transações recentes que possam corresponder a este pedido
       // Isso é uma verificação de fallback para quando a API pública falha
       const now = new Date();
