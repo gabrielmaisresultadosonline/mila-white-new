@@ -255,7 +255,7 @@ async function sendAccessEmail(
   }
 
   const htmlContent = getEmailHtml(username, password, planType);
-  const subject = "MRO - Acesso Liberado à Ferramenta Instagram!";
+  const subject = "Código InstaShop - Acesso Liberado à Ferramenta Instagram!";
 
   // Tentar primeiro porta 465 (SSL/TLS)
   try {
