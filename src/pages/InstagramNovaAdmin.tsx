@@ -845,6 +845,16 @@ export default function InstagramNovaAdmin() {
         const createdAt = new Date(order.created_at);
         const minutesSinceCreation = Math.floor((now.getTime() - createdAt.getTime()) / 60000);
         
+        // Se passar de 15 minutos e ainda estiver pendente, marcar como expirado
+        if (order.status === "pending" && minutesSinceCreation >= 15) {
+          console.log(`[AUTO-CHECK] Pedido ${order.nsu_order} excedeu 15 minutos. Marcando como expirado.`);
+          await supabase
+            .from("mro_orders")
+            .update({ status: "expired" })
+            .eq("id", order.id);
+          return null;
+        }
+
         console.log(`[AUTO-CHECK] Verificando ${order.nsu_order} (${order.username}) - ${minutesSinceCreation}min desde criação`);
 
         // Verificar pagamento via API
