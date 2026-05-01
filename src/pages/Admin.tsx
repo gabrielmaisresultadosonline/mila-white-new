@@ -87,15 +87,22 @@ const Admin = () => {
     const checkAdminAccess = async () => {
       setIsVerifying(true);
 
-      // Always require fresh login when accessing /admin directly
+      // Allow entry if either we just logged in OR we already have a valid session
       const cameFromLogin = sessionStorage.getItem('admin_just_logged_in');
-      if (!cameFromLogin) {
+      const loggedIn = await isAdminLoggedIn();
+      
+      if (!cameFromLogin && !loggedIn) {
+        console.log('🔒 Admin: Sessão expirada ou acesso direto negado.');
         await logoutAdmin();
         navigate('/admin/login');
         return;
       }
-      sessionStorage.removeItem('admin_just_logged_in');
       
+      // Clear the "just logged in" flag if it was used
+      if (cameFromLogin) {
+        sessionStorage.removeItem('admin_just_logged_in');
+      }
+
       // Load data from server on mount
       console.log('🔄 Admin: Carregando dados do servidor...');
       const serverSyncData = await loadSyncDataFromServer();
