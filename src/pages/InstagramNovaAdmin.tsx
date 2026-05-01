@@ -119,6 +119,7 @@ export default function InstagramNovaAdmin() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "paid" | "completed" | "expired">("all");
+  const [lastLoadTime, setLastLoadTime] = useState<number>(0);
   
   const autoCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const logsAutoRefreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -128,6 +129,7 @@ export default function InstagramNovaAdmin() {
   // Importante: manter sempre a lista mais recente para o auto-check (intervalo não recria quando orders muda)
   useEffect(() => {
     ordersRef.current = orders;
+    console.log(`[SYNC-REF] ordersRef atualizado com ${orders.length} pedidos`);
   }, [orders]);
   
   // State para seções colapsáveis
@@ -784,6 +786,8 @@ export default function InstagramNovaAdmin() {
       });
 
       setOrders(finalOrders);
+      setLastLoadTime(Date.now());
+      localStorage.setItem("mro_last_load_time", Date.now().toString());
     } catch (error) {
       console.error("Error:", error);
       toast.error("Erro ao carregar dados");
@@ -800,12 +804,11 @@ export default function InstagramNovaAdmin() {
       const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       const currentOrders = ordersRef.current;
       
-      // Filtrar pedidos pendentes
-      const pendingOrders = currentOrders.filter(o => {
-        if (o.status !== "pending") return false;
-        const createdAt = new Date(o.created_at);
-        return createdAt >= oneDayAgo;
-      });
+      // LOG PARA DEPURAÇÃO: ver todos os pedidos em memória
+      console.log(`[AUTO-CHECK] Total de pedidos em memória: ${currentOrders.length}`);
+      
+      // Filtrar pedidos pendentes - REMOVIDO o filtro de 24h para garantir que apareça TUDO
+      const pendingOrders = currentOrders.filter(o => o.status === "pending");
       
       if (pendingOrders.length === 0) {
         setLastAutoCheck(new Date());
@@ -813,7 +816,7 @@ export default function InstagramNovaAdmin() {
         // para garantir que novos "pendentes" apareçam instantaneamente
         const timeSinceLastLoad = localStorage.getItem("mro_last_load_time");
         if (!timeSinceLastLoad || Date.now() - parseInt(timeSinceLastLoad) > 4000) {
-          console.log("[AUTO-REFRESH] Recarregando lista de pedidos...");
+          console.log("[AUTO-REFRESH] Nenhum pendente em memória, recarregando lista completa via API...");
           loadOrders();
           localStorage.setItem("mro_last_load_time", Date.now().toString());
         }
