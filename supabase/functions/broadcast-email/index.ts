@@ -217,7 +217,7 @@ serve(async (req) => {
         '<body style="margin:0;padding:0;font-family:Arial,sans-serif;background-color:#f4f4f4;">' +
         '<table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;">' +
         '<tr><td style="padding:25px;text-align:center;border-bottom:3px solid #FFD700;">' +
-        '<div style="background:#000;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">MRO</div>' +
+        '<div style="background:#000;color:#fff;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">Código InstaShop</div>' +
         '</td></tr>' +
         '<tr><td style="padding:30px;">' +
         greetingHtml +
