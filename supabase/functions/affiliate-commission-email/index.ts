@@ -388,11 +388,11 @@ Seu resumo de vendas esta pronto:
 Acesse seu resumo completo com todos os detalhes:
 ${resumoLink}
 
-Senha de acesso: ${affiliateId || 'mro2024'}
+Senha de acesso: ${affiliateId || 'codigo2024'}
 
 Atualizado em ${timestamp}
 
-MRO - Programa de Afiliados`;
+Código InstaShop - Programa de Afiliados`;
 
     } else if (type === 'summary' || type === 'partial_summary') {
       // Email de resumo (final ou parcial)
