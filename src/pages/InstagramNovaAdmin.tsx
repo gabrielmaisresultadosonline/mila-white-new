@@ -1012,15 +1012,15 @@ ${GROUP_LINK}`;
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30"><CheckCircle className="w-3 h-3 mr-1" /> Completo</Badge>;
+        return <Badge className="bg-green-500 text-white border-none font-bold">Completo</Badge>;
       case "paid":
-        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30"><CheckCircle className="w-3 h-3 mr-1" /> Pago</Badge>;
+        return <Badge className="bg-blue-500 text-white border-none font-bold">Pago</Badge>;
       case "pending":
-        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30"><Clock className="w-3 h-3 mr-1" /> Pendente</Badge>;
+        return <Badge className="bg-yellow-500 text-black border-none font-bold">Pendente</Badge>;
       case "expired":
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30"><AlertTriangle className="w-3 h-3 mr-1" /> Expirado</Badge>;
+        return <Badge className="bg-red-500 text-white border-none font-bold">Expirado</Badge>;
       default:
-        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30"><XCircle className="w-3 h-3 mr-1" /> {status}</Badge>;
+        return <Badge className="bg-gray-500 text-white border-none">{status}</Badge>;
     }
   };
 
@@ -3876,58 +3876,81 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardContent className="p-8 text-center">
               <p className="text-zinc-400">Nenhum pedido encontrado</p>
+              {orders.length > 0 && (
+                <p className="text-xs text-zinc-500 mt-2">
+                  Total no banco: {orders.length} (estão sendo filtrados)
+                </p>
+              )}
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-3">
-            {sections.map(({ key, label, color, icon: Icon, orders: sectionOrders }) => {
-              if (sectionOrders.length === 0) return null;
+          <div className="space-y-4">
+            {/* Lista Principal de Pedidos */}
+            <div className="bg-zinc-800/20 rounded-xl border border-zinc-800 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-white font-bold flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-amber-500" />
+                  Listagem de Pedidos ({filteredOrders.length})
+                </h3>
+                <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Mais Recentes Primeiro</span>
+              </div>
               
-              const isOpen = openSections[key];
-              const colorClasses: Record<string, string> = {
-                green: "bg-green-500/10 border-green-500/40 hover:bg-green-500/20",
-                blue: "bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20",
-                yellow: "bg-yellow-500/10 border-yellow-500/40 hover:bg-yellow-500/20",
-                red: "bg-red-500/10 border-red-500/40 hover:bg-red-500/20",
-              };
-              const textClasses: Record<string, string> = {
-                green: "text-green-400",
-                blue: "text-blue-400",
-                yellow: "text-yellow-400",
-                red: "text-red-400",
-              };
-              
-              return (
-                <Collapsible key={key} open={isOpen} onOpenChange={() => toggleSection(key)}>
-                  <CollapsibleTrigger asChild>
-                    <div 
-                      className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${colorClasses[color]}`}
-                    >
-                      <div className="flex items-center gap-3">
-                        {isOpen ? (
-                          <ChevronDown className={`w-5 h-5 ${textClasses[color]}`} />
-                        ) : (
-                          <ChevronRight className={`w-5 h-5 ${textClasses[color]}`} />
-                        )}
-                        <Icon className={`w-5 h-5 ${textClasses[color]}`} />
-                        <span className={`font-semibold ${textClasses[color]}`}>{label}</span>
-                        <Badge className={`${colorClasses[color]} ${textClasses[color]} border-none`}>
-                          {sectionOrders.length}
-                        </Badge>
-                      </div>
-                      <span className="text-zinc-400 text-sm">
-                        {isOpen ? "Clique para ocultar" : "Clique para expandir"}
-                      </span>
-                    </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="mt-2 space-y-2 pl-2 border-l-2 border-zinc-700/50 ml-4">
-                      {sectionOrders.map((order) => renderOrderCard(order, true))}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              );
-            })}
+              <div className="space-y-3">
+                {filteredOrders.map((order) => renderOrderCard(order, true))}
+              </div>
+            </div>
+
+            {/* Seções Originais (Backup se precisar) */}
+            <div className="pt-8 border-t border-zinc-800">
+              <p className="text-xs text-zinc-500 text-center mb-4 uppercase tracking-tighter">Visão Detalhada por Grupos</p>
+              <div className="space-y-3">
+                {sections.map(({ key, label, color, icon: Icon, orders: sectionOrders }) => {
+                  if (sectionOrders.length === 0) return null;
+                  
+                  const isOpen = openSections[key];
+                  const colorClasses: Record<string, string> = {
+                    green: "bg-green-500/10 border-green-500/40 hover:bg-green-500/20",
+                    blue: "bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20",
+                    yellow: "bg-yellow-500/10 border-yellow-500/40 hover:bg-yellow-500/20",
+                    red: "bg-red-500/10 border-red-500/40 hover:bg-red-500/20",
+                  };
+                  const textClasses: Record<string, string> = {
+                    green: "text-green-400",
+                    blue: "text-blue-400",
+                    yellow: "text-yellow-400",
+                    red: "text-red-400",
+                  };
+                  
+                  return (
+                    <Collapsible key={key} open={isOpen} onOpenChange={() => toggleSection(key)}>
+                      <CollapsibleTrigger asChild>
+                        <div 
+                          className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${colorClasses[color]}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            {isOpen ? (
+                              <ChevronDown className={`w-5 h-5 ${textClasses[color]}`} />
+                            ) : (
+                              <ChevronRight className={`w-5 h-5 ${textClasses[color]}`} />
+                            )}
+                            <Icon className={`w-5 h-5 ${textClasses[color]}`} />
+                            <span className={`font-semibold ${textClasses[color]}`}>{label}</span>
+                            <Badge className={`${colorClasses[color]} ${textClasses[color]} border-none`}>
+                              {sectionOrders.length}
+                            </Badge>
+                          </div>
+                        </div>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className="mt-2 space-y-2 pl-2 border-l-2 border-zinc-700/50 ml-4">
+                          {sectionOrders.map((order) => renderOrderCard(order, true))}
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
         </>)}
