@@ -3982,9 +3982,10 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     <Loader2 className="w-10 h-10 animate-spin text-amber-500 mx-auto mb-4" />
                     <p className="text-white font-bold">CARREGANDO DADOS...</p>
                   </div>
-                ) : Array.isArray(filteredOrders) && filteredOrders.length > 0 ? (
+                ) : Array.isArray(orders) && orders.length > 0 ? (
                   <div className="divide-y divide-zinc-800">
-                    {filteredOrders.map((order) => (
+                    {/* Renderizamos TODOS os pedidos da lista 'orders' bruta para garantir que nada seja filtrado por erro */}
+                    {orders.map((order) => (
                       <div key={order.id} className="p-6 hover:bg-zinc-800/30 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group">
                         <div className="space-y-3 flex-1">
                           <div className="flex items-center gap-4 flex-wrap">
