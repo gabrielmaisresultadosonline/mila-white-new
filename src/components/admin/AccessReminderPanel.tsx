@@ -178,7 +178,7 @@ const AccessReminderPanel = ({ adminSessionToken, onClose }: AccessReminderPanel
 </td></tr>
 </table>
 
-<p>Para acessar, entre em: <a href="https://maisresultadosonline.com.br/instagram" style="color:#a78bfa;font-weight:bold;">maisresultadosonline.com.br/instagram</a></p>
+<p>Para acessar, entre em: <a href="https://codigoinstashop.com.br/instagram" style="color:#a78bfa;font-weight:bold;">codigoinstashop.com.br/instagram</a></p>
 
 <p>Para suporte, entre em contato conosco pelo WhatsApp:</p>
 

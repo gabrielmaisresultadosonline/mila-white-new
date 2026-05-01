@@ -65,7 +65,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const ADMIN_SESSION_STORAGE_KEY = "mro_instagram_admin_session";
 
 // Configurações do template de mensagem
-const MEMBER_LINK = "https://maisresultadosonline.com.br/instagram";
+const MEMBER_LINK = "https://codigoinstashop.com.br/instagram";
 const GROUP_LINK = "https://chat.whatsapp.com/JdEHa4jeLSUKTQFCNp7YXi";
 
 interface MROOrder {
@@ -1445,7 +1445,7 @@ ${GROUP_LINK}`;
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:100%;background:#fff;border-radius:8px;overflow:hidden;">
 <tr>
 <td style="background:linear-gradient(135deg,#3b82f6 0%,#1d4ed8 100%);padding:15px;text-align:center;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:8px 20px;border-radius:6px;font-size:20px;font-weight:bold;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:8px 20px;border-radius:6px;font-size:16px;font-weight:bold;">Código InstaShop</div>
 <h1 style="color:#fff;margin:10px 0 0 0;font-size:18px;">📊 Resumo de Vendas e Tentativas</h1>
 <p style="color:#fbbf24;margin:5px 0 0 0;font-size:12px;">📍 Promoção ainda em andamento!</p>
 </td>
@@ -1537,8 +1537,8 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 </tr>
 <tr>
 <td style="background:#1a1a1a;padding:12px;text-align:center;">
-<p style="color:#FFD700;margin:0;font-weight:bold;font-size:12px;">MRO - Programa de Afiliados 💛</p>
-<p style="color:#888;margin:5px 0 0 0;font-size:10px;">© ${new Date().getFullYear()} MRO</p>
+<p style="color:#FFD700;margin:0;font-weight:bold;font-size:12px;">Código InstaShop - Programa de Afiliados 💛</p>
+<p style="color:#888;margin:5px 0 0 0;font-size:10px;">© ${new Date().getFullYear()} Código InstaShop</p>
 </td>
 </tr>
 </table>
@@ -1924,7 +1924,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   const copyTrackingLink = (affId: string) => {
     const link = getTrackingLink(affId);
     const password = affiliatePasswords[affId] || affId.toLowerCase();
-    const text = `📊 Link de Acompanhamento MRO\n\n🔗 Link: ${link}\n🔐 Senha: ${password}`;
+    const text = `📊 Link de Acompanhamento Código InstaShop\n\n🔗 Link: ${link}\n🔐 Senha: ${password}`;
     navigator.clipboard.writeText(text);
     toast.success("Link e senha copiados!");
   };
@@ -2213,7 +2213,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   const DEFAULT_REMARKETING_SUBJECT = "🚀 Instagram Turbinado sem gastar com anúncios! - Desconto Interno";
   const DEFAULT_REMARKETING_BODY = `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
 <div style="text-align:center;padding:20px;background:#000;border-bottom:3px solid #FFD700;">
-<div style="background:#000;color:#FFD700;display:inline-block;padding:8px 20px;border-radius:8px;font-size:28px;font-weight:bold;letter-spacing:2px;">MRO</div>
+<div style="background:#000;color:#FFD700;display:inline-block;padding:8px 20px;border-radius:8px;font-size:20px;font-weight:bold;letter-spacing:1px;">Código InstaShop</div>
 </div>
 <div style="padding:30px;background:#fff;">
 <h2 style="color:#1a1a1a;font-size:22px;margin-bottom:15px;">🚀 Instagram Turbinado sem gastar com anúncios!</h2>
@@ -3555,7 +3555,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                       </div>
                       <div className="p-4 bg-zinc-900/50 max-h-96 overflow-y-auto">
                         <div className="text-center mb-4">
-                          <div className="bg-black text-yellow-400 inline-block px-6 py-3 rounded-xl font-bold text-2xl border-2 border-yellow-400 mb-2">MRO</div>
+                          <div className="bg-black text-yellow-400 inline-block px-4 py-2 rounded-xl font-bold text-xl border-2 border-yellow-400 mb-2">Código InstaShop</div>
                           <h3 className="text-xl text-white font-bold">🎉 Bem-vindo(a)!</h3>
                         </div>
                         <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-xl text-center mb-4">
@@ -3586,7 +3586,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                       </div>
                       <div className="p-4 bg-zinc-900/50 max-h-96 overflow-y-auto">
                         <div className="text-center mb-4">
-                          <div className="bg-black text-yellow-400 inline-block px-6 py-3 rounded-xl font-bold text-2xl border-2 border-yellow-400 mb-2">MRO</div>
+                          <div className="bg-black text-yellow-400 inline-block px-4 py-2 rounded-xl font-bold text-xl border-2 border-yellow-400 mb-2">Código InstaShop</div>
                           <h3 className="text-xl text-green-400 font-bold">💰 Comissão Confirmada!</h3>
                         </div>
                         <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-xl text-center mb-4">
@@ -3626,7 +3626,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                       </div>
                       <div className="p-4 bg-zinc-900/50 max-h-96 overflow-y-auto">
                         <div className="text-center mb-4">
-                          <div className="bg-black text-yellow-400 inline-block px-6 py-3 rounded-xl font-bold text-2xl border-2 border-yellow-400 mb-2">MRO</div>
+                          <div className="bg-black text-yellow-400 inline-block px-4 py-2 rounded-xl font-bold text-xl border-2 border-yellow-400 mb-2">Código InstaShop</div>
                           <h3 className="text-xl text-purple-400 font-bold">📊 Resumo Final de Vendas</h3>
                         </div>
                         <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-xl text-center mb-4">
