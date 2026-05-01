@@ -791,16 +791,15 @@ export default function InstagramNovaAdmin() {
   const checkPendingPayments = async () => {
     try {
       const now = new Date();
-      // Verificamos pedidos dos últimos 60 minutos para garantir que nada passe
-      const sixtyMinutesAgo = new Date(now.getTime() - 60 * 60 * 1000);
+      // Verificamos pedidos dos últimos 24 horas para garantir total cobertura
+      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       const currentOrders = ordersRef.current;
       
       // Filtrar pedidos pendentes
       const pendingOrders = currentOrders.filter(o => {
         if (o.status !== "pending") return false;
         const createdAt = new Date(o.created_at);
-        // Priorizar os mais recentes, mas verificar até 60min
-        return createdAt >= sixtyMinutesAgo;
+        return createdAt >= oneDayAgo;
       });
       
       if (pendingOrders.length === 0) {
