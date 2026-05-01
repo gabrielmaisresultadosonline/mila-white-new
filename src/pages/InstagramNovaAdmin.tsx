@@ -102,7 +102,7 @@ interface Affiliate {
   isLifetime?: boolean;    // true = afiliado vitalício, recebe comissão na hora
 }
 
-export default function InstagramNovaAdmin() {
+const InstagramNovaAdmin = () => {
   // Vendas filtradas por afiliado (para aba de vendas)
   const getFilteredAffiliateSales = () => {
     if (selectedAffiliateFilter === "all") {
@@ -4509,3 +4509,5 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
   );
 }
 }
+
+export default InstagramNovaAdmin;
