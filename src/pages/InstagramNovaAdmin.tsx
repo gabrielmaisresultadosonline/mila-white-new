@@ -2292,7 +2292,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
         sent++;
         setRemarketingSentCount(sent);
-        setRemarketingSentHistory(prev => new Set([...prev, baseEmail.toLowerCase()]));
+        setRemarketingSentHistory(prev => new Set<string>([...Array.from(prev), baseEmail.toLowerCase()]));
 
         // Random delay 5-15 seconds between sends
         if (sent < targetOrders.length && remarketingSendingRef.current) {
