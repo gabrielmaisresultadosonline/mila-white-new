@@ -743,12 +743,9 @@ export default function InstagramNovaAdmin() {
         return order;
       });
 
-      // Removida a lógica de filtragem agressiva de duplicatas por email/telefone que estava ocultando pendentes recentes.
-      // Vamos apenas normalizar e garantir que o status pago vença em caso de IDs diferentes para o mesmo email.
-      const processedOrdersWithUpdates = (data || []).map((order) => {
+
       const normalizeEmailKey = (email: string) => {
         const lower = (email || "").trim().toLowerCase();
-        // Alguns pedidos podem vir como "afiliado:email@..."; usar apenas o email final.
         const parts = lower.split(":");
         const last = parts[parts.length - 1];
         if (parts.length > 1 && last.includes("@")) return last;
@@ -757,7 +754,6 @@ export default function InstagramNovaAdmin() {
 
       const normalizePhone = (phone: string | null | undefined): string => {
         if (!phone) return "";
-        // Remove tudo que não é dígito
         return phone.replace(/\D/g, "");
       };
 
@@ -770,47 +766,13 @@ export default function InstagramNovaAdmin() {
       };
 
       const orderTimestamp = (order: MROOrder) => {
-        const t =
-          order.completed_at ||
-          order.paid_at ||
-          order.updated_at ||
-          order.created_at;
+        const t = order.completed_at || order.paid_at || order.updated_at || order.created_at;
         const ms = new Date(t).getTime();
         return Number.isFinite(ms) ? ms : 0;
       };
 
-      // Função para verificar se novo pedido é "melhor" que o atual
-      const isBetterOrder = (newOrder: MROOrder, current: MROOrder): boolean => {
-        const rNew = statusRank(newOrder.status);
-        const rCur = statusRank(current.status);
-        if (rNew > rCur) return true;
-        if (rNew < rCur) return false;
-        return orderTimestamp(newOrder) > orderTimestamp(current);
-      };
-
-      // Primeiro pass: agrupar por email
-      const bestByEmail = new Map<string, MROOrder>();
-      for (const order of processedOrders) {
-        const key = normalizeEmailKey(order.email);
-        const current = bestByEmail.get(key);
-        if (!current || isBetterOrder(order, current)) {
-          bestByEmail.set(key, order);
-        }
-      }
-
-      // Segundo pass: também agrupar por telefone (se tiver)
-      const bestByPhone = new Map<string, MROOrder>();
-      for (const order of processedOrders) {
-        const phoneKey = normalizePhone(order.phone);
-        if (!phoneKey || phoneKey.length < 8) continue; // Ignorar telefones inválidos/curtos
-        const current = bestByPhone.get(phoneKey);
-        if (!current || isBetterOrder(order, current)) {
-          bestByPhone.set(phoneKey, order);
-        }
-      }
-
       // Simplificado: mostrar todos os registros, mas ordenando para que os mais recentes e pagos fiquem no topo
-      const finalOrders = processedOrders.sort((a, b) => {
+      const finalOrders = [...processedOrders].sort((a, b) => {
         const rankDiff = statusRank(b.status) - statusRank(a.status);
         if (rankDiff !== 0) return rankDiff;
         return orderTimestamp(b) - orderTimestamp(a);
