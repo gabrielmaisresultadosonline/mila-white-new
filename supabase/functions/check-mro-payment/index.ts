@@ -264,12 +264,13 @@ serve(async (req) => {
     }
 
     // Tentar buscar status via API pública do InfiniPay usando o link
-    if (order.infinitepay_link) {
-      log("Trying to extract slug from payment link", { link: order.infinitepay_link });
+    const paymentLink = link || order.infinitepay_link;
+    if (paymentLink) {
+      log("Trying to extract slug from payment link", { link: paymentLink });
       
       try {
         // Extrair parâmetros do link
-        const url = new URL(order.infinitepay_link);
+        const url = new URL(paymentLink);
         const lenc = url.searchParams.get('lenc');
         
         if (lenc) {
