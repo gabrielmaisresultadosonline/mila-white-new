@@ -4514,6 +4514,7 @@ export default InstagramNovaAdmin;
             </Button>
           </DialogFooter>
         </DialogContent>
+      </Dialog>
     </div>
   );
 };
