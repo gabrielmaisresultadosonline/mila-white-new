@@ -335,7 +335,7 @@ serve(async (req) => {
   try {
     log("Received webhook request");
 
-    const verification = await verifyInfinitePayWebhook(req, corsHeaders, "MRO-PAYMENT-WEBHOOK");
+    const verification = await verifyInfinitePayWebhook(req, corsHeaders, "INSTASHOP-PAYMENT-WEBHOOK");
     if (!verification.verified) {
       // No logs, it allows for now if secret is missing but warns in console
     }
