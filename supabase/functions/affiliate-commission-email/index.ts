@@ -273,7 +273,7 @@ Utilize sempre o seu link de compra e <strong style="color:#FFD700;">vamos pra c
 <!-- Footer -->
 <tr>
 <td style="background:#000;padding:25px;text-align:center;border-top:3px solid #FFD700;">
-<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;font-size:16px;">MRO - Programa de Afiliados 💛</p>
+<p style="color:#FFD700;margin:0 0 10px 0;font-weight:bold;font-size:16px;">Código InstaShop - Programa de Afiliados 💛</p>
 <p style="color:#6b7280;margin:0;font-size:12px;">© ${new Date().getFullYear()} Código InstaShop</p>
 <p style="color:#4b5563;margin:10px 0 0 0;font-size:11px;">Juntos vamos longe! 🚀</p>
 </td>
