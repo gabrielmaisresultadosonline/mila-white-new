@@ -681,26 +681,30 @@ export default function InstagramNovaAdmin() {
   const loadOrders = async (tokenOverride?: string) => {
     const token = getAdminSessionToken(tokenOverride);
     if (!token) {
+      console.log("[ADMIN] Carregamento cancelado: Token não encontrado");
       setOrders([]);
       return;
     }
 
     setLoading(true);
     try {
+      console.log("[ADMIN] Buscando lista de pedidos via API...");
       const { data: response, error } = await supabase.functions.invoke("instagram-admin", {
         body: { action: "listOrders", token }
       });
 
       if (error || !response?.success) {
         if (response?.error?.includes("Sessão expirada")) {
+          console.warn("[ADMIN] Sessão expirada no servidor");
           clearAdminSession();
         }
-        console.error("Error loading orders:", error || response?.error);
+        console.error("[ADMIN] Erro ao carregar pedidos via Edge Function:", error || response?.error);
         toast.error(response?.error || "Erro ao carregar pedidos");
         return;
       }
 
       const data: MROOrder[] = response.orders || [];
+      console.log(`[ADMIN] ${data.length} pedidos recebidos do servidor`);
 
       // Verificar na API os pedidos paid/completed que não têm api_created = true
       const ordersToVerify = (data || []).filter(
