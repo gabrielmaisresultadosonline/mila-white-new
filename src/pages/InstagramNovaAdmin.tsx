@@ -3844,40 +3844,40 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
         {!showAffiliateConfig && !showRemarketingDashboard && !showAccessReminder && (<>
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-          <Card className="bg-zinc-800/50 border-zinc-700">
+          <Card className="bg-zinc-800 border-zinc-700">
             <CardContent className="p-4">
-              <p className="text-zinc-400 text-sm">Total</p>
-              <p className="text-2xl font-bold text-white">{stats.total}</p>
+              <p className="text-zinc-400 text-[10px] uppercase font-bold">Total</p>
+              <p className="text-2xl font-black text-white">{orders?.length || 0}</p>
             </CardContent>
           </Card>
-          <Card className="bg-yellow-500/10 border-yellow-500/30">
+          <Card className="bg-yellow-500/20 border-yellow-500/30">
             <CardContent className="p-4">
-              <p className="text-yellow-400 text-sm">Pendentes</p>
-              <p className="text-2xl font-bold text-yellow-400">{stats.pending}</p>
+              <p className="text-yellow-400 text-[10px] uppercase font-bold">Pendentes</p>
+              <p className="text-2xl font-black text-yellow-400">{orders?.filter(o => o.status === 'pending').length || 0}</p>
             </CardContent>
           </Card>
-          <Card className="bg-blue-500/10 border-blue-500/30">
+          <Card className="bg-blue-500/20 border-blue-500/30">
             <CardContent className="p-4">
-              <p className="text-blue-400 text-sm">Pagos</p>
-              <p className="text-2xl font-bold text-blue-400">{stats.paid}</p>
+              <p className="text-blue-400 text-[10px] uppercase font-bold">Pagos</p>
+              <p className="text-2xl font-black text-blue-400">{orders?.filter(o => o.status === 'paid').length || 0}</p>
             </CardContent>
           </Card>
-          <Card className="bg-green-500/10 border-green-500/30">
+          <Card className="bg-green-500/20 border-green-500/30">
             <CardContent className="p-4">
-              <p className="text-green-400 text-sm">Completos</p>
-              <p className="text-2xl font-bold text-green-400">{stats.completed}</p>
+              <p className="text-green-400 text-[10px] uppercase font-bold">Completos</p>
+              <p className="text-2xl font-black text-green-400">{orders?.filter(o => o.status === 'completed').length || 0}</p>
             </CardContent>
           </Card>
-          <Card className="bg-red-500/10 border-red-500/30">
+          <Card className="bg-red-500/20 border-red-500/30">
             <CardContent className="p-4">
-              <p className="text-red-400 text-sm">Expirados</p>
-              <p className="text-2xl font-bold text-red-400">{stats.expired}</p>
+              <p className="text-red-400 text-[10px] uppercase font-bold">Expirados</p>
+              <p className="text-2xl font-black text-red-400">{orders?.filter(o => o.status === 'expired').length || 0}</p>
             </CardContent>
           </Card>
-          <Card className="bg-amber-500/10 border-amber-500/30">
+          <Card className="bg-emerald-500/20 border-emerald-500/30">
             <CardContent className="p-4">
-              <p className="text-amber-400 text-sm">Receita</p>
-              <p className="text-2xl font-bold text-amber-400">R$ {stats.totalRevenue.toFixed(2)}</p>
+              <p className="text-emerald-400 text-[10px] uppercase font-bold">Receita</p>
+              <p className="text-lg font-black text-emerald-400">R$ {orders?.filter(o => o.status === 'paid' || o.status === 'completed').reduce((acc, o) => acc + (Number(o.amount) || 0), 0).toFixed(2)}</p>
             </CardContent>
           </Card>
         </div>
