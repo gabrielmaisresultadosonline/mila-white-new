@@ -103,23 +103,9 @@ interface Affiliate {
 }
 
 const InstagramNovaAdmin = () => {
-  // Vendas filtradas por afiliado (para aba de vendas)
-  const getFilteredAffiliateSales = () => {
-    if (selectedAffiliateFilter === "all") {
-      // Todas as vendas de afiliados
-      return orders.filter(o => 
-        (o.status === "paid" || o.status === "completed") && 
-        affiliates.some(a => o.email.toLowerCase().startsWith(`${a.id.toLowerCase()}:`))
-      );
-    } else {
-      return orders.filter(o => 
-        (o.status === "paid" || o.status === "completed") && 
-        o.email.toLowerCase().startsWith(`${selectedAffiliateFilter.toLowerCase()}:`)
-      );
-    }
-  };
 
   const ADMIN_NOVA_REMEMBER_KEY = 'mro_nova_admin_credentials';
+
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginEmail, setLoginEmail] = useState(() => {
@@ -1033,7 +1019,6 @@ const InstagramNovaAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
   };
 
   const generateCopyMessage = (order: MROOrder) => {
@@ -2214,7 +2199,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
           .select("recipient_email, subject")
           .like("subject", "%Instagram Turbinado%");
         if (!error && data) {
-          const sentEmails = new Set(data.map(d => d.recipient_email.toLowerCase()));
+          const sentEmails = new Set<string>(data.map(d => d.recipient_email.toLowerCase()));
           setRemarketingSentHistory(sentEmails);
         }
       } catch (e) {
@@ -2307,7 +2292,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 
         sent++;
         setRemarketingSentCount(sent);
-        setRemarketingSentHistory(prev => new Set([...prev, baseEmail.toLowerCase()]));
+        setRemarketingSentHistory(prev => new Set<string>([...Array.from(prev), baseEmail.toLowerCase()]));
 
         // Random delay 5-15 seconds between sends
         if (sent < targetOrders.length && remarketingSendingRef.current) {
@@ -4210,9 +4195,11 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
             {/* ESPAÇAMENTO INFERIOR */}
             <div className="h-40"></div>
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    )}
+  </div>
+</div>
   );
 };
 
