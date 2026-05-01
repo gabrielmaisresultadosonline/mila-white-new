@@ -4448,3 +4448,4 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
 };
 
 export default InstagramNovaAdmin;
+
