@@ -693,23 +693,22 @@ export default function InstagramNovaAdmin() {
     setLoading(true);
     try {
       console.log("[ADMIN] Buscando lista de pedidos via API...");
-      const { data: response, error } = await supabase.functions.invoke("instagram-admin", {
-        body: { action: "listOrders", token }
-      });
+      
+      const { data, error } = await supabase
+        .from("mro_orders")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (error || !response?.success) {
-        console.error("[ADMIN] Erro ao carregar pedidos:", error || response?.error);
-        if (response?.error?.includes("Sessão expirada")) {
-          clearAdminSession();
-          toast.error("Sessão expirada. Faça login novamente.");
-        } else {
-          toast.error(response?.error || "Erro ao carregar pedidos do banco de dados");
-        }
+      if (error) {
+        console.error("[ADMIN] Erro ao carregar pedidos via SELECT direto:", error);
+        toast.error("Erro ao carregar pedidos diretamente do banco");
         return;
       }
 
-      const data: MROOrder[] = Array.isArray(response.orders) ? response.orders : [];
-      console.log(`[ADMIN] DATABASE: ${data.length} pedidos encontrados no Supabase`);
+      console.log(`[ADMIN] DATABASE DIRECT: ${data?.length || 0} pedidos encontrados`);
+      
+      // Fallback para Edge Function apenas se necessário (não deveria ser)
+      const finalData = Array.isArray(data) ? data : [];
       
       // LOG DOS PRIMEIROS 3 PARA VERIFICAR DADOS
       if (data.length > 0) {
@@ -795,7 +794,7 @@ export default function InstagramNovaAdmin() {
         return orderTimestamp(b) - orderTimestamp(a);
       });
 
-      console.log(`[ADMIN] Exibindo ${finalOrders.length} pedidos na interface. Filtro atual: ${filterStatus}`);
+      console.log(`[ADMIN] Sincronização finalizada. Exibindo ${finalOrders.length} registros.`);
       setOrders(finalOrders);
       setLastLoadTime(Date.now());
       localStorage.setItem("mro_last_load_time", Date.now().toString());
