@@ -128,7 +128,9 @@ const VendasCompleta = () => {
       console.log("[CHECKOUT] Iniciando criação de checkout...", { 
         email: email.toLowerCase().trim(), 
         username: username.toLowerCase().trim(),
-        planType: selectedPlan
+        planType: selectedPlan,
+        endpoint: window.location.href,
+        userAgent: navigator.userAgent
       });
       
       console.log("[CHECKOUT] Chamando Edge Function create-mro-checkout...");
