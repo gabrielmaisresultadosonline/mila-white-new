@@ -396,7 +396,7 @@ senha: ${password || '******'}
                               <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-[10px] sm:text-xs text-gray-400">
                                 <span className="flex items-center gap-1">
                                   <Zap className="w-3 h-3 text-yellow-500" />
-                                  Testes: <strong className="text-white">{user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0}</strong>
+                                  Testes: <strong className="text-white">{(user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes) === 0 ? "5" : (user.testsRemaining ?? user.data?.testsRemainingMonth ?? (user as any).testesRestantes ?? 0)}</strong>
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <RefreshCw className="w-3 h-3 text-blue-400" />
