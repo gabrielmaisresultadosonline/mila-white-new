@@ -4049,7 +4049,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                             </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                             <div className="flex items-center gap-2 bg-black/30 p-2 rounded-lg border border-zinc-800">
                               <Mail className="w-4 h-4 text-amber-500 shrink-0" />
                               <span className="text-zinc-200 font-bold text-xs truncate">{order.email}</span>
