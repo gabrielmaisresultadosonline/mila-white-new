@@ -195,7 +195,7 @@ serve(async (req) => {
       throw insertError;
     }
 
-    log("Order created successfully", { orderId: orderData.id, paymentLink, orderNsu });
+    log("Response payload", { orderId: orderData.id, nsu: orderNsu });
 
     return new Response(
       JSON.stringify({
