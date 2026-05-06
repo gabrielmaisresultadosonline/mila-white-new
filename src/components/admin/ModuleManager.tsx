@@ -1831,7 +1831,35 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                           </p>
                           
                           {/* Action buttons overlay */}
-                          <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap items-center justify-center gap-2 p-2">
+                            {/* Move Left */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveContent(module.id, content.id, 'left');
+                              }}
+                              className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                              disabled={idx === 0}
+                              title="Mover para esquerda"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5 -rotate-90" />
+                            </button>
+
+                            {/* Move Right */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveContent(module.id, content.id, 'right');
+                              }}
+                              className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                              disabled={idx === module.contents.length - 1}
+                              title="Mover para direita"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5 rotate-90" />
+                            </button>
+
                             {/* Edit button */}
                             <button
                               type="button"
