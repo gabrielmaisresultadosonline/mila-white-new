@@ -687,6 +687,26 @@ export const reorderContents = (moduleId: string, contentIds: string[]): void =>
   }
 };
 
+export const reorderSectionContents = (moduleId: string, sectionId: string, contentIds: string[]): void => {
+  const data = getAdminData();
+  const module = data.modules.find(m => m.id === moduleId);
+  if (module) {
+    const section = module.contents.find(c => c.id === sectionId && c.type === 'section') as ModuleSection | undefined;
+    if (section) {
+      const reordered: SectionContent[] = [];
+      contentIds.forEach((id, index) => {
+        const content = section.contents.find(c => c.id === id);
+        if (content) {
+          content.order = index + 1;
+          reordered.push(content);
+        }
+      });
+      section.contents = reordered;
+      saveAdminData(data);
+    }
+  }
+};
+
 // Helper function
 export const getYoutubeThumbnail = (url: string): string => {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
