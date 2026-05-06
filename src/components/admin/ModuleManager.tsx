@@ -2105,8 +2105,37 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                 )}
                                 <p className="text-xs font-medium mt-1 truncate">{sContent.title}</p>
                                 
-                                {/* Delete button */}
-                                <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                {/* Action buttons overlay */}
+                                <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap items-center justify-center gap-2 p-1">
+                                  {/* Move Left/Up */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMoveSectionContent(module.id, section.id, sContent.id, 'up');
+                                    }}
+                                    className="w-7 h-7 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                                    disabled={sIdx === 0}
+                                    title="Mover para cima"
+                                  >
+                                    <ArrowUp className="w-3.5 h-3.5" />
+                                  </button>
+
+                                  {/* Move Right/Down */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMoveSectionContent(module.id, section.id, sContent.id, 'down');
+                                    }}
+                                    className="w-7 h-7 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                                    disabled={sIdx === section.contents.length - 1}
+                                    title="Mover para baixo"
+                                  >
+                                    <ArrowDown className="w-3.5 h-3.5" />
+                                  </button>
+
+                                  {/* Delete button */}
                                   <button
                                     type="button"
                                     onClick={() => handleDeleteSectionContent(module.id, section.id, sContent.id)}
