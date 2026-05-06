@@ -919,6 +919,55 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
     }
   };
 
+  const handleMoveContent = (moduleId: string, contentId: string, direction: 'left' | 'right') => {
+    const data = getLocalData();
+    const module = data.modules?.find(m => m.id === moduleId);
+    if (!module) return;
+    
+    const contents = [...module.contents].sort((a, b) => a.order - b.order);
+    const index = contents.findIndex(c => c.id === contentId);
+    if (index < 0) return;
+    
+    if (direction === 'left' && index === 0) return;
+    if (direction === 'right' && index === contents.length - 1) return;
+    
+    const swapIndex = direction === 'left' ? index - 1 : index + 1;
+    [contents[index], contents[swapIndex]] = [contents[swapIndex], contents[index]];
+    
+    contents.forEach((c, i) => c.order = i + 1);
+    module.contents = contents;
+    
+    saveLocalData(data);
+    refreshData();
+    toast({ title: "Ordem do conteúdo atualizada!" });
+  };
+
+  const handleMoveSectionContent = (moduleId: string, sectionId: string, contentId: string, direction: 'up' | 'down') => {
+    const data = getLocalData();
+    const module = data.modules?.find(m => m.id === moduleId);
+    if (!module) return;
+    
+    const section = module.contents.find(c => c.id === sectionId && c.type === 'section') as ModuleSection | undefined;
+    if (!section) return;
+    
+    const contents = [...section.contents].sort((a, b) => a.order - b.order);
+    const index = contents.findIndex(c => c.id === contentId);
+    if (index < 0) return;
+    
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === contents.length - 1) return;
+    
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    [contents[index], contents[swapIndex]] = [contents[swapIndex], contents[index]];
+    
+    contents.forEach((c, i) => c.order = i + 1);
+    section.contents = contents;
+    
+    saveLocalData(data);
+    refreshData();
+    toast({ title: "Ordem na seção atualizada!" });
+  };
+
   const handleToggleContentNumber = (moduleId: string, content: ModuleContent) => {
     if (content.type === 'video') {
       handleUpdateContent(moduleId, content.id, { showNumber: !(content as ModuleVideo).showNumber });
