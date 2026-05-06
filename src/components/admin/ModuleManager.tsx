@@ -1779,7 +1779,27 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                 }}
                               />
                               {(content as ModuleVideo).showNumber && (
-                                <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-lg">
+                                <div 
+                                  className="absolute top-2 left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-lg cursor-pointer hover:scale-110 transition-transform"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const newOrder = prompt(`Alterar ordem (atual: ${idx + 1}):`, (idx + 1).toString());
+                                    if (newOrder && !isNaN(parseInt(newOrder))) {
+                                      const orderInt = parseInt(newOrder);
+                                      const contents = [...module.contents].sort((a, b) => a.order - b.order);
+                                      const item = contents.splice(idx, 1)[0];
+                                      contents.splice(Math.max(0, orderInt - 1), 0, item);
+                                      contents.forEach((c, i) => c.order = i + 1);
+                                      const data = getLocalData();
+                                      const mod = data.modules.find(m => m.id === module.id);
+                                      if (mod) mod.contents = contents;
+                                      saveLocalData(data);
+                                      refreshData();
+                                      toast({ title: "Ordem atualizada!" });
+                                    }
+                                  }}
+                                  title="Clique para mudar a ordem manualmente"
+                                >
                                   {idx + 1}
                                 </div>
                               )}
