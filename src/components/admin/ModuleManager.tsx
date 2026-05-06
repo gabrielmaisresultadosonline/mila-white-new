@@ -2100,7 +2100,28 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                       alt={sContent.title}
                                       className="w-full h-full object-cover"
                                     />
-                                    <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                                    <div 
+                                      className="absolute top-2 left-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-lg cursor-pointer hover:scale-110 transition-transform"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newOrder = prompt(`Alterar ordem (atual: ${sIdx + 1}):`, (sIdx + 1).toString());
+                                        if (newOrder && !isNaN(parseInt(newOrder))) {
+                                          const orderInt = parseInt(newOrder);
+                                          const contents = [...section.contents].sort((a, b) => a.order - b.order);
+                                          const item = contents.splice(sIdx, 1)[0];
+                                          contents.splice(Math.max(0, orderInt - 1), 0, item);
+                                          contents.forEach((c, i) => c.order = i + 1);
+                                          const data = getLocalData();
+                                          const mod = data.modules.find(m => m.id === module.id);
+                                          const sec = mod?.contents.find(c => c.id === section.id && c.type === 'section') as ModuleSection | undefined;
+                                          if (sec) sec.contents = contents;
+                                          saveLocalData(data);
+                                          refreshData();
+                                          toast({ title: "Ordem atualizada!" });
+                                        }
+                                      }}
+                                      title="Clique para mudar a ordem manualmente"
+                                    >
                                       {sIdx + 1}
                                     </div>
                                     <div className="absolute inset-0 bg-background/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
