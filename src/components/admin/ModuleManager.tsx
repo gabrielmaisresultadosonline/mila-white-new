@@ -919,6 +919,55 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
     }
   };
 
+  const handleMoveContent = (moduleId: string, contentId: string, direction: 'left' | 'right') => {
+    const data = getLocalData();
+    const module = data.modules?.find(m => m.id === moduleId);
+    if (!module) return;
+    
+    const contents = [...module.contents].sort((a, b) => a.order - b.order);
+    const index = contents.findIndex(c => c.id === contentId);
+    if (index < 0) return;
+    
+    if (direction === 'left' && index === 0) return;
+    if (direction === 'right' && index === contents.length - 1) return;
+    
+    const swapIndex = direction === 'left' ? index - 1 : index + 1;
+    [contents[index], contents[swapIndex]] = [contents[swapIndex], contents[index]];
+    
+    contents.forEach((c, i) => c.order = i + 1);
+    module.contents = contents;
+    
+    saveLocalData(data);
+    refreshData();
+    toast({ title: "Ordem do conteúdo atualizada!" });
+  };
+
+  const handleMoveSectionContent = (moduleId: string, sectionId: string, contentId: string, direction: 'up' | 'down') => {
+    const data = getLocalData();
+    const module = data.modules?.find(m => m.id === moduleId);
+    if (!module) return;
+    
+    const section = module.contents.find(c => c.id === sectionId && c.type === 'section') as ModuleSection | undefined;
+    if (!section) return;
+    
+    const contents = [...section.contents].sort((a, b) => a.order - b.order);
+    const index = contents.findIndex(c => c.id === contentId);
+    if (index < 0) return;
+    
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === contents.length - 1) return;
+    
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    [contents[index], contents[swapIndex]] = [contents[swapIndex], contents[index]];
+    
+    contents.forEach((c, i) => c.order = i + 1);
+    section.contents = contents;
+    
+    saveLocalData(data);
+    refreshData();
+    toast({ title: "Ordem na seção atualizada!" });
+  };
+
   const handleToggleContentNumber = (moduleId: string, content: ModuleContent) => {
     if (content.type === 'video') {
       handleUpdateContent(moduleId, content.id, { showNumber: !(content as ModuleVideo).showNumber });
@@ -1730,7 +1779,27 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                 }}
                               />
                               {(content as ModuleVideo).showNumber && (
-                                <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-lg">
+                                <div 
+                                  className="absolute top-2 left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-lg cursor-pointer hover:scale-110 transition-transform"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const newOrder = prompt(`Alterar ordem (atual: ${idx + 1}):`, (idx + 1).toString());
+                                    if (newOrder && !isNaN(parseInt(newOrder))) {
+                                      const orderInt = parseInt(newOrder);
+                                      const contents = [...module.contents].sort((a, b) => a.order - b.order);
+                                      const item = contents.splice(idx, 1)[0];
+                                      contents.splice(Math.max(0, orderInt - 1), 0, item);
+                                      contents.forEach((c, i) => c.order = i + 1);
+                                      const data = getLocalData();
+                                      const mod = data.modules.find(m => m.id === module.id);
+                                      if (mod) mod.contents = contents;
+                                      saveLocalData(data);
+                                      refreshData();
+                                      toast({ title: "Ordem atualizada!" });
+                                    }
+                                  }}
+                                  title="Clique para mudar a ordem manualmente"
+                                >
                                   {idx + 1}
                                 </div>
                               )}
@@ -1782,7 +1851,35 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                           </p>
                           
                           {/* Action buttons overlay */}
-                          <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap items-center justify-center gap-2 p-2">
+                            {/* Move Left */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveContent(module.id, content.id, 'left');
+                              }}
+                              className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                              disabled={idx === 0}
+                              title="Mover para esquerda"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5 -rotate-90" />
+                            </button>
+
+                            {/* Move Right */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveContent(module.id, content.id, 'right');
+                              }}
+                              className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                              disabled={idx === module.contents.length - 1}
+                              title="Mover para direita"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5 rotate-90" />
+                            </button>
+
                             {/* Edit button */}
                             <button
                               type="button"
@@ -2003,7 +2100,28 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                       alt={sContent.title}
                                       className="w-full h-full object-cover"
                                     />
-                                    <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                                    <div 
+                                      className="absolute top-2 left-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-lg cursor-pointer hover:scale-110 transition-transform"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newOrder = prompt(`Alterar ordem (atual: ${sIdx + 1}):`, (sIdx + 1).toString());
+                                        if (newOrder && !isNaN(parseInt(newOrder))) {
+                                          const orderInt = parseInt(newOrder);
+                                          const contents = [...section.contents].sort((a, b) => a.order - b.order);
+                                          const item = contents.splice(sIdx, 1)[0];
+                                          contents.splice(Math.max(0, orderInt - 1), 0, item);
+                                          contents.forEach((c, i) => c.order = i + 1);
+                                          const data = getLocalData();
+                                          const mod = data.modules.find(m => m.id === module.id);
+                                          const sec = mod?.contents.find(c => c.id === section.id && c.type === 'section') as ModuleSection | undefined;
+                                          if (sec) sec.contents = contents;
+                                          saveLocalData(data);
+                                          refreshData();
+                                          toast({ title: "Ordem atualizada!" });
+                                        }
+                                      }}
+                                      title="Clique para mudar a ordem manualmente"
+                                    >
                                       {sIdx + 1}
                                     </div>
                                     <div className="absolute inset-0 bg-background/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -2028,8 +2146,37 @@ const ModuleManager = ({ downloadLink, onDownloadLinkChange, onSaveSettings, pla
                                 )}
                                 <p className="text-xs font-medium mt-1 truncate">{sContent.title}</p>
                                 
-                                {/* Delete button */}
-                                <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                {/* Action buttons overlay */}
+                                <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap items-center justify-center gap-2 p-1">
+                                  {/* Move Left/Up */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMoveSectionContent(module.id, section.id, sContent.id, 'up');
+                                    }}
+                                    className="w-7 h-7 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                                    disabled={sIdx === 0}
+                                    title="Mover para cima"
+                                  >
+                                    <ArrowUp className="w-3.5 h-3.5" />
+                                  </button>
+
+                                  {/* Move Right/Down */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMoveSectionContent(module.id, section.id, sContent.id, 'down');
+                                    }}
+                                    className="w-7 h-7 bg-secondary rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-secondary/80 disabled:opacity-30"
+                                    disabled={sIdx === section.contents.length - 1}
+                                    title="Mover para baixo"
+                                  >
+                                    <ArrowDown className="w-3.5 h-3.5" />
+                                  </button>
+
+                                  {/* Delete button */}
                                   <button
                                     type="button"
                                     onClick={() => handleDeleteSectionContent(module.id, section.id, sContent.id)}
