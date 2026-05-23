@@ -54,7 +54,7 @@ interface SalesSettings {
 }
 
 const PLANS = {
-  test: { name: "Plano Teste", price: 1.00, days: 7, description: "Acesso de teste por 7 dias" },
+  
   annual: { name: "Anual", price: 397.00, days: 365, description: "Acesso por 1 ano" },
   lifetime: { name: "Vitalício", price: 797.00, days: 999999, description: "Acesso para sempre" },
 };
@@ -74,7 +74,7 @@ const VendasCompleta = () => {
   });
   
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<"annual" | "lifetime" | "test">("annual");
+  const [selectedPlan, setSelectedPlan] = useState<"annual" | "lifetime">("annual");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
