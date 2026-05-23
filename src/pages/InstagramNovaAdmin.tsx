@@ -2917,28 +2917,48 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                     </div>
                     
                     {/* Toggle Vitalício */}
-                    <div className="col-span-2 lg:col-span-3 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <label className="text-sm text-amber-400 font-medium flex items-center gap-2">
-                            ⭐ Afiliado Vitalício
-                          </label>
-                          <p className="text-xs text-zinc-500 mt-1">
-                            Sem data definida - Recebe comissão <strong className="text-green-400">na hora</strong> que vender
+                    <div className="col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <label className="text-sm text-amber-400 font-medium flex items-center gap-2">
+                              ⭐ Afiliado Vitalício
+                            </label>
+                            <p className="text-xs text-zinc-500 mt-1">
+                              Sem data definida - Recebe comissão <strong className="text-green-400">na hora</strong> que vender
+                            </p>
+                          </div>
+                          <Switch
+                            checked={isLifetimeAffiliate}
+                            onCheckedChange={(checked) => {
+                              setIsLifetimeAffiliate(checked);
+                              if (checked) {
+                                setPromoStartDate("");
+                                setPromoEndDate("");
+                                setPromoStartTime("");
+                                setPromoEndTime("");
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3">
+                        <label className="text-sm text-purple-400 font-medium flex items-center gap-2 mb-1">
+                          <DollarSign className="w-4 h-4" />
+                          Comissão por Venda (R$)
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="number"
+                            value={affiliateCommissionValue}
+                            onChange={(e) => setAffiliateCommissionValue(Number(e.target.value))}
+                            className="bg-zinc-800/50 border-zinc-600 text-white h-8"
+                          />
+                          <p className="text-xs text-zinc-500 whitespace-nowrap">
+                            Padrão: R$ 97
                           </p>
                         </div>
-                        <Switch
-                          checked={isLifetimeAffiliate}
-                          onCheckedChange={(checked) => {
-                            setIsLifetimeAffiliate(checked);
-                            if (checked) {
-                              setPromoStartDate("");
-                              setPromoEndDate("");
-                              setPromoStartTime("");
-                              setPromoEndTime("");
-                            }
-                          }}
-                        />
                       </div>
                     </div>
                   </div>
@@ -3080,7 +3100,7 @@ ${notPaidAttempts > 0 ? `🎯 Você tem ${notPaidAttempts} vendas para recuperar
                         const attempts = getAffiliateAttempts(affiliate.id);
                         const multipleAttempts = getMultipleAttempts(affiliate.id);
                         const revenue = sales.reduce((sum, o) => sum + Number(o.amount), 0);
-                        const commission = sales.length * 97;
+                        const commission = sales.length * (affiliate.commissionValue ?? 97);
                         
                         return (
                           <div 
