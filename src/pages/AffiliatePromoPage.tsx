@@ -1187,11 +1187,12 @@ const AffiliatePromoPage = () => {
 
             {/* Video de como faturar */}
             <div 
-              onClick={() => openVideo("WQwnAHNvSMU")}
+              onClick={() => openVideo("FbSPSMxTjDk")}
               className="relative rounded-xl overflow-hidden cursor-pointer group shadow-xl mb-6 max-w-2xl mx-auto"
             >
               <img 
-                src="https://img.youtube.com/vi/WQwnAHNvSMU/maxresdefault.jpg" 
+                src="https://img.youtube.com/vi/FbSPSMxTjDk/maxresdefault.jpg" 
+
                 alt="Video Como Faturar" 
                 className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
               />
@@ -1227,6 +1228,19 @@ const AffiliatePromoPage = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6">
             CONFIRA UMA APRESENTAÇÃO DE COMO DESENVOLVEMOS ESSA SOLUÇÃO:
           </h2>
+          
+          <div className="relative rounded-xl overflow-hidden shadow-2xl border border-green-500/30 mb-8">
+            <div className="aspect-video">
+              <iframe
+                src="https://www.youtube.com/embed/FbSPSMxTjDk?rel=0&modestbranding=1"
+                title="Renda Extra Apresentação"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+
           <p className="text-gray-400 mb-8">
             Está pronto para começar? Entre em contato e garanta seu acesso vitalício agora mesmo!
           </p>
