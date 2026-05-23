@@ -100,6 +100,7 @@ interface Affiliate {
   promoStartTime?: string; // HH:mm
   promoEndTime?: string;   // HH:mm
   isLifetime?: boolean;    // true = afiliado vitalício, recebe comissão na hora
+  commissionValue?: number; // Valor personalizado da comissão
 }
 
 const InstagramNovaAdmin = () => {
@@ -178,6 +179,7 @@ const InstagramNovaAdmin = () => {
   const [promoStartTime, setPromoStartTime] = useState("");
   const [promoEndTime, setPromoEndTime] = useState("");
   const [isLifetimeAffiliate, setIsLifetimeAffiliate] = useState(false);
+  const [affiliateCommissionValue, setAffiliateCommissionValue] = useState<number>(97);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [isEditingAffiliate, setIsEditingAffiliate] = useState(false);
