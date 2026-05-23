@@ -46,6 +46,7 @@ import {
 } from "lucide-react";
 import logoMro from "@/assets/logo-codigoinstashop.png";
 import ActiveClientsSection from "@/components/ActiveClientsSection";
+import WhatsAppFloatingButton from "@/components/whatsapp/WhatsAppFloatingButton";
 
 interface SalesSettings {
   whatsappNumber: string;
@@ -978,6 +979,7 @@ const VendasCompleta = () => {
           </div>
         </div>
       </footer>
+      <WhatsAppFloatingButton />
     </div>
   );
 };
