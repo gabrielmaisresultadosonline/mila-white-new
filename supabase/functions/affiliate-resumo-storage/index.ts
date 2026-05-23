@@ -202,6 +202,7 @@ serve(async (req) => {
       // Get affiliate config to get name
       let affiliateName = affiliateId;
       let isLifetime = false;
+      let commissionValue = 97;
       try {
         const { data: configData } = await supabase.storage
           .from('user-data')
@@ -214,6 +215,7 @@ serve(async (req) => {
           if (affiliate) {
             affiliateName = affiliate.name;
             isLifetime = affiliate.isLifetime || false;
+            commissionValue = affiliate.commissionValue ?? 97;
           }
         }
       } catch (e) {
@@ -368,8 +370,8 @@ serve(async (req) => {
           };
         });
 
-      const totalCommission = sales.length * 97;
-      const paidCommissionsTotal = salesList.filter(s => s.commissionPaid).length * 97;
+      const totalCommission = sales.length * commissionValue;
+      const paidCommissionsTotal = salesList.filter(s => s.commissionPaid).length * commissionValue;
       const pendingCommissionsTotal = totalCommission - paidCommissionsTotal;
 
       const resumo = {
