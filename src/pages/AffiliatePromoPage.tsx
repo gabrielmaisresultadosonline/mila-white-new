@@ -1170,7 +1170,7 @@ const AffiliatePromoPage = () => {
               </p>
             </div>
 
-            <div className="space-y-4 text-gray-300 text-sm sm:text-base mb-6">
+            <div className="space-y-4 text-gray-300 text-sm sm:text-base mb-6 text-center">
               <p>
                 Temos um método completo no qual você pode prestar serviços utilizando essa ferramenta, fechando contratos com empresas que buscam engajamento, clientes e vendas.
               </p>
@@ -1183,28 +1183,22 @@ const AffiliatePromoPage = () => {
               <p>
                 Esses testes servem para apresentar o serviço: você roda a ferramenta por 1 dia, o cliente vê o resultado e você fecha um contrato mensal com ele.
               </p>
+              
+              <p className="font-bold text-white pt-4">
+                🎬 VÍDEO: COMO FATURAR COM O CÓDIGO INSTASHOP
+              </p>
             </div>
 
             {/* Video de como faturar */}
-            <div 
-              onClick={() => openVideo("FbSPSMxTjDk")}
-              className="relative rounded-xl overflow-hidden cursor-pointer group shadow-xl mb-6 max-w-2xl mx-auto"
-            >
-              <img 
-                src="https://img.youtube.com/vi/FbSPSMxTjDk/maxresdefault.jpg" 
-
-                alt="Video Como Faturar" 
-                className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                  <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1" fill="white" />
-                </div>
-              </div>
-              <div className="absolute bottom-2 left-2 right-2 text-center">
-                <span className="bg-black/70 text-white text-xs sm:text-sm px-3 py-1 rounded-full">
-                  🎬 VÍDEO: COMO FATURAR COM O CÓDIGO INSTASHOP
-                </span>
+            <div className="relative rounded-xl overflow-hidden shadow-2xl border border-green-500/30 mb-8 max-w-4xl mx-auto">
+              <div className="aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/FbSPSMxTjDk?rel=0&modestbranding=1"
+                  title="Video Como Faturar"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </div>
             </div>
 
@@ -1219,38 +1213,6 @@ const AffiliatePromoPage = () => {
               Caso precise de mais contas no futuro, cobramos R$150 por conta adicional para quem já utiliza o sistema.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Video de Apresentação */}
-      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-black">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6">
-            CONFIRA UMA APRESENTAÇÃO DE COMO DESENVOLVEMOS ESSA SOLUÇÃO:
-          </h2>
-          
-          <div className="relative rounded-xl overflow-hidden shadow-2xl border border-green-500/30 mb-8">
-            <div className="aspect-video">
-              <iframe
-                src="https://www.youtube.com/embed/FbSPSMxTjDk?rel=0&modestbranding=1"
-                title="Renda Extra Apresentação"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-
-          <p className="text-gray-400 mb-8">
-            Está pronto para começar? Entre em contato e garanta seu acesso vitalício agora mesmo!
-          </p>
-          
-          <Button 
-            onClick={scrollToPricing}
-            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-sm sm:text-lg px-6 sm:px-10 py-5 sm:py-6 rounded-full shadow-lg shadow-green-500/30"
-          >
-            GARANTIR MEU ACESSO <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-          </Button>
         </div>
       </section>
 
