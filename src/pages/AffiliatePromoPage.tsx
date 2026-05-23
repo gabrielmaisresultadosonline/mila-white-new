@@ -1187,11 +1187,12 @@ const AffiliatePromoPage = () => {
 
             {/* Video de como faturar */}
             <div 
-              onClick={() => openVideo("WQwnAHNvSMU")}
+              onClick={() => openVideo("FbSPSMxTjDk")}
               className="relative rounded-xl overflow-hidden cursor-pointer group shadow-xl mb-6 max-w-2xl mx-auto"
             >
               <img 
-                src="https://img.youtube.com/vi/WQwnAHNvSMU/maxresdefault.jpg" 
+                src="https://img.youtube.com/vi/FbSPSMxTjDk/maxresdefault.jpg" 
+
                 alt="Video Como Faturar" 
                 className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
               />
