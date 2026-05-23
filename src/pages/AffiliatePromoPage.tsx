@@ -468,7 +468,7 @@ const AffiliatePromoPage = () => {
             <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-green-500/30">
               <div className="aspect-video">
                 <iframe
-                  src="https://www.youtube.com/embed/lecSwt54sa0?rel=0&modestbranding=1"
+                  src="https://www.youtube.com/embed/qWLdVeoWUns?rel=0&modestbranding=1"
                   title="Video Código InstaShop"
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
