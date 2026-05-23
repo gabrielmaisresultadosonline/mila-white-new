@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 const Obrigado = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [whatsappNumber, setWhatsappNumber] = useState("555195781011");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
