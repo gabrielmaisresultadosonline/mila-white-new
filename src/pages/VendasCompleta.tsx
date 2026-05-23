@@ -826,8 +826,8 @@ const VendasCompleta = () => {
           {/* Vídeo */}
           <div className="max-w-3xl mx-auto">
             <h4 className="text-center text-xl font-bold mb-6 text-fuchsia-300">🎬 CONFIRA UMA APRESENTAÇÃO DE COMO DESENVOLVEMOS ESSA SOLUÇÃO:</h4>
-            <div onClick={() => openVideo("WQwnAHNvSMU")} className="relative rounded-2xl overflow-hidden cursor-pointer group shadow-2xl shadow-fuchsia-500/10 border-2 border-fuchsia-500/30 hover:border-fuchsia-400/60 transition-all">
-              <img src="https://img.youtube.com/vi/WQwnAHNvSMU/maxresdefault.jpg" alt="Video 5K" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div onClick={() => openVideo("FbSPSMxTjDk")} className="relative rounded-2xl overflow-hidden cursor-pointer group shadow-2xl shadow-fuchsia-500/10 border-2 border-fuchsia-500/30 hover:border-fuchsia-400/60 transition-all">
+              <img src="https://img.youtube.com/vi/FbSPSMxTjDk/maxresdefault.jpg" alt="Video Renda Extra" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition-colors">
                 <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-fuchsia-500 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-fuchsia-500/40">
                   <Play className="w-8 h-8 text-white ml-1" fill="white" />
