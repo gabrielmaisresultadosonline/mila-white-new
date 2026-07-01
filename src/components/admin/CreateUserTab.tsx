@@ -13,8 +13,11 @@ import {
   Copy,
   Plus,
   History,
-  Search
+  Search,
+  Mail,
+  CloudUpload
 } from 'lucide-react';
+
 
 
 interface CreatedAccess {
@@ -151,6 +154,45 @@ export const CreateUserTab = () => {
       toast.error('Erro ao copiar');
     }
   };
+
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const [reprovisioning, setReprovisioning] = useState(false);
+
+  const resendEmail = async (access: CreatedAccess) => {
+    try {
+      setResendingId(access.id);
+      const { data, error } = await supabase.functions.invoke('manage-user-access', {
+        body: { action: 'resend_email', id: access.id },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        toast.success(`Email reenviado para ${access.customer_email}`);
+        loadHistory();
+      } else {
+        toast.error('Falha ao reenviar email');
+      }
+    } catch (e: any) {
+      toast.error('Erro: ' + e.message);
+    } finally {
+      setResendingId(null);
+    }
+  };
+
+  const reprovisionAllOnSquareCloud = async () => {
+    if (!confirm('Recriar TODOS os usuários (manuais + compras) na SquareCloud? Emails NÃO serão reenviados.')) return;
+    try {
+      setReprovisioning(true);
+      toast.info('Iniciando reprovisionamento na SquareCloud...');
+      const { data, error } = await supabase.functions.invoke('restore-paid-users', { body: {} });
+      if (error) throw error;
+      toast.success(`Reprovisionamento concluído: ${data?.restored ?? 0} usuários`);
+    } catch (e: any) {
+      toast.error('Erro no reprovisionamento: ' + e.message);
+    } finally {
+      setReprovisioning(false);
+    }
+  };
+
 
   const handleCreateAccess = async () => {
     if (!form.customerEmail || !form.username || !form.password) {
@@ -364,9 +406,22 @@ export const CreateUserTab = () => {
                 <History className="w-4 h-4 text-primary" />
                 Histórico ({filteredHistory.length})
               </span>
-              <Button variant="ghost" size="icon" onClick={loadHistory} disabled={loadingHistory} className="h-7 w-7">
-                <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin' : ''}`} />
-              </Button>
+              <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={reprovisionAllOnSquareCloud}
+                  disabled={reprovisioning}
+                  className="h-7 w-7"
+                  title="Recriar TODOS na SquareCloud (manuais + compras)"
+                >
+                  <CloudUpload className={`w-3.5 h-3.5 ${reprovisioning ? 'animate-pulse text-primary' : ''}`} />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={loadHistory} disabled={loadingHistory} className="h-7 w-7">
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin' : ''}`} />
+                </Button>
+              </div>
+
             </CardTitle>
             <div className="relative">
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -389,16 +444,31 @@ export const CreateUserTab = () => {
                   <div key={h.id} className="p-2.5 rounded-md bg-secondary/30 border border-border/50 hover:border-primary/30 transition-colors text-xs space-y-1">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-semibold text-primary truncate">{h.username}</span>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-6 w-6 shrink-0"
-                        onClick={() => copyToClipboard(h)}
-                        title="Copiar mensagem para cliente"
-                      >
-                        <Copy className="w-3 h-3" />
-                      </Button>
+                      <div className="flex gap-1 shrink-0">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-6 w-6"
+                          onClick={() => resendEmail(h)}
+                          disabled={resendingId === h.id}
+                          title="Reenviar email de acesso"
+                        >
+                          {resendingId === h.id
+                            ? <RefreshCw className="w-3 h-3 animate-spin" />
+                            : <Mail className="w-3 h-3" />}
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-6 w-6"
+                          onClick={() => copyToClipboard(h)}
+                          title="Copiar mensagem para cliente"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </div>
                     </div>
+
                     <p className="text-muted-foreground truncate">{h.customer_email}</p>
                     <div className="flex items-center justify-between text-[10px] text-muted-foreground">
                       <span>{h.access_type === 'lifetime' ? 'Vitalício' : h.access_type === 'annual' ? 'Anual' : 'Mensal'}</span>
