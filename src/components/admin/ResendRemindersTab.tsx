@@ -44,7 +44,7 @@ export function ResendRemindersTab() {
   const [subject, setSubject] = useState(DEFAULT_SUBJECT);
   const [body, setBody] = useState(DEFAULT_BODY);
   const [sending, setSending] = useState(false);
-  const [pausedRef] = useState({ current: false });
+  const pausedRef = useRef({ current: false });
   const stopRef = useRef({ current: false });
   const [progress, setProgress] = useState({ done: 0, total: 0, current: '', ok: 0, fail: 0 });
   const [search, setSearch] = useState('');
