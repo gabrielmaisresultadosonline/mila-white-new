@@ -228,7 +228,7 @@ export function ResendRemindersTab() {
             <Input value={subject} onChange={e => setSubject(e.target.value)} disabled={sending} />
           </div>
           <div>
-            <Label>Mensagem <span className="text-xs text-muted-foreground">(use <code>[BOTAO_WHATSAPP]</code> para inserir o botão do WhatsApp)</span></Label>
+            <Label>Mensagem <span className="text-xs text-muted-foreground">(placeholders: <code>[USUARIO]</code>, <code>[SENHA]</code>, <code>[EMAIL]</code>, <code>[BOTAO_WHATSAPP]</code>)</span></Label>
             <Textarea value={body} onChange={e => setBody(e.target.value)} rows={14} disabled={sending} className="font-mono text-sm" />
           </div>
           <div className="flex items-center gap-3 flex-wrap">
