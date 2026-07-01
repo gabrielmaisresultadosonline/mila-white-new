@@ -162,7 +162,7 @@ Deno.serve(async (req) => {
     squarecloud_existed: report.filter(r => r.squarecloud?.existed).length,
   };
 
-  return new Response(JSON.stringify({ summary, report }, null, 2), {
+  return new Response(JSON.stringify({ summary, restored: summary.total, report }, null, 2), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 });
