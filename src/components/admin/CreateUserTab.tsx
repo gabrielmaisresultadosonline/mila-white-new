@@ -354,6 +354,72 @@ export const CreateUserTab = () => {
           )}
         </CardContent>
       </Card>
+      </div>
+
+      <div className="lg:col-span-1">
+        <Card className="glass-card border-primary/20 lg:sticky lg:top-4">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between text-base">
+              <span className="flex items-center gap-2">
+                <History className="w-4 h-4 text-primary" />
+                Histórico ({filteredHistory.length})
+              </span>
+              <Button variant="ghost" size="icon" onClick={loadHistory} disabled={loadingHistory} className="h-7 w-7">
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin' : ''}`} />
+              </Button>
+            </CardTitle>
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Buscar usuário/email..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-secondary/30 h-8 pl-8 text-xs"
+              />
+            </div>
+          </CardHeader>
+          <CardContent className="p-3">
+            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+              {loadingHistory && history.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-4">Carregando...</p>
+              ) : filteredHistory.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-4">Nenhum usuário criado ainda</p>
+              ) : (
+                filteredHistory.map((h) => (
+                  <div key={h.id} className="p-2.5 rounded-md bg-secondary/30 border border-border/50 hover:border-primary/30 transition-colors text-xs space-y-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-semibold text-primary truncate">{h.username}</span>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 shrink-0"
+                        onClick={() => copyToClipboard(h)}
+                        title="Copiar mensagem para cliente"
+                      >
+                        <Copy className="w-3 h-3" />
+                      </Button>
+                    </div>
+                    <p className="text-muted-foreground truncate">{h.customer_email}</p>
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                      <span>{h.access_type === 'lifetime' ? 'Vitalício' : h.access_type === 'annual' ? 'Anual' : 'Mensal'}</span>
+                      <span>{new Date(h.created_at).toLocaleDateString('pt-BR')}</span>
+                    </div>
+                    <div className="flex gap-1 text-[10px]">
+                      <span className={`px-1.5 py-0.5 rounded ${h.api_created ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        API {h.api_created ? '✓' : '✗'}
+                      </span>
+                      <span className={`px-1.5 py-0.5 rounded ${h.email_sent ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        Email {h.email_sent ? '✓' : '✗'}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
+
