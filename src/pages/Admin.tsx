@@ -27,18 +27,21 @@ import TicketsManager from '@/components/admin/TicketsManager';
 import UsersListPanel from '@/components/admin/UsersListPanel';
 import WhatsAppSettingsTab from '@/components/admin/WhatsAppSettingsTab';
 import { CreateUserTab } from '@/components/admin/CreateUserTab';
+import { ResendRemindersTab } from '@/components/admin/ResendRemindersTab';
+
 import {
   Users, Settings, Video, LogOut, Search, 
   Eye, TrendingUp, Calendar, Sparkles, Download, 
   Save, RefreshCw, Check, ExternalLink,
   Image as ImageIcon, BarChart3, User, CloudDownload,
-  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2, UserPlus
+  Instagram, CheckCircle, XCircle, Phone, Bell, MessageCircle, Ticket, Globe, ShoppingCart, Users2, UserPlus, Send
 } from 'lucide-react';
+
 import ManualScraper from '@/components/admin/ManualScraper';
 import { lazy, Suspense } from 'react';
 const InstagramNovaAdmin = lazy(() => import('./InstagramNovaAdmin'));
 
-type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados' | 'create_user';
+type Tab = 'users' | 'analytics' | 'calls' | 'sync' | 'tutorials' | 'zapmro' | 'estrutura' | 'tickets' | 'announcements' | 'pixel' | 'settings' | 'scraper' | 'userlist' | 'whatsapp' | 'vendas' | 'afiliados' | 'create_user' | 'resend_reminders';
 type UserFilter = 'all' | 'instagram' | 'connected';
 
 const Admin = () => {
@@ -221,6 +224,8 @@ const Admin = () => {
   const tabs = [
     { id: 'userlist', label: 'Lista Usuários (SquareCloud)', icon: <User className="w-4 h-4" /> },
     { id: 'create_user', label: 'Criar Usuário', icon: <UserPlus className="w-4 h-4" /> },
+    { id: 'resend_reminders', label: 'Reenviar Lembretes', icon: <Send className="w-4 h-4" /> },
+
     { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
     { id: 'vendas', label: 'Vendas', icon: <ShoppingCart className="w-4 h-4" /> },
     { id: 'afiliados', label: 'Afiliados', icon: <Users2 className="w-4 h-4" /> },
@@ -977,6 +982,11 @@ const Admin = () => {
         {activeTab === 'create_user' && (
           <CreateUserTab />
         )}
+
+        {activeTab === 'resend_reminders' && (
+          <ResendRemindersTab />
+        )}
+
         {/* Users List Tab */}
         {activeTab === 'userlist' && (
           <UsersListPanel />
