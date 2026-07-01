@@ -75,6 +75,9 @@ export const CreateUserTab = () => {
   const [loading, setLoading] = useState(false);
   const [lastCreatedAccess, setLastCreatedAccess] = useState<any>(null);
   const [settings, setSettings] = useState<AdminSettings>(DEFAULT_SETTINGS);
+  const [history, setHistory] = useState<CreatedAccess[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [search, setSearch] = useState('');
 
   const [form, setForm] = useState({
     customerEmail: '',
@@ -88,7 +91,25 @@ export const CreateUserTab = () => {
 
   useEffect(() => {
     loadSettings();
+    loadHistory();
   }, []);
+
+  const loadHistory = async () => {
+    try {
+      setLoadingHistory(true);
+      const { data, error } = await supabase.functions.invoke('manage-user-access', {
+        body: { action: 'list_accesses' },
+      });
+      if (!error && data?.accesses) {
+        setHistory(data.accesses);
+      }
+    } catch (e) {
+      console.error('Error loading history:', e);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
 
   const loadSettings = async () => {
     try {
