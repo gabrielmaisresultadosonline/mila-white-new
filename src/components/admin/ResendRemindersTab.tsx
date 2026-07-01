@@ -55,7 +55,7 @@ export function ResendRemindersTab() {
 
   const [progress, setProgress] = useState({ done: 0, total: 0, current: '', ok: 0, fail: 0 });
   const [search, setSearch] = useState('');
-  const [skipAlreadySent, setSkipAlreadySent] = useState(true);
+  const [skipAlreadySent, setSkipAlreadySent] = useState(false);
   const [minDelay, setMinDelay] = useState(2);
   const [maxDelay, setMaxDelay] = useState(6);
 
