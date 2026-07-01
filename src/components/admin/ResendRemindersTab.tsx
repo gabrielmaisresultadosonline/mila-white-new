@@ -24,24 +24,27 @@ interface LogEntry {
 
 const LOGIN_URL = 'https://codigoinstashop.com.br/instagram';
 const DEFAULT_SUBJECT = 'Seu acesso à ferramenta Código InstaShop';
-const DEFAULT_BODY = `Olá!
+const DEFAULT_BODY = `<p style="margin:0 0 16px 0;color:#333;font-size:15px;line-height:1.6;">Olá!</p>
 
-Estamos passando para <strong>lembrar do seu acesso</strong> à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.
+<p style="margin:0 0 16px 0;color:#333;font-size:15px;line-height:1.6;">Estamos passando para <strong>lembrar do seu acesso</strong> à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.</p>
 
-<strong>🔐 Seus dados de acesso:</strong>
+<p style="margin:0 0 12px 0;color:#333;font-size:16px;line-height:1.6;"><strong>🔐 Seus dados de acesso:</strong></p>
 
-🌐 <strong>Link de acesso:</strong> ${LOGIN_URL}
-👤 <strong>Usuário:</strong> [USUARIO]
-🔑 <strong>Senha:</strong> [SENHA]
+<table cellpadding="0" cellspacing="0" style="width:100%;background:#f8f9fa;border-left:4px solid #FFD700;border-radius:6px;margin:0 0 20px 0;">
+  <tr><td style="padding:16px 20px;">
+    <p style="margin:0 0 10px 0;color:#333;font-size:14px;line-height:1.6;">🌐 <strong>Link de acesso:</strong><br><a href="${LOGIN_URL}" style="color:#0066cc;word-break:break-all;">${LOGIN_URL}</a></p>
+    <p style="margin:0 0 10px 0;color:#333;font-size:14px;line-height:1.6;">👤 <strong>Usuário:</strong> <code style="background:#fff;padding:3px 8px;border-radius:4px;border:1px solid #ddd;font-size:14px;">[USUARIO]</code></p>
+    <p style="margin:0;color:#333;font-size:14px;line-height:1.6;">🔑 <strong>Senha:</strong> <code style="background:#fff;padding:3px 8px;border-radius:4px;border:1px solid #ddd;font-size:14px;">[SENHA]</code></p>
+  </td></tr>
+</table>
 
-Guarde este email em um local seguro. Caso tenha qualquer dúvida ou precise de ajuda com o acesso, nosso suporte está à disposição no WhatsApp:
+<p style="margin:0 0 16px 0;color:#333;font-size:15px;line-height:1.6;">Guarde este email em um local seguro. Caso tenha qualquer dúvida ou precise de ajuda, nosso suporte está à disposição no WhatsApp:</p>
 
 [BOTAO_WHATSAPP]
 
-Continue aproveitando ao máximo todas as ferramentas para crescer no Instagram.
+<p style="margin:20px 0 16px 0;color:#333;font-size:15px;line-height:1.6;">Continue aproveitando ao máximo todas as ferramentas para crescer no Instagram.</p>
 
-Abraços,
-Equipe Código InstaShop`;
+<p style="margin:0;color:#333;font-size:15px;line-height:1.6;">Abraços,<br><strong>Equipe Código InstaShop</strong></p>`;
 
 export function ResendRemindersTab() {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
