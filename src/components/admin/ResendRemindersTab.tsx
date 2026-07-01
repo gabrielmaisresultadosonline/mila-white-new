@@ -71,21 +71,33 @@ export function ResendRemindersTab() {
 
       const map = new Map<string, Recipient>();
 
-      for (const o of ordersRes.data || []) {
-        if (!o.email) continue;
-        // Remove prefix like "affiliate:email@x.com"
-        let em = String(o.email).trim().toLowerCase();
-        const colonIdx = em.indexOf(':');
-        if (colonIdx > 0 && !em.substring(0, colonIdx).includes('@')) em = em.substring(colonIdx + 1);
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
-        if (!map.has(em)) map.set(em, { email: em, name: o.username || '', username: o.username || '', source: 'vendas' });
-      }
-
+      // Manual first (has plaintext password)
       for (const m of manualList) {
         if (!m.customer_email) continue;
         const em = String(m.customer_email).trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
-        if (!map.has(em)) map.set(em, { email: em, name: m.customer_name || m.username || '', username: m.username || '', source: 'manual' });
+        if (!map.has(em)) map.set(em, {
+          email: em,
+          name: m.customer_name || m.username || '',
+          username: m.username || '',
+          password: m.password || '',
+          source: 'manual',
+        });
+      }
+
+      for (const o of ordersRes.data || []) {
+        if (!o.email) continue;
+        let em = String(o.email).trim().toLowerCase();
+        const colonIdx = em.indexOf(':');
+        if (colonIdx > 0 && !em.substring(0, colonIdx).includes('@')) em = em.substring(colonIdx + 1);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
+        if (!map.has(em)) map.set(em, {
+          email: em,
+          name: o.username || '',
+          username: o.username || '',
+          password: '',
+          source: 'vendas',
+        });
       }
 
       setRecipients(Array.from(map.values()));
