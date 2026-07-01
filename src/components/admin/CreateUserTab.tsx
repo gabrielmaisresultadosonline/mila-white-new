@@ -13,8 +13,11 @@ import {
   Copy,
   Plus,
   History,
-  Search
+  Search,
+  Mail,
+  CloudUpload
 } from 'lucide-react';
+
 
 
 interface CreatedAccess {
