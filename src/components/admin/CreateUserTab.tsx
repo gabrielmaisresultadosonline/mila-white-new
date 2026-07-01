@@ -194,6 +194,7 @@ export const CreateUserTab = () => {
         notes: '',
         createInApi: true,
       });
+      loadHistory();
     } catch (error: any) {
       toast.error('Erro ao criar acesso: ' + error.message);
     } finally {
@@ -201,8 +202,20 @@ export const CreateUserTab = () => {
     }
   };
 
+  const filteredHistory = history.filter(h => {
+    const q = search.toLowerCase().trim();
+    if (!q) return true;
+    return (
+      h.username?.toLowerCase().includes(q) ||
+      h.customer_email?.toLowerCase().includes(q) ||
+      h.customer_name?.toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      <div className="lg:col-span-2 space-y-6">
+
       <Card className="glass-card border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
