@@ -321,6 +321,7 @@ export function ResendRemindersTab() {
             )}
             {filtered.map(r => {
               const sent = sentSet.has(r.email);
+              const busy = singleSending === r.email;
               return (
                 <div key={r.email} className="flex items-center justify-between gap-2 p-2 rounded hover:bg-muted text-xs">
                   <div className="min-w-0 flex-1">
@@ -339,6 +340,16 @@ export function ResendRemindersTab() {
                       <span className="text-amber-500 text-[10px]">pendente</span>
                     )}
                   </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2 shrink-0"
+                    disabled={busy || sending}
+                    onClick={() => sendOne(r)}
+                    title="Enviar apenas para este"
+                  >
+                    {busy ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                  </Button>
                 </div>
               );
             })}
