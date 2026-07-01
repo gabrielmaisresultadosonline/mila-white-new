@@ -157,11 +157,20 @@ export function ResendRemindersTab() {
       setProgress(p => ({ ...p, current: r.email, done: i }));
 
       try {
+        const usuarioTxt = r.username || r.email;
+        const senhaTxt = r.password
+          ? r.password
+          : 'entre em contato no WhatsApp para recuperar';
+        const personalizedBody = body
+          .replace(/\[USUARIO\]/g, usuarioTxt)
+          .replace(/\[SENHA\]/g, senhaTxt)
+          .replace(/\[EMAIL\]/g, r.email);
+
         const { data, error } = await supabase.functions.invoke('broadcast-email', {
           body: {
             to: r.email,
             subject: subject.trim(),
-            body: body,
+            body: personalizedBody,
             userName: r.name,
             rawHtml: false,
           },
