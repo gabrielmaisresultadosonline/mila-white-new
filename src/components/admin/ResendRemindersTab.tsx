@@ -58,9 +58,10 @@ export function ResendRemindersTab() {
     try {
       const [ordersRes, manualRes, logsRes] = await Promise.all([
         supabase.from('mro_orders').select('email, username, status').eq('status', 'completed'),
-        supabase.from('created_accesses').select('customer_email, customer_name, username').eq('service_type', 'instagram'),
+        supabase.functions.invoke('manage-user-access', { body: { action: 'list_accesses' } }),
         supabase.from('broadcast_email_logs').select('recipient_email, status, sent_at, created_at').order('created_at', { ascending: false }).limit(2000),
       ]);
+      const manualList: any[] = (manualRes as any)?.data?.accesses || [];
 
       const map = new Map<string, Recipient>();
 
@@ -74,7 +75,7 @@ export function ResendRemindersTab() {
         if (!map.has(em)) map.set(em, { email: em, name: o.username || '', username: o.username || '', source: 'vendas' });
       }
 
-      for (const m of manualRes.data || []) {
+      for (const m of manualList) {
         if (!m.customer_email) continue;
         const em = String(m.customer_email).trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
