@@ -406,9 +406,22 @@ export const CreateUserTab = () => {
                 <History className="w-4 h-4 text-primary" />
                 Histórico ({filteredHistory.length})
               </span>
-              <Button variant="ghost" size="icon" onClick={loadHistory} disabled={loadingHistory} className="h-7 w-7">
-                <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin' : ''}`} />
-              </Button>
+              <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={reprovisionAllOnSquareCloud}
+                  disabled={reprovisioning}
+                  className="h-7 w-7"
+                  title="Recriar TODOS na SquareCloud (manuais + compras)"
+                >
+                  <CloudUpload className={`w-3.5 h-3.5 ${reprovisioning ? 'animate-pulse text-primary' : ''}`} />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={loadHistory} disabled={loadingHistory} className="h-7 w-7">
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin' : ''}`} />
+                </Button>
+              </div>
+
             </CardTitle>
             <div className="relative">
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
