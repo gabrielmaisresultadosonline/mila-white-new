@@ -1838,6 +1838,87 @@ export type Database = {
         }
         Relationships: []
       }
+      paid_users_audit_log: {
+        Row: {
+          application_name: string | null
+          client_addr: string | null
+          created_at: string
+          email: string | null
+          id: string
+          new_data: Json | null
+          old_data: Json | null
+          operation: string
+          paid_user_id: string | null
+          performed_by: string | null
+          rows_affected_in_stmt: number | null
+          session_user_name: string | null
+          statement_query: string | null
+          username: string | null
+        }
+        Insert: {
+          application_name?: string | null
+          client_addr?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          new_data?: Json | null
+          old_data?: Json | null
+          operation: string
+          paid_user_id?: string | null
+          performed_by?: string | null
+          rows_affected_in_stmt?: number | null
+          session_user_name?: string | null
+          statement_query?: string | null
+          username?: string | null
+        }
+        Update: {
+          application_name?: string | null
+          client_addr?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          new_data?: Json | null
+          old_data?: Json | null
+          operation?: string
+          paid_user_id?: string | null
+          performed_by?: string | null
+          rows_affected_in_stmt?: number | null
+          session_user_name?: string | null
+          statement_query?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      paid_users_backup_daily: {
+        Row: {
+          created_at: string
+          data: Json
+          email: string | null
+          id: string
+          paid_user_id: string | null
+          snapshot_date: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email?: string | null
+          id?: string
+          paid_user_id?: string | null
+          snapshot_date: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email?: string | null
+          id?: string
+          paid_user_id?: string | null
+          snapshot_date?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
       payment_orders: {
         Row: {
           amount: number
@@ -3246,6 +3327,11 @@ export type Database = {
       increment_corretor_corrections: {
         Args: { p_user_id: string }
         Returns: undefined
+      }
+      paid_users_daily_backup: { Args: never; Returns: number }
+      restore_paid_users_from_backup: {
+        Args: { p_snapshot_date?: string }
+        Returns: number
       }
     }
     Enums: {
