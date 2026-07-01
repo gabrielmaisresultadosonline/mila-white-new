@@ -161,9 +161,8 @@ export function ResendRemindersTab() {
 
       try {
         const usuarioTxt = r.username || r.email;
-        const senhaTxt = r.password
-          ? r.password
-          : 'entre em contato no WhatsApp para recuperar';
+        // Padrão do sistema: senha = username quando não temos plaintext (vendas)
+        const senhaTxt = r.password || r.username || '';
         const personalizedBody = body
           .replace(/\[USUARIO\]/g, usuarioTxt)
           .replace(/\[SENHA\]/g, senhaTxt)
