@@ -198,6 +198,30 @@ export function ResendRemindersTab() {
     loadData();
   };
 
+  const [singleSending, setSingleSending] = useState<string | null>(null);
+  const sendOne = async (r: Recipient) => {
+    if (!subject.trim() || !body.trim()) { toast.error('Preencha assunto e corpo'); return; }
+    setSingleSending(r.email);
+    try {
+      const usuarioTxt = r.username || r.email;
+      const senhaTxt = r.password || r.username || '';
+      const personalizedBody = body
+        .replace(/\[USUARIO\]/g, usuarioTxt)
+        .replace(/\[SENHA\]/g, senhaTxt)
+        .replace(/\[EMAIL\]/g, r.email);
+      const { data, error } = await supabase.functions.invoke('broadcast-email', {
+        body: { to: r.email, subject: subject.trim(), body: personalizedBody, userName: r.name, rawHtml: false },
+      });
+      if (error || !data?.success) throw new Error(error?.message || data?.error || 'Falha');
+      toast.success(`Enviado para ${r.email}`);
+      loadData();
+    } catch (e: any) {
+      toast.error(`Falha ao enviar: ${e.message}`);
+    } finally {
+      setSingleSending(null);
+    }
+  };
+
   const alreadySentCount = filtered.filter(r => sentSet.has(r.email)).length;
 
   return (
@@ -297,6 +321,7 @@ export function ResendRemindersTab() {
             )}
             {filtered.map(r => {
               const sent = sentSet.has(r.email);
+              const busy = singleSending === r.email;
               return (
                 <div key={r.email} className="flex items-center justify-between gap-2 p-2 rounded hover:bg-muted text-xs">
                   <div className="min-w-0 flex-1">
@@ -315,6 +340,16 @@ export function ResendRemindersTab() {
                       <span className="text-amber-500 text-[10px]">pendente</span>
                     )}
                   </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2 shrink-0"
+                    disabled={busy || sending}
+                    onClick={() => sendOne(r)}
+                    title="Enviar apenas para este"
+                  >
+                    {busy ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                  </Button>
                 </div>
               );
             })}
