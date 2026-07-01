@@ -198,6 +198,30 @@ export function ResendRemindersTab() {
     loadData();
   };
 
+  const [singleSending, setSingleSending] = useState<string | null>(null);
+  const sendOne = async (r: Recipient) => {
+    if (!subject.trim() || !body.trim()) { toast.error('Preencha assunto e corpo'); return; }
+    setSingleSending(r.email);
+    try {
+      const usuarioTxt = r.username || r.email;
+      const senhaTxt = r.password || r.username || '';
+      const personalizedBody = body
+        .replace(/\[USUARIO\]/g, usuarioTxt)
+        .replace(/\[SENHA\]/g, senhaTxt)
+        .replace(/\[EMAIL\]/g, r.email);
+      const { data, error } = await supabase.functions.invoke('broadcast-email', {
+        body: { to: r.email, subject: subject.trim(), body: personalizedBody, userName: r.name, rawHtml: false },
+      });
+      if (error || !data?.success) throw new Error(error?.message || data?.error || 'Falha');
+      toast.success(`Enviado para ${r.email}`);
+      loadData();
+    } catch (e: any) {
+      toast.error(`Falha ao enviar: ${e.message}`);
+    } finally {
+      setSingleSending(null);
+    }
+  };
+
   const alreadySentCount = filtered.filter(r => sentSet.has(r.email)).length;
 
   return (
