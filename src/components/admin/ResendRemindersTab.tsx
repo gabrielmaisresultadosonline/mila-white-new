@@ -11,6 +11,7 @@ interface Recipient {
   email: string;
   name: string;
   username: string;
+  password: string;
   source: 'vendas' | 'manual';
 }
 
@@ -21,14 +22,19 @@ interface LogEntry {
   created_at: string;
 }
 
-const DEFAULT_SUBJECT = 'Lembrete: Seu acesso à ferramenta Código InstaShop';
+const LOGIN_URL = 'https://codigoinstashop.com.br/instagram';
+const DEFAULT_SUBJECT = 'Seu acesso à ferramenta Código InstaShop';
 const DEFAULT_BODY = `Olá!
 
-Estamos passando para lembrar do seu acesso à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.
+Estamos passando para <strong>lembrar do seu acesso</strong> à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.
 
-Se precisar de qualquer ajuda para acessar a plataforma, recuperar sua senha ou tirar dúvidas sobre as funcionalidades, nosso suporte está à disposição.
+<strong>🔐 Seus dados de acesso:</strong>
 
-Basta clicar no botão abaixo para falar diretamente com o nosso time no WhatsApp:
+🌐 <strong>Link de acesso:</strong> ${LOGIN_URL}
+👤 <strong>Usuário:</strong> [USUARIO]
+🔑 <strong>Senha:</strong> [SENHA]
+
+Guarde este email em um local seguro. Caso tenha qualquer dúvida ou precise de ajuda com o acesso, nosso suporte está à disposição no WhatsApp:
 
 [BOTAO_WHATSAPP]
 
@@ -65,21 +71,33 @@ export function ResendRemindersTab() {
 
       const map = new Map<string, Recipient>();
 
-      for (const o of ordersRes.data || []) {
-        if (!o.email) continue;
-        // Remove prefix like "affiliate:email@x.com"
-        let em = String(o.email).trim().toLowerCase();
-        const colonIdx = em.indexOf(':');
-        if (colonIdx > 0 && !em.substring(0, colonIdx).includes('@')) em = em.substring(colonIdx + 1);
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
-        if (!map.has(em)) map.set(em, { email: em, name: o.username || '', username: o.username || '', source: 'vendas' });
-      }
-
+      // Manual first (has plaintext password)
       for (const m of manualList) {
         if (!m.customer_email) continue;
         const em = String(m.customer_email).trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
-        if (!map.has(em)) map.set(em, { email: em, name: m.customer_name || m.username || '', username: m.username || '', source: 'manual' });
+        if (!map.has(em)) map.set(em, {
+          email: em,
+          name: m.customer_name || m.username || '',
+          username: m.username || '',
+          password: m.password || '',
+          source: 'manual',
+        });
+      }
+
+      for (const o of ordersRes.data || []) {
+        if (!o.email) continue;
+        let em = String(o.email).trim().toLowerCase();
+        const colonIdx = em.indexOf(':');
+        if (colonIdx > 0 && !em.substring(0, colonIdx).includes('@')) em = em.substring(colonIdx + 1);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
+        if (!map.has(em)) map.set(em, {
+          email: em,
+          name: o.username || '',
+          username: o.username || '',
+          password: '',
+          source: 'vendas',
+        });
       }
 
       setRecipients(Array.from(map.values()));
@@ -139,11 +157,20 @@ export function ResendRemindersTab() {
       setProgress(p => ({ ...p, current: r.email, done: i }));
 
       try {
+        const usuarioTxt = r.username || r.email;
+        const senhaTxt = r.password
+          ? r.password
+          : 'entre em contato no WhatsApp para recuperar';
+        const personalizedBody = body
+          .replace(/\[USUARIO\]/g, usuarioTxt)
+          .replace(/\[SENHA\]/g, senhaTxt)
+          .replace(/\[EMAIL\]/g, r.email);
+
         const { data, error } = await supabase.functions.invoke('broadcast-email', {
           body: {
             to: r.email,
             subject: subject.trim(),
-            body: body,
+            body: personalizedBody,
             userName: r.name,
             rawHtml: false,
           },
@@ -201,7 +228,7 @@ export function ResendRemindersTab() {
             <Input value={subject} onChange={e => setSubject(e.target.value)} disabled={sending} />
           </div>
           <div>
-            <Label>Mensagem <span className="text-xs text-muted-foreground">(use <code>[BOTAO_WHATSAPP]</code> para inserir o botão do WhatsApp)</span></Label>
+            <Label>Mensagem <span className="text-xs text-muted-foreground">(placeholders: <code>[USUARIO]</code>, <code>[SENHA]</code>, <code>[EMAIL]</code>, <code>[BOTAO_WHATSAPP]</code>)</span></Label>
             <Textarea value={body} onChange={e => setBody(e.target.value)} rows={14} disabled={sending} className="font-mono text-sm" />
           </div>
           <div className="flex items-center gap-3 flex-wrap">
