@@ -431,16 +431,31 @@ export const CreateUserTab = () => {
                   <div key={h.id} className="p-2.5 rounded-md bg-secondary/30 border border-border/50 hover:border-primary/30 transition-colors text-xs space-y-1">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-semibold text-primary truncate">{h.username}</span>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-6 w-6 shrink-0"
-                        onClick={() => copyToClipboard(h)}
-                        title="Copiar mensagem para cliente"
-                      >
-                        <Copy className="w-3 h-3" />
-                      </Button>
+                      <div className="flex gap-1 shrink-0">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-6 w-6"
+                          onClick={() => resendEmail(h)}
+                          disabled={resendingId === h.id}
+                          title="Reenviar email de acesso"
+                        >
+                          {resendingId === h.id
+                            ? <RefreshCw className="w-3 h-3 animate-spin" />
+                            : <Mail className="w-3 h-3" />}
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-6 w-6"
+                          onClick={() => copyToClipboard(h)}
+                          title="Copiar mensagem para cliente"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </div>
                     </div>
+
                     <p className="text-muted-foreground truncate">{h.customer_email}</p>
                     <div className="flex items-center justify-between text-[10px] text-muted-foreground">
                       <span>{h.access_type === 'lifetime' ? 'Vitalício' : h.access_type === 'annual' ? 'Anual' : 'Mensal'}</span>
