@@ -75,7 +75,7 @@ export function ResendRemindersTab() {
         if (!map.has(em)) map.set(em, { email: em, name: o.username || '', username: o.username || '', source: 'vendas' });
       }
 
-      for (const m of manualRes.data || []) {
+      for (const m of manualList) {
         if (!m.customer_email) continue;
         const em = String(m.customer_email).trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) continue;
