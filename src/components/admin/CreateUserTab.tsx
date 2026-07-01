@@ -155,6 +155,45 @@ export const CreateUserTab = () => {
     }
   };
 
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const [reprovisioning, setReprovisioning] = useState(false);
+
+  const resendEmail = async (access: CreatedAccess) => {
+    try {
+      setResendingId(access.id);
+      const { data, error } = await supabase.functions.invoke('manage-user-access', {
+        body: { action: 'resend_email', id: access.id },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        toast.success(`Email reenviado para ${access.customer_email}`);
+        loadHistory();
+      } else {
+        toast.error('Falha ao reenviar email');
+      }
+    } catch (e: any) {
+      toast.error('Erro: ' + e.message);
+    } finally {
+      setResendingId(null);
+    }
+  };
+
+  const reprovisionAllOnSquareCloud = async () => {
+    if (!confirm('Recriar TODOS os usuários (manuais + compras) na SquareCloud? Emails NÃO serão reenviados.')) return;
+    try {
+      setReprovisioning(true);
+      toast.info('Iniciando reprovisionamento na SquareCloud...');
+      const { data, error } = await supabase.functions.invoke('restore-paid-users', { body: {} });
+      if (error) throw error;
+      toast.success(`Reprovisionamento concluído: ${data?.restored ?? 0} usuários`);
+    } catch (e: any) {
+      toast.error('Erro no reprovisionamento: ' + e.message);
+    } finally {
+      setReprovisioning(false);
+    }
+  };
+
+
   const handleCreateAccess = async () => {
     if (!form.customerEmail || !form.username || !form.password) {
       toast.error('Preencha email, usuário e senha!');
