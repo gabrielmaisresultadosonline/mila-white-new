@@ -11,6 +11,7 @@ interface Recipient {
   email: string;
   name: string;
   username: string;
+  password: string;
   source: 'vendas' | 'manual';
 }
 
@@ -21,14 +22,19 @@ interface LogEntry {
   created_at: string;
 }
 
-const DEFAULT_SUBJECT = 'Lembrete: Seu acesso à ferramenta Código InstaShop';
+const LOGIN_URL = 'https://codigoinstashop.com.br/instagram';
+const DEFAULT_SUBJECT = 'Seu acesso à ferramenta Código InstaShop';
 const DEFAULT_BODY = `Olá!
 
-Estamos passando para lembrar do seu acesso à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.
+Estamos passando para <strong>lembrar do seu acesso</strong> à ferramenta <strong>Código InstaShop</strong>. Sua conta continua ativa e pronta para uso.
 
-Se precisar de qualquer ajuda para acessar a plataforma, recuperar sua senha ou tirar dúvidas sobre as funcionalidades, nosso suporte está à disposição.
+<strong>🔐 Seus dados de acesso:</strong>
 
-Basta clicar no botão abaixo para falar diretamente com o nosso time no WhatsApp:
+🌐 <strong>Link de acesso:</strong> ${LOGIN_URL}
+👤 <strong>Usuário:</strong> [USUARIO]
+🔑 <strong>Senha:</strong> [SENHA]
+
+Guarde este email em um local seguro. Caso tenha qualquer dúvida ou precise de ajuda com o acesso, nosso suporte está à disposição no WhatsApp:
 
 [BOTAO_WHATSAPP]
 
