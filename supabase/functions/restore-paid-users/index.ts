@@ -144,9 +144,11 @@ Deno.serve(async (req) => {
 
       item.db = upsertErr ? `ERR: ${upsertErr.message}` : "ok";
 
-      // Garantir na API SquareCloud (idempotente)
-      const api = await ensureInstagramUser(entry.username, entry.username, entry.days);
+      // Garantir na API SquareCloud (idempotente) — usa a senha correta se disponível
+      const pwd = (entry as any).password || entry.username;
+      const api = await ensureInstagramUser(entry.username, pwd, entry.days);
       item.squarecloud = api;
+
     } catch (e) {
       item.error = String(e);
     }
