@@ -97,6 +97,33 @@ Deno.serve(async (req) => {
     });
   }
 
+  // 2b. Coleta candidatos de created_accesses (usuários criados manualmente no /admin)
+  const { data: manual } = await supabase
+    .from("created_accesses")
+    .select("customer_email, username, password, access_type, expiration_date")
+    .eq("service_type", "instagram");
+
+  for (const m of manual || []) {
+    if (!m.customer_email || !m.username) continue;
+    const key = m.username.toLowerCase();
+    let days = 365;
+    if (m.access_type === "monthly") days = 30;
+    else if (m.access_type === "lifetime") days = 999999;
+    else if (m.expiration_date) {
+      const diff = Math.ceil((new Date(m.expiration_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      if (diff > 0) days = diff;
+    }
+    // Manual entries override — usam a senha correta
+    map.set(key, {
+      email: m.customer_email.toLowerCase().trim(),
+      username: m.username,
+      days,
+      source: "created_accesses",
+      password: m.password,
+    } as any);
+  }
+
+
   // 3. Para cada, upsert em paid_users + garantir na SquareCloud API
   for (const entry of map.values()) {
     const item: any = { ...entry };
