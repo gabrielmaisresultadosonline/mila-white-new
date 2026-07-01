@@ -11,8 +11,11 @@ import {
   UserPlus, 
   RefreshCw, 
   Copy,
-  Plus
+  Plus,
+  History,
+  Search
 } from 'lucide-react';
+
 
 interface CreatedAccess {
   id: string;
