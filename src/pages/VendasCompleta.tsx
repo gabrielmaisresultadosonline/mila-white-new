@@ -248,7 +248,7 @@ const VendasCompleta = () => {
   const affiliateBonus = "Cadastro Afiliado - Comissão de R$97 Por venda";
 
   const faqs = [
-    { q: "Quais são os planos disponíveis hoje?", a: "Oferecemos dois planos: o Plano Anual de 12 meses, que dá acesso completo por um ano, e o Plano Pagamento Único Vitalício, onde você paga apenas uma vez e tem acesso para sempre, incluindo todas as atualizações sem custo adicional." },
+    { q: "Quais são os planos disponíveis hoje?", a: "Oferecemos o Plano Anual de 12 meses, que dá acesso completo por um ano à ferramenta Código InstaShop, incluindo todas as atualizações durante o período." },
     { q: "O que é a automação de Direct (DM) em massa?", a: "É uma funcionalidade exclusiva do Código InstaShop que permite enviar mensagens automáticas no Direct para novos seguidores, seus seguidores atuais e até seguidores de qualquer outra página — tudo com copy otimizada pelo Corretor de IA exclusivo Código InstaShop." },
     { q: "O que são os Filtros Inteligentes (Público Quente)?", a: "São filtros avançados de segmentação que identificam pessoas que já demonstraram interesse no seu nicho — como quem curtiu posts, comentou ou segue perfis concorrentes. Isso garante mais precisão, mais respostas e mais conversões." },
     { q: "Isso em massa não gera bloqueio?", a: "Não. Nosso sistema simula um humano com tela ligada, interações espaçadas e pausas naturais. Você deixa rodando por 7 a 8 horas diárias com segurança. O algoritmo entende como uso real, evitando bloqueios." },
@@ -666,10 +666,13 @@ const VendasCompleta = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
             {/* Plano Anual */}
             <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-purple-500 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl">
-              <h3 className="text-2xl font-bold mb-2 text-center text-purple-400">Plano Anual</h3>
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-xs font-black px-4 py-1.5 rounded-full whitespace-nowrap">⭐ MAIS POPULAR</div>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-center text-purple-400 mt-2">Plano Anual</h3>
               <p className="text-gray-400 text-center mb-6 text-sm">Acesso completo por 12 meses</p>
               <div className="text-center mb-6">
                 <div className="flex items-baseline justify-center gap-1">
@@ -687,39 +690,16 @@ const VendasCompleta = () => {
                 ))}
                 <div className="flex items-center gap-2 text-xs text-gray-500 pt-1"><span>• {affiliateBonus}</span></div>
               </div>
-              <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold py-4 rounded-xl hover:scale-105 transition-transform"
-                onClick={() => { trackLead('Instagram MRO - Plano Anual'); setSelectedPlan("annual"); setShowCheckoutModal(true); }}>
-                GARANTIR PLANO ANUAL
-              </Button>
-            </div>
-
-            {/* Plano Vitalício */}
-            <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-pink-500 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl shadow-pink-500/30">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-fuchsia-500 to-rose-500 text-black text-xs font-black px-4 py-1.5 rounded-full whitespace-nowrap">⭐ MAIS POPULAR</div>
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-center text-pink-400 mt-2">Plano Vitalício</h3>
-              <p className="text-gray-400 text-center mb-6 text-sm">Acesso completo para sempre</p>
-              <div className="text-center mb-6">
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-lg sm:text-xl text-gray-400">12x de</span>
-                  <span className="text-5xl sm:text-6xl font-black text-pink-400">R$81</span>
-                </div>
-                <p className="text-gray-400 mt-2">ou à vista PIX <span className="text-white font-bold">R$797</span></p>
-              </div>
-              <div className="space-y-2 mb-6">
-                {lifetimeFeatures.map((f, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-pink-400 flex-shrink-0" />
-                    <span className="text-gray-300">{f}</span>
-                  </div>
-                ))}
-                <div className="flex items-center gap-2 text-xs text-gray-500 pt-1"><span>• {affiliateBonus}</span></div>
-              </div>
-              <Button size="lg" className="w-full text-white font-bold py-4 rounded-xl hover:scale-105 transition-transform border-0" style={{ background: 'linear-gradient(90deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}
-                onClick={() => { trackLead('Instagram MRO - Plano Vitalício'); setSelectedPlan("lifetime"); setShowCheckoutModal(true); }}>
-                GARANTIR PLANO VITALÍCIO
-              </Button>
+              <a
+                href="https://pay.kiwify.com.br/niUOf0H"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => { trackLead('Instagram MRO - Plano Anual'); }}
+              >
+                <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold py-4 rounded-xl hover:scale-105 transition-transform">
+                  GARANTIR PLANO ANUAL
+                </Button>
+              </a>
             </div>
           </div>
         </div>
